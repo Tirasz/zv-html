@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="objektum-orientált-paradigma-és-annak-megvalósítása-a-java-és-c-nyelvekben.-az-absztrakt-adattípus-az-osztály.-az-egységbezárás-az-információ-elrejtés-az-öröklődés-az-újrafelhasználás-és-a-polimorfizmus.-a-polimorfizmus-feloldásának-módszere">7. Objektum orientált paradigma és annak megvalósítása a JAVA és C++ nyelvekben. Az absztrakt adattípus, az osztály. Az egységbezárás, az információ elrejtés, az öröklődés, az újrafelhasználás és a polimorfizmus. A polimorfizmus feloldásának módszere</h1>
+<h2 id="objektum-orientált-paradigma">Objektum orientált paradigma</h2>
+<p>Az objektum orientált paradigma az <strong>objektumok</strong> fogalmán alapuló programozási paradigma. Az objektumok egységbe foglalják az adatokat és a hozzájuk tartozó műveleteket. A program egymással kommunikáló objektumok összességéből áll melyek használják egymás műveleteit és adatait.</p>
+<p>Az objektum-orientáltság három alapillére:</p>
+<ul>
+<li>
+<p>Egységbezárás és adatelrejtés (Encapsulation &amp; information hiding)</p>
+</li>
+<li>
+<p>Újrafelhasználás, polimorfizmus és öröklődés (Reusability, polymorphism &amp; inheritence)</p>
+</li>
+<li>
+<p>Magasabb fokú absztrakció</p>
+</li>
+</ul>
+<h3 id="egységbezárás-és-adatelrejtés">Egységbezárás és adatelrejtés</h3>
+<p>Az egységbe zárás azt fejezi ki, hogy az összetartozó adatok és függvények, eljárások együtt vannak, egy egységbe tartoznak.</p>
+<p>További fontos fogalom az <strong>adatelrejtés</strong>, ami azt jelenti, hogy kívülről csak az férhető hozzá közvetlenül, amit az objektum osztálya megenged.</p>
+<p>Ha az objektum, illetve osztály elrejti az összes adattagját, és csak bizonyos metódusokon keresztül férhetnek hozzá a kliensek, akkor az egységbe zárás az absztrakciót és információelrejtés erős formáját valósítja meg</p>
+<h3 id="az-osztály-és-objektum">Az osztály és objektum</h3>
+<p><strong>Absztrakt adattípus:</strong> Az adattípus leírásának legmagasabb szintje, amelyben az adattípust úgy specifikáljuk, hogy az adatok ábrázolására és a műveletek implementációjára semmilyen előírást nem adunk.</p>
+<p><strong>Osztály:</strong> Egy absztrakt adattípus. Az adattagokból és a rajta elvégezhető műveleteket zárja egy egységbe. Egészen konkrétan objektumok csoportjának leírása, amelyeknek közös az attribútumaik, operációik és szemantikus viselkedésük van. Ugyanúgy viselkedik, mint minden egyéb primitív típus, tehát pl. változó (objektum) hozható létre belőlük.</p>
+<ul>
+<li><strong>Létrehozás:</strong> Java-ban és C+±ban is a class kulcsszóval tudunk osztályokat definiálni. Az osztályokból tetszőleges mennyiségben létrehozhatunk példányokat, azaz objektumokat.</li>
+</ul>
+<p><strong>Objektum:</strong> Egy változó, melynek típusa valamely objektumosztály, vagyis az osztály egy példánya amely rendelkezik állapottal, viselkedéssel, identitással. Az objektumok gyakran megfeleltethetők a való élet objektumainak vagy egyedeinek</p>
+<ul>
+<li>
+<p><strong>állapot:</strong> Egy az objektum lehetséges létezési lehetőségei közül (a tulajdonságok aktuális értéke, pl: lámpaBekapcsolva true vagy false)</p>
+</li>
+<li>
+<p><strong>viselkedés:</strong> Az objektum viselkedése annak leírása, hogy az objektum hogy reagál más objektumok kéréseire. (metódusok, pl: lámpa.bekapcsol())</p>
+</li>
+<li>
+<p><strong>identitás:</strong> Minden objektum egyedi, még akkor is, ha éppen ugyanabban az állapotban vannak, és ugyanolyan viselkedést képesek megvalósítani.</p>
+</li>
+</ul>
+<h3 id="információ-elrejtése">Információ elrejtése</h3>
+<p>A láthatóságok segítségével tudjuk szabályozni adattagok, metódusok elérését, ugyanis ezeket az objektumorientált paradigma értelmében korlátozni kell, kívülről csak és kizárólag ellenőrzött módon lehessen ezeket elérni, használni.</p>
+<p>Az adattagok, és metódusok láthatóságának vezérléséhez vannak kulcsszavak, amelyekkel megfelelően el tudjuk rejteni őket.</p>
+<p>Láthatósági opciók</p>
+<ul>
+<li>
+<p><strong>public:</strong> mindenhonnan látható</p>
+</li>
+<li>
+<p><strong>protected:</strong> csak az osztály scope-ján belül, illetve a később az adott osztályból származtatott gyerekosztályokon belül lehet hivatkozni.</p>
+</li>
+<li>
+<p><strong>private:</strong> csak az adott osztályon belül lehet hivatkozni rá</p>
+</li>
+</ul>
+<p>(<strong>Java-ban alapértelmezetten package private</strong> (az adott packagen belül public, egyébként private) a láthatóság, míg <strong>C++ -ban private</strong>)</p>
+<p>Törekedni kell a minél nagyobb adatbiztonságra és információ elrejtésre: az adat tagok láthatósága legyen private, esetleg indokolt esetben protected.</p>
+<h3 id="öröklődés">Öröklődés</h3>
+<p>Osztályok között értelmezett viszony, amely segítségével egy általánosabb típusból (ősosztály) egy sajátosabb típust tudunk létrehozni (utódosztály). Az utódosztály adatokat és műveleteket örököl, kiegészíti ezeket saját adatokkal és műveletekkel, illetve felülírhat bizonyos műveleteket. A kód újrafelhasználásának egyik módja. <strong>Megkülönböztetünk egyszeres és többszörös örökítést</strong>.</p>
+<p>A hasonlóság kifejezése az ős felé az általánosítás. A különbség a gyerek felé a specializálás.</p>
+<p><strong>Java:</strong> az <mark>extends</mark> kulcsszóval tudjuk jelezni, hogy az adott osztály egy másik osztálynak a leszármazottja. Java-ban egyszeres öröklődés van, vagyis <strong>egy osztály csak is egy ősosztályból származhat</strong> (viszont több interfészt implementálhat)</p>
+<ul>
+<li><strong>super:</strong> segítségével gyerekosztályból hivatkozhatunk szűlőosztály adattagjaira és metódusaira.</li>
+</ul>
+<p><strong>C++:</strong> Az <mark>osztály neve után vesszővel elválasztva</mark> lehet megadni az ősosztályokat és velük együtt a láthatóságaikat. <strong>Lehetőség van többszörös öröklődésre is.</strong></p>
+<ul>
+<li>Az öröklődés során lehetőség van az ős osztály tagjainak láthatósági opcióján változtatni. Ezt az ős osztályok felsorolásakor kell definiálni. Az változtatás csak szigorítást (korlátozást) jelenthet. Az alábbi táblázat a gyermek osztálybeli láthatóságot mutatja be az ős osztálybeli láthatóság és a módosítás függvényében:</li>
+</ul>
+<p>| Base class member access specifier | Type inheritence |of |inheritence |</p>
+<p>|--------------------------------------------|---------------------|-----------|---------|</p>
+<p>| | <strong>public</strong> | <strong>protected</strong> | <strong>private</strong> |</p>
+<p>| <strong>Public</strong> | protected | protected | private |</p>
+<p>| <strong>Protected</strong> | protected | protected | private |</p>
+<p>| <strong>Private</strong> | Hidden | Hidden | Hidden |</p>
+<h3 id="virtuális-öröklődés">Virtuális öröklődés</h3>
+<p>Többszörös öröklődésnél előfordulhat olyan eset, amikor egy-egy ős osztály az öröklődési hierarchia különböző pontján ismét megjelenik. Ekkor a gyermek osztályban ennek az ős osztálynak több példánya jelenhet meg. Erre néhány esetben nincs szükség, például ha az ős osztály csak egy eljárás-erőforrás, akkor minden esetben elegendő egyetlen előfordulás a gyermek osztályokban.</p>
+<p>A virtuális ős osztályt az őröklődésnél az ős osztályok felsorolásakor <strong>virtual módosítóval</strong> kell jelezni.</p>
+<p>(Ha nem adom meg a virtual módosító szót, akkor az A osztály többször fog megjelenni a D osztály példányaiban. Hivatkozásnál mindig meg kell mondani, hogy az A melyik példányáról van szó: C::A::m_iN, B::A::m_iN.)</p>
+<h3 id="újrafelhasználás-polimorfizmus">Újrafelhasználás, Polimorfizmus:</h3>
+<p>Az újrafelhasználhatóság az OOP egyik legfontosabb előnye.</p>
+<p>Az a jelenség, hogy egy változó nem csak egyfajta típusú objektumra hivatkozhat a polimorfizmus.</p>
+<p>A polimorfizmus lehetővé teszi számunkra, hogy egyetlen műveletet különböző módon hajtsunk végre. Más szavakkal, a polimorfizmus lehetővé teszi egy interfész definiálását és több megvalósítást. Az objektumok felcserélhetőségét biztosítja. Az objektumok őstípusai alapján kezeljük, így a kód nem függ a specifikus típusoktól.</p>
+<p>Polimorfizmusra két lehetőség van:</p>
+<ul>
+<li>
+<p><strong>statikus polimorfizmus (korai hozzárendelés)</strong> - a hívott metódus nevének és címének összerendelése szerkesztéskor történik meg. A futtatható programban már fix metóduscímek találhatók. (statikus, private, final metódusok)</p>
+</li>
+<li>
+<p><strong>dinamikus polimorfizmus (késői hozzárendelés)</strong> - metódus nevének és címének hozzárendelése a hívás előtti sorban történik, futási időben</p>
+</li>
+</ul>
+<h3 id="virtuális-eljárások">Virtuális eljárások</h3>
+<p>Egy virtuális eljárás címének meghatározása indirekt módon, futás közben történik.</p>
+<p>Java-ban eleve <strong>csak virtuális eljárások</strong> vannak (<strong>kivéve</strong> a <strong>final metódusokat</strong>, amelyeket nem lehet felüldefiniálni és a <strong>private metódusokat, amelyeket nem lehet örökölni</strong>)</p>
+<p>C++ -ban a <strong>virtuális függvénytábla</strong> tartja nyilván a virtuális eljárások címeit. A VFT táblázat öröklődik, feltöltéséről a konstruktor gondoskodik. A származtatott osztály konstruktora módosítja a virtuális függvénytáblát, kijavítja az ősosztályból örökölt metóduscímeket. Amikor a konstruálási folyamat véget ér, a VFT táblázat minden sora értéket kap, mégpedig a ténylegesen létrehozott osztálynak megfelelő metódus címeket. A VFT táblázat sorai ezután már nem változnak meg.</p>
+<ul>
+<li>Virtuális eljárásokat a <strong>virtual kulcsszóval</strong> tudunk létrehozni. Az újrafelhasználás során nagy valószínűséggel módosításra kerülő eljárásokat a szülő osztályokban célszerű egyből virtuálisra megírni, mert ezzel jelentős munkát lehet megtakarítani a későbbiekben.</li>
+</ul>
+<h3 id="absztrakt-osztály-interfész">Absztrakt osztály, interfész</h3>
+<p>**Java:</p>
+<p>Absztrakt osztályok:**</p>
+<ul>
+<li>
+<p>Az abstract kulcsszóval hozható létre.</p>
+</li>
+<li>
+<p>Egy absztrakt osztályból nem hozható létre objektum.</p>
+</li>
+<li>
+<p>Tartalmazhat absztrakt metódusokat (absztrakt metódusnak nincs implementációja, azaz törzse), illetve nem absztraktokat</p>
+</li>
+<li>
+<p>Gyerek osztályban az abstract metódusokat felül KELL definiálni, ha példányosítható osztályt szeretnénk</p>
+</li>
+<li>
+<p>Ha egy osztály rendelkezik legalább egy absztrakt metódussal, akkor osztálynak is absztraktnak kell lennie</p>
+</li>
+<li>
+<p>Lehetnek adattagjai</p>
+</li>
+</ul>
+<p><strong>Interfész</strong></p>
+<ul>
+<li>
+<p>Az interface kulcsszóval lehet létrehozni</p>
+</li>
+<li>
+<p>Egy speciális absztrakt osztály</p>
+</li>
+<li>
+<p>Nincsenek sem megvalósított metódusok, sem adattagok. Csupán metódus deklarációkat tartalmaz (Újabb javaban lehet <strong>public static final</strong> lesz mindegyik adattag)</p>
+</li>
+<li>
+<p>Gyerekosztályban az <strong>implements</strong> kulcsszóval lehet implementálni</p>
+</li>
+</ul>
+<p>**C++:</p>
+<p>Absztrakt osztályok:**</p>
+<p>A törzs nélküli virtuális eljárásokat <strong>pure virtual</strong> eljárásoknak nevezzük (pl.: virtual int getArea() = 0;). A pure virtual eljárás egy üres (NULL) bejegyzést foglal el a VFT (Virtual Function Table) táblázatban. Ha egy osztály ilyen eljárást tartalmaz, akkor azt absztrakt osztálynak nevezzük amiatt, mert ebből az osztályból objektum példányokat létrehozni nem lehet. A gyermek osztályokban minden pure virtual eljárást megfelelő törzzsel kell ellátni, ezt a fordító ellenőrzi. Amíg egyetlen pure virtual eljárás is marad, az osztály absztrakt lesz.</p>
+<p>Interfészeket lehet szimulálni úgy, hogy minden metódust pure virtuallá teszünk.</p>
+</div>
+</body>
+
+</html>

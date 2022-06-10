@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="objektumok-életciklusa-létrehozás-inicializálás-másolás-megszüntetés.-dinamikus-lokális-és-statikus-objektumok-létrehozása.-a-statikus-adattagok-és-metódusok-valamint-szerepük-a-programozásban.-operáció-és-operátor-overloading-a-java-és-c-nyelvekben.-kivételkezelés">8. Objektumok életciklusa, létrehozás, inicializálás, másolás, megszüntetés. Dinamikus, lokális és statikus objektumok létrehozása. A statikus adattagok és metódusok, valamint szerepük a programozásban. Operáció és operátor overloading a JAVA és C++ nyelvekben. Kivételkezelés</h1>
+<h2 id="objektumok-létrehozása">Objektumok létrehozása</h2>
+<p>Az objektumokat Java-ban és C++ -ban is tárolhatjuk <strong>statikusan</strong> (az adatszegmensben), a <strong>veremben</strong> (lokálisan) vagy a <strong>heapben</strong> (dinamikusan).</p>
+<p>Java-ban az objektumok mindig a heap-ben keletkeznek, kivéve a primitív típusokat.</p>
+<p><strong>Objektumok inicializálása, konstruktorok</strong></p>
+<p>Az osztályok konstruktora fogja inicializálni az objektumot. A konstruktor neve meg kell egyezzen az osztály nevével. A konstruktornak nincs visszatérési értéke, de paraméterei lehetnek, amelyekkel meg lehet adni, hogy hogyan inicializáljuk az objektumot.</p>
+<p>A <strong>new</strong> operátor:</p>
+<ul>
+<li>
+<p>Szintaxis: new Osztály(args)</p>
+</li>
+<li>
+<p>Létrehozás lépései:</p>
+</li>
+<li>
+<p>Lefoglalja a számára szükséges memóriát</p>
+</li>
+<li>
+<p>Meghívja az osztály konstruktorát</p>
+</li>
+<li>
+<p>Visszaadja az objektumra mutató referenciát</p>
+</li>
+</ul>
+<p>Egy osztályhoz készíthetünk több konstruktort, amelyek különböző paraméterlistával rendelkeznek.</p>
+<p><strong>C+±ban is hasonlóan működik a konstruktor</strong>: a konstruktor inicializálja az objektumot, azaz tölti fel az adattagjait értékekkel, több különböző paraméter listájú konstruktort lehet létrehozni egy osztályhoz, a konstruktor neve meg kell egyezzen az osztály nevével és visszaadott értéke nem lehet.</p>
+<p>A paraméter nélküli konstruktor eljárás neve: <strong>alapértelmezett (default) konstruktor.</strong> Csak ős osztályokban kötelező, akkor ha az osztályból gyermek osztályokat szeretnének létrehozni öröklődéssel. Megvalósítható olymódon is, hogy egy nem default konstruktor minden paraméteréhez default eljárás paramétereket adunk (pl. Osztaly(int x = 1, int y = 2)).</p>
+<p>Amennyiben egy gyermek osztály konstruálunk, akkor a konstruktor minden esetben meg kell hívja rekurzívan az ős osztály(ok) konstruktorait mielőtt elkezdené a saját eljárás törzsét végrehajtani. Java-ban ez impliciten megtörténik, ha az ősosztálynak van default konstruktora.</p>
+<p>C+±ban a <strong>heapbeli objektumok létrehozása a new operátorral</strong> történik, <strong>megszüntetésük pedig a delete operátorral</strong>. A létrehozáshoz nem elegendő a memória megfelelő méretben történő lefoglalása, hanem a konstruktor eljárást is meg kell hívni. (Ezért nem lehet objektum példányt létrehozni malloc eljárással.)</p>
+<p>A new operátorral egyetlen objektum példányt vagy megadott méretű tömböt hozhatunk létre. A new operátor alkalmazásának eredménye mindig egy pointer a new operandusában megadott osztályra.</p>
+<p><strong>Szintaxis:</strong></p>
+<p>Tömbök foglalásakor a default konstruktor hívódik meg. Megszüntetésüknél az üres [] zárójelpár használata kötelező.</p>
+<p>C++ban az objektum megszüntetése előtti takarítást, erőforrás felszabadítást a destruktor végzi. A neve meg kell egyezzen az osztály nevével, ami elé egy ~ (tilde) jelet is kell tenni. Paramétere és visszaadott értéke nem lehet. A destruktor már nem állíthatja meg az objektum megszüntetését. Amikor a destruktor véget ér, az objektumot a rendszer a memóriából törli. Mindig a gyerek osztály destruktora hívódik meg először, és azt követi rekurzívan az ős osztályok destruktorainak a meghívása.</p>
+<p>Java-ban nincs szükség a heap-ben létrehozott objektumok manuális törlésére. A takarítást automatikusan elvégzi a garbage collector (szemétgyűjtő). Ez biztonságosabb, a programozónak nem kell emlékeznie, hogy fel kell szabadítani az erőforrásokat, viszont sokkal lassabb. A szemétgyűjtést kézzel is el lehet indítani, de ez nem egyenlő a destruktorral, kiszámíthatatlan, hogy mikor fog végrehajtódni.</p>
+<h3 id="objektum-másolás">Objektum másolás</h3>
+<p>Akkor beszélünk klónozásról, ha egy objektum példányt két (vagy több) példányban sokszorosítunk úgy, hogy az egyes példányok adat tagjai azonosak lesznek.</p>
+<p>Klónozás lehetséges az „=” segítségével, viszont ilyenkor az objektumok ugyan lemásolódnak, de a referenciájuk ugyanarra a memóriaterületre fog mutatni, azaz, ha pl. az egyik másolt objektum egyik adattagját módosítjuk, az az eredeti objektumra is hatással lesz.</p>
+<p><strong>Java:</strong></p>
+<p>Valódi másolást Java-ban a clone() metódussal tudunk végrehajtani. Az osztálynak, amit szeretnénk klónozhatóvá tenni implementálnia kell a Cloneable interfészt és meg kell hívnia az ős clone() metódusát (super.clone()).</p>
+<p><strong>C++:</strong></p>
+<p>A valós klónozás megvalósítására szolgát a copy konstruktor. A copy konstruktor paramétereinek száma 1, ennek az egy paraméternek a típusa pedig a tartalmazó osztályra mutató referencia típus.</p>
+<h2 id="dinamikus-lokális-és-statikus-objektumok-létrehozása">Dinamikus, lokális és statikus objektumok létrehozása:</h2>
+<p><strong>C++:</strong></p>
+<p>A <strong>statikusan létrehozott objektum</strong> az adott kód blokk végén megszűnik, amelyikben létre lett hozva.</p>
+<p><strong>Lokális objektumokat</strong> default paraméter vagy objektumokat tartalmazó kifejezésekben használhatunk. Szokás még objektum konstansnak is nevezni őket.</p>
+<p><strong>Objektumokat dinamikusan</strong> a new operátor segítségével tudunk létrehozni, amelynek törléséről a programozónak kell gondoskodnia.</p>
+<p><strong>Java:</strong></p>
+<p>Java-ban minden objektum dinamikusan jön létre a heap-ben.</p>
+<h3 id="a-statikus-adattagok-és-metódusok">A statikus adattagok és metódusok</h3>
+<p>A statikus adattagok és metódusok hasonlóan működnek Java-ban és C+±ban. Mindkét nyelven a static módosítóval tudjuk jelezni, hogy az adott member statikus lesz.</p>
+<p>Az ilyen adattagok és metódusok csak egy példányban jönnek létre és az osztálynak lesznek a tagjai, amelyet az objektumok közösen használhatnak.</p>
+<p>A statikus metódusok nem lehetnek virtuálisak, nem hivatkozhatnak az adott objektumra (this-re).</p>
+<p>Az ilyen adattagok, metódusok példányosítás nélkül is használhatóak.</p>
+<p>Olyan esetekben lehetnek hasznosak, amikor az adott adattag, metódus független az objektumoktól, és mindenhol megegyezne az implementáció. Például van egy statikus adattagunk, amely a diákok számát tárolja és egy statikus metódus, amely visszaadja ennek a statikus adattagnak az értékét.</p>
+<h2 id="operáció-és-operátor-overloading">Operáció és operátor overloading</h2>
+<h3 id="operáció-kiterjesztés">Operáció kiterjesztés</h3>
+<p>Az operáció kiterjesztés mind Java, mind C++ nyelven támogatott és hasonló módon működik. A lényege, hogy azonos nevű függvények többször vannak implementálva melyek paraméterei eltérő számúak és típusúak lehetnek. Ilyenek a változó paraméterű konstruktorok is többek között.</p>
+<p>A fordító a kiterjesztett metódusokat a paraméterlistájuk alapján különbözteti meg</p>
+<pre><code>
+void sum(int a,int b){ System.out.println(a+b); }
+
+void sum(int a,int b,int c){ System.out.println(a+b+c); }
+
+</code></pre>
+<h3 id="operátor-kiterjesztés">Operátor kiterjesztés</h3>
+<p><strong>Java-ban nincs lehetőség az operátorok kiterjesztésére.</strong></p>
+<p>A C++ programozási nyelv lehetőséget biztosít arra, hogy az osztályokra kiterjesszük a nyelvben definiált bináris és unáris operátorokat. A kiterjesztésre vonatkozóan több megszorítás is van, ennek ellenére ez a szolgáltatás jelentős lépés az absztrakció növelésének irányába.</p>
+<ul>
+<li>
+<p>A kiterjesztés CSAK osztályok esetén lehetséges (ebben benne van a class, struct és a union), viszont nem működik tömbökre, pointerekre.</p>
+</li>
+<li>
+<p>Bizonyos elemi operátorok kiterjesztésére nincs lehetőség, ilyenek a . (member selection), :: (scope resolution), ? : (ternary), .* (pointer to member), # és ## a preprocesszorból. Kiterjeszthető viszont a (typecast) operátor!</p>
+</li>
+<li>
+<p>Az operátorok precedenciája nem változtatható meg.</p>
+</li>
+<li>
+<p>Az operátor eljárások öröklődnek (kivéve az „=” operátor).</p>
+</li>
+<li>
+<p>Az operátorok egyik operandusa osztály (vagy osztályra mutató referencia típus) kell legyen. Ettől függetlenül lehet a két operandus különböző.</p>
+</li>
+</ul>
+<h2 id="a-friend-osztályok-és-eljárások">A friend osztályok és eljárások</h2>
+<p>Az operátor eljárások implementációjakor szükség lehet objektumok private és protected adattagjainak elérésére. Az adattagok elérésére használhatunk segéd eljárásokat, azonban itt egy speciális esetről van szó, ahol számításba jöhet egy ”barát” eljárás alkalmazása is (talán szándékaink szerint metódussal szerettük volna megvalósítani az operátor eljárást, csak valamiért ez nem volt megengedett).</p>
+<ul>
+<li>
+<p>A friend eljárást az osztály belsejében kell deklarálni.</p>
+</li>
+<li>
+<p>Nemcsak eljárás lehet friend, hanem másik osztály is!</p>
+</li>
+<li>
+<p>A friend eljárások nem lesznek az osztály tagjai!</p>
+</li>
+<li>
+<p>Abban az osztályban kell őket deklarálni, amelynek a tagjait el kívánják érni.</p>
+</li>
+<li>
+<p>A friend eljárásokat a global scope-ban kell megvalósítani.</p>
+</li>
+</ul>
+<h2 id="kivételkezelés">Kivételkezelés</h2>
+<p>A kivétel a program futása során előálló rendellenes állapot, amely közbeavatkozás nélkül a program futásának abnormális megszakadását eredményezheti. A kivételes helyzetek kezelésének elmulasztása például a hálózati a kommunikáció, vagy az adatbázis tranzakció félbeszakadásával járhat úgy, hogy mindeközben meghatározatlan állapotba kerül a rendszer.</p>
+<p>A lényeg, hogy amikor egy hiba megjelenik a programban, azaz egy kivételes esemény történik, a program normális végrehajtása megáll, és átadódik a vezérlés a kivételkezelő mechanizmusnak.</p>
+<p>A Java kivételkezelése a C++ kivételkezelésére alapul.</p>
+<p>A kivételkezelés eszköze a try és a catch utasítás, míg a manuális kivétel kiváltásra szolgál a throw utasítás. A kivételkezelő blokk végén a finally mindenképpen lefut.</p>
+<p>A program azon részeit, ahol a kivételek keletkezhetnek, és amiket utána kivétel kezelő részek követnek, a program védett régióinak nevezzük.</p>
+<p>A kivétel bekövetkezésekor a throwbeli kifejezés típusának megfelelő catch blokk hívódik meg, ezt a veremben visszafelé haladva keresi meg a rendszer. A verem tartalmát az adott pontig kiüríti a rendszer, végrehajtja a catch blokkot, majd a try utáni sorral folytatja a végrehajtást.</p>
+<h3 id="kivétel-létrehozása">Kivétel létrehozása</h3>
+<p>Beépített kivétel osztályok mellett létrehozhatunk sajátokat is.</p>
+<p>Java:</p>
+<p>Ha akarunk, akár saját kivételeket is hozhatunk létre bármely kivétel osztály specializálásával. Ekkor egy osztályt az Exception osztályból kell származtatni és meg kell hívni az ősosztály konstrukturát.</p>
+<p>C++:</p>
+<pre><code>
+class MyException : public std::exception {
+
+std::string _msg;
+
+public:
+
+MyException(const std::string&amp; msg) : _msg(msg){}
+
+virtual const char* what() const noexcept override {
+
+return _msg.c_str();
+
+}
+
+};
+
+</code></pre>
+</div>
+</body>
+
+</html>

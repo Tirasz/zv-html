@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="az-sql-adatbázisnyelv-az-adatdefiníciós-nyelv-ddl-és-az-adatmanipulációs-nyelv-dml.-relációsémák-definiálása-megszorítások-típusai-és-létrehozásuk.-adatmanipulációs-lehetőségek-és-lekérdezések">2. Az SQL adatbázisnyelv: Az adatdefiníciós nyelv (DDL) és az adatmanipulációs nyelv (DML). Relációsémák definiálása, megszorítások típusai és létrehozásuk. Adatmanipulációs lehetőségek és lekérdezések</h1>
+<h2 id="sql">SQL</h2>
+<p>Structured Query Language, egy lekérdező nyelv. Arra szolgál, hogy adatokat kezeljünk vele.</p>
+<ul>
+<li>
+<p>beszúrás</p>
+</li>
+<li>
+<p>törlés</p>
+</li>
+<li>
+<p>módosítás</p>
+</li>
+<li>
+<p>lekérdezés</p>
+</li>
+</ul>
+<p>A nyelv elemeit két fő részre oszthatjuk.</p>
+<h2 id="az-adatdefiníciós-nyelv-ddl">Az adatdefiníciós nyelv (DDL)</h2>
+<p>Ide tartoznak az adatbázisok, sémák, típusok definíciós utasításai, pl:</p>
+<ul>
+<li>
+<p>CREATE DATABASE</p>
+</li>
+<li>
+<p>CREATE TABLE</p>
+</li>
+<li>
+<p>ALTER TABLE</p>
+</li>
+<li>
+<p>DROP TABLE</p>
+</li>
+<li>
+<p><strong>CREATE TRIGGER</strong>: Nem tábla létrehozásra van</p>
+</li>
+</ul>
+<p><strong>Triggerekről pár infó</strong></p>
+<p>Olyan kis programok, aktív elemek az adatbáziokban, amelyek valamilyen</p>
+<ul>
+<li>
+<p>adataktualizáló művelet vagy</p>
+</li>
+<li>
+<p>Amelyek minden adatmanipulációs művelet esetén végrehajtódnak (Insert, update)</p>
+</li>
+<li>
+<p>rendszerszintű művelet esetén hajtódnak végre.</p>
+</li>
+<li>
+<p>Pl felhasználó bejelentkezése stb.</p>
+</li>
+</ul>
+<h2 id="az-adat-manipulációs-nyelv-dml">Az adat manipulációs nyelv (DML)</h2>
+<p>Ide tartoznak a beszúró, módosító, törlő, lekérdező utasítások.</p>
+<ul>
+<li>
+<p>INSERT INTO</p>
+</li>
+<li>
+<p>UPDATE</p>
+</li>
+<li>
+<p>DELETE FROM</p>
+</li>
+<li>
+<p>SELECT</p>
+</li>
+</ul>
+<p>Egyes irodalmak különválasztják a lekérdező utasításokat a manipulációs utasításoktól.</p>
+<h2 id="relációsémák-definiálása-megszorítások-típusai-és-létrehozásuk">Relációsémák definiálása, megszorítások típusai és létrehozásuk</h2>
+<p>Relációsémákat a</p>
+<pre><code>
+CREATE TABLE tablanev(
+
+mező1 típus [oszlopfeltételek],
+
+....
+
+[tablafeltételek]
+
+);
+
+</code></pre>
+<p>utasítással hozhatunk lére. A sémák különböznek a tábláktól, és nevével ellentétben a CREATE TABLE utasítás csak a relációsémát hozza létre. A tábla már az adatrekordok halmazát jelenti.</p>
+<p>Relációsémákat módosítani a</p>
+<p>Új oszlop hozzáadás:</p>
+<p><code>ALTER TABLE táblanév ADD (uj_oszlop TÍPUS [oszlopfeltételek])</code></p>
+<p>Oszlop módosítása:</p>
+<p><code>ALTER TABLE táblanév MODIFY (meglevo_oszlop TÍPUS [oszlopfeltetl])</code></p>
+<p>Oszlop törlése:</p>
+<p><code>ALTER TABLE táblanév DROP (oszlop)</code></p>
+<p>Adatbázis törlése:</p>
+<p><code>DROP TABLE táblanév;</code></p>
+<h3 id="megszorítások">Megszorítások</h3>
+<p><strong>Oszlopfeltételek:</strong></p>
+<p>Csak az adott mezőre vonatkoznak</p>
+<ul>
+<li>
+<p><strong>PRIMARY KEY</strong>, az elsődleges kulcs</p>
+</li>
+<li>
+<p><strong>UNIQUE</strong>, kulcs, minden érték egyszer fordulhat elő az oszlopban</p>
+</li>
+<li>
+<p><strong>NOT NULL</strong>, az oszlop értéke nem lehet NULL, azaz kötelező kitölteni</p>
+</li>
+<li>
+<p><strong>REFERENCES T(oszlop)</strong>, a T tábla oszlop oszlopára vonatkozó külső kulcs</p>
+</li>
+<li>
+<p><strong>DEFAULT tartalom</strong>, az oszlop alapértelmezett értéke tartalom lesz</p>
+</li>
+</ul>
+<p><strong>Táblafeltételek</strong></p>
+<p>Ha több oszlopra is vonatkoznak feltételek, azt itt tudjuk megadni.</p>
+<ul>
+<li>
+<p><strong>PRIMARY KEY(oszloplista)</strong>, az elsődleges kulcs/kulcsok</p>
+</li>
+<li>
+<p><strong>UNIQUE (oszloplista)</strong>, kulcs, minden érték egyszer fordulhat elő az oszlopban</p>
+</li>
+<li>
+<p><strong>FOREIGN KEY (oszloplista) REFERENCES T(oszloplista)</strong>, a T tábla oszloplista oszloplistájára vonatkozó külső kulcs</p>
+</li>
+</ul>
+<p><strong>Külső kulcs feltételek és szabályok</strong></p>
+<p>Az integritás megőrzése szempontjából a külső kulcsokhoz meghatározhatjuk azt is, hogy hogyan viselkedjenek a hivatkozott kulcs törlése vagy módosítása esetén.</p>
+<p><strong>ON DELETE</strong></p>
+<ul>
+<li>
+<p><strong>RESTRICT,</strong> ha van a törlendő rekord kulcsára van vonatkozó külső kulcs, megtiltjuk a törlést</p>
+</li>
+<li>
+<p><strong>SET NULL,</strong> a törlendő rekord kulcsára hivatkozó külső kulcs értékét NULL-ra állítjuk</p>
+</li>
+<li>
+<p><strong>NO ACTION,</strong> a törlendő rekord kulcsára vonatkozó külső kulcs értéke nem változik</p>
+</li>
+<li>
+<p><strong>CASCADE,</strong> a törlendő rekord kulcsára hivatkozó külső kulcsú rekordok is törlődnek</p>
+</li>
+</ul>
+<p>pl:</p>
+<p><code>felhasznalonev VARCHAR(20) REFERENCES felhasznalo(felhasznalonev) ON DELETE SET NULL</code></p>
+<p><strong>ON UPDATE</strong></p>
+<ul>
+<li>
+<p><strong>RESTRICT,</strong> ha van a módosítandó rekord kulcsára van vonatkozó külső kulcs, megtiltjuk a módosítást</p>
+</li>
+<li>
+<p><strong>SET NULL,</strong> a módosítandó rekord kulcsára hivatkozó külső kulcs értékét NULL-ra állítjuk</p>
+</li>
+<li>
+<p><strong>NO ACTION,</strong> a módosítandó rekord kulcsára vonatkozó külső kulcs értéke nem változik</p>
+</li>
+<li>
+<p><strong>CASCADE,</strong> a módosítandó rekord kulcsára hivatkozó külső kulcsú rekordok is az új értékre változnak</p>
+</li>
+</ul>
+<p><code>felhasznalonev VARCHAR(20) REFERENCES felhasznalo(felhasznalonev) ON UPDATE CASCADE</code></p>
+<p><strong>Táblákra és attribútumokra vonatkozó megszorítások</strong></p>
+<p>Elsődleges feladata, hogy megelőzzük az adatbeviteli hibákat, és elkerüljük a hiányzó adatokat a kötelező mezőkből.</p>
+<p><strong>NOT NULL:</strong> a cella értékét kötelező kitölteni, nem lehet NULL</p>
+<p><strong>CHECK (feltétel):</strong> ellenőrző feltétel arra, hogy milyen értékeket vehet fel az adott oszlop</p>
+<p><strong>DOMAIN:</strong> értéktartomány egy oszlop értékeire vonatkozóan</p>
+<h2 id="adatmanipulációs-lehetőségek-és-lekérdezések">Adatmanipulációs lehetőségek és lekérdezések</h2>
+<h4 id="adatok-beszúrása"><strong>Adatok beszúrása:</strong></h4>
+<p>Ha csak adott oszlopoknak akarunk értéket adni (pl mert nem kötelező, vagy alapértelmezett érték):</p>
+<p><code>INSERT INTO táblanév (oszloplista) VALUES (értéklista);</code></p>
+<p>Ha minden oszlop értékét ki akarjuk tölteni:</p>
+<p><code>INSERT INTO táblanév VALUES (értéklista);</code></p>
+<p>Adatok módosítása:</p>
+<pre><code>
+UPDATE táblanév SET
+
+oszlop=kifejezés
+
+[oszlop2=kifejezés2]
+
+[WHERE feltétel];
+
+</code></pre>
+<p>Módosítjuk egy vagy több oszlop értékét az adott táblában, azokon a sorokon, amelyek eleget tesznek a WHERE záradékban tett feltételnek.</p>
+<h4 id="adatok-törlése"><strong>Adatok törlése:</strong></h4>
+<p><code>DELETE FROM táblanév [WHERE feltétel];</code></p>
+<p>Töröljük az összes rekordot a táblából, amelyek megfelelnek a WHERE záradékban megadott feltételnek.</p>
+<h4 id="lekérdezések"><strong>Lekérdezések:</strong></h4>
+<p><code>SELECT oszloplista FROM tábla;</code></p>
+<p>A megadott oszlopokat kilistázza az adott táblából. oszloplista helyére megadható *, ha az összes oszlopot listázni akarjuk.</p>
+<p><strong>Teljes szintaxisa:</strong></p>
+<pre><code>
+SELECT [DISTINCT] oszloplista FROM táblalista
+
+[WHERE feltétel]
+
+[GROUP BY oszloplista]
+
+[HAVING csoportfeltétel]
+
+[ORDER BY oszloplista [DESC]];
+
+</code></pre>
+<p><strong>DISTINCT:</strong> csak a különböző sorokat írja ki</p>
+<p><strong>FROM táblalista:</strong> a táblalistában megadott táblákbó képez Descartes szorzatot</p>
+<p><strong>WHERE:</strong> kiválasztás a feltétel szerint</p>
+<p><strong>GROUP BY:</strong> csoportosítás az oszloplistában szereplő oszlopok szerint</p>
+<p><strong>HAVING:</strong> a csoportosítás után a csoportokra vonatkozó feltétel</p>
+<p><strong>ORDER BY:</strong> az oszloplistában szereplő adatok rendezése abc szerint növekvő vagy csökkenő sorrendben</p>
+<h4 id="összesítő-függvények"><strong>Összesítő függvények</strong></h4>
+<p>Leggyakrabban a <strong>GROUP BY-jal együtt</strong> szoktuk használni, de enélkül is lehet.</p>
+<p><strong>Leginkább</strong> a <strong>SELECT utáni oszloplistában</strong>, de a <strong>where-ben</strong> és a <strong>having-ban</strong> is használható. Az eredményoszlopokat AS kulcsszóval el is nevezhetjük.</p>
+<p><strong>MIN(oszlop):</strong> az oszlopban lévő minimumot adja vissza</p>
+<p><strong>MAX(oszlop):</strong> maxot</p>
+<p><strong>AVG(oszlop):</strong> az oszlop átlaga</p>
+<p><strong>SUM(oszlop):</strong> az oszlop összege</p>
+<p><strong>COUNT ([DISTINCT]</strong> oszlop): az eredményben szereplő (különböző) rekordok száma</p>
+<h4 id="természetes-összekapcsolás"><strong>Természetes összekapcsolás</strong></h4>
+<p><strong>SELECT * FROM T1, T2 WHERE T1.X = T2.X;</strong></p>
+<p>X az most egy oszlop, egy kulcs-külső kulcs kapcsolat.</p>
+<p>Erre használható még SQL-ben az <strong>INNER JOIN</strong> kulcsszó is.</p>
+<p><code>SELECT * FROM T1, T2 INNER JOIN T2 ON T1.X = T2.X;</code></p>
+<p>Használható még a NATURAL JOIN kifejezés is, de ez egy picit máshogy működik. Ennek a használatához a két tábla közös attribútumhalmaza ugyanazokat az oszlopneveket tartalmazza mindkét táblában és a párosított oszlopok típusa is megegyezik. Ebből kifolyólag nem kell megadnunk a kapcsolódó, kulcs és külső kulcs oszlopokat. A közös oszlop csak egy példányban jelenik majd meg.</p>
+<p><code>SELECT * FROM T1 NATURAL JOIN T2;</code></p>
+<p><strong>Jobboldali, baloldali és teljes külső összekapcsolás:</strong></p>
+<p>Valamelyik, vagy mindkét tábla összes rekordja szerepelni fog az eredményben.</p>
+<p><strong>Baloldali összekapcsolásnál (LEFT JOIN)</strong> a baloldali tábla minden rekordja megmarad, és ezekhez a rekordokhoz párosítjuk a jobboldali tábla rekordjait.</p>
+<p><strong>Jobboldalinál (RIGHT JOIN) pont fordítva</strong>.</p>
+<p><strong>Teljes összekapcsolásnál (FULL OUTER JOIN)</strong> pedig mindkét tábla összes rekordja megmarad, és mindenhol a hiányzó helyeken NULL értékek lesznek.</p>
+<p><strong>Theta kapcsolás</strong></p>
+<p>Nem feltételezünk, hogy lenne a két táblának közös kapcsolómezője. <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <strong>Descartes szorzat</strong></p>
+<p><code>SELECT * FROM T1 , T2 WHERE feltétel ;</code></p>
+<p><strong>Lekérdezések eredményén, amikor ugyanannyi és ugyanolyan típusú oszlopot kérünk le</strong>, használhatunk halmazműveleteket is, pl <strong>UNION vagy INTERSECT</strong>.</p>
+<h4 id="alkérdések">Alkérdések</h4>
+<p>Alkérdés tulajdonképpen egy <strong>SELECT</strong> utasítás. Leginkább a <strong>WHERE</strong> és <strong>HAVING</strong> feltételeibe szoktuk megadni.</p>
+<p>Lehetőség van megadni őket beszuró, módosító és törlő utasitásokban.</p>
+<p>Pl: <code>INSERT INTO táblanév [(oszloplista)] AS (alkérdés);</code></p>
+</div>
+</body>
+
+</html>

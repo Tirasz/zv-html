@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="neumann-elvű-gép-egységei.-cpu-adatút-utasítás-végrehajtás-utasítás--és-processzorszintű-párhuzamosság.-korszerű-számítógépek-tervezési-elvei.-példák-risc-ultrasparc-és-cisc-pentium-4-architektúrákra-jellemzőik">15. Neumann-elvű gép egységei. CPU, adatút, utasítás-végrehajtás, utasítás- és processzorszintű párhuzamosság. Korszerű számítógépek tervezési elvei. Példák RISC (UltraSPARC) és CISC (Pentium 4) architektúrákra, jellemzőik</h1>
+<p>Számítógép architektúra: A hardver egy általános absztrakciója: a hardver struktúráját és viselkedését jelenti más rendszerek egyedi, sajátos tulajdonságaitól eltekintve</p>
+<h2 id="neumann-elvű-gép">Neumann elvű gép</h2>
+<ol>
+<li>
+<p><strong>Teljesen elektronikus működés</strong></p>
+</li>
+<li>
+<p><strong>Kettes számrendszer</strong> használata</p>
+</li>
+<li>
+<p><strong>Belső memória használata</strong></p>
+</li>
+<li>
+<p><strong>Tárol program elve</strong>: A számításokhoz szükséges adatokat és programutasításokat a gép azonos módon, egyaránt a <strong>belső memóriában</strong> tárolja.</p>
+</li>
+<li>
+<p><strong>Soros utasítás-végrehajtás</strong>: Az utasítások végrehajtása időben egymás után történjen.</p>
+</li>
+<li>
+<p><strong>Univerzális felhasználhatóság</strong>, Turing-gép (programozhatóság, különböző feladatoakt programokkal legyenek megoldva)</p>
+</li>
+<li>
+<p><strong>Szerkezet</strong>: öt funkcionális egység</p>
+</li>
+</ol>
+<ul>
+<li>
+<p>Aritmetikai egység</p>
+</li>
+<li>
+<p>Központi vezérlőegység</p>
+</li>
+<li>
+<p>Memóriák</p>
+</li>
+<li>
+<p>Bemeneti és kimeneti egységek.</p>
+</li>
+</ul>
+<h3 id="neumann-elvű-gép-egységei">Neumann-elvű gép egységei</h3>
+<ol>
+<li><strong>központi memória:</strong> a program kódját és adatait tárolja számokként</li>
+</ol>
+<ul>
+<li>RAM, ROM</li>
+</ul>
+<ol start="2">
+<li><strong>központi feldolgozóegység (CPU):</strong> a központi memóriában tárolt program utasításait beolvassa és végrehajtja</li>
+</ol>
+<ul>
+<li>
+<p><em>ALU (Arithmetic logic unit)</em></p>
+</li>
+<li>
+<p><em>CU (vezérlőegység)</em></p>
+</li>
+<li>
+<p>Regiszterek</p>
+</li>
+</ul>
+<ol start="3">
+<li>
+<p><strong>beviteli/kiviteli eszközök:</strong> kapcsolatot teremt a felhasználóval, adatot tárol a háttértáron, nyomtat, stb.</p>
+</li>
+<li>
+<p><strong>Háttértárak:</strong> Merevlemez, SSD stb.</p>
+</li>
+</ol>
+<ul>
+<li>
+<p><strong>Busz és sínrendszerek:</strong></p>
+</li>
+<li>
+<p><strong>külső sín:</strong> A számítógép egyes elemei között biztosít kapcsolatot. Pl. perifériák, csatolókártyák</p>
+</li>
+<li>
+<p><strong>belső sín:</strong> CPU részegységei közötti kommunikációt hozza létre (vezérlőegység-ALU-regiszterek)</p>
+</li>
+</ul>
+<h2 id="cpu-adatút-utasítás-végrehajtás-utasítás--és-processzorszintű-párhuzamosság">CPU, adatút, utasítás-végrehajtás, utasítás- és processzorszintű párhuzamosság</h2>
+<h3 id="cpu">CPU</h3>
+<p>A CPU feladata a központi memóriában tárolt program utasításainak beolvasása és végrehajtása</p>
+<p><strong>3 fő egysége:</strong></p>
+<ul>
+<li>
+<p><strong>vezérlőegység (CU):</strong></p>
+</li>
+<li>
+<p>Utasítások beolvasása a memóriából</p>
+</li>
+<li>
+<p>Értelmezi, végrehajtja, kiszámítja a következő utasítás címét.</p>
+</li>
+<li>
+<p>az ALU és regiszterek vezérlése</p>
+</li>
+<li>
+<p>Szervezi ütemezi a processzor munkáját</p>
+</li>
+<li>
+<p><strong>aritmetika-logikai egység (ALU):</strong></p>
+</li>
+<li>
+<p>Egy tipikus Neumann-féle CPU belső szerkezetének részében az ALU végzi az összeadást, a kivonást és más egyszerű műveleteket az inputjain, így adva át az eredményt az output regiszternek, azaz a kimeneten ez fog megjelenni.</p>
+</li>
+<li>
+<p>az utasítások végrehajtásához szükséges aritmetikai és logikai műveleteket végzi el</p>
+</li>
+<li>
+<p>Aritmetikai operátorok: +, -, *, / (alapműveletek)</p>
+</li>
+<li>
+<p>Logikai operátorok: NOT, AND, OR, NAND, NOR, XOR, NXOR (EQ)</p>
+</li>
+<li>
+<p><strong>regiszterek:</strong></p>
+</li>
+<li>
+<p>kisméretű, gyors memóriarekeszek, amelyek részeredményeket és vezérlőinformációkat tárolnak</p>
+</li>
+<li>
+<p>A regiszterek a számítógépek központi feldolgozó egységeinek, illetve mikroprocesszorainak gyorsan írható-olvasható, ideiglenes tartalmú, és általában egyszerre csak 1 gépi szó feldolgozására alkalmas tárolóegységei</p>
+</li>
+<li>
+<p>Itt találhatóak különféle fontos számlálók és jelzők. Ilyen pl:</p>
+</li>
+<li>
+<p><strong>Utasításszámláló (PC/IP)</strong>, ami mindig a következő utasitás címére mutat</p>
+</li>
+<li>
+<p><strong>Utasításregiszer(IR)</strong>, ami a memóriából kiolvasott utasíátst tárolja.</p>
+</li>
+<li>
+<p><strong>Veremmutató(SP)</strong></p>
+</li>
+<li>
+<p><strong>Flagregiszter</strong>, amely a processzor működése közben létrejött állapotok jelzőit tárolja.</p>
+</li>
+</ul>
+<h3 id="adatút">Adatút</h3>
+<ul>
+<li>
+<p>Az adatút az adatok áramlásának útja, alapfeladata, hogy kiválasszon egy vagy két regisztert, az ALU-val műveletet végeztessen el rajtuk (összeadás, kivonás…), az eredményt pedig valamelyik regiszterben tárolja. Egyes gépeken az adatút működését mikroprogram vezérli, másutt a vezérlés közvetlenül a hardver feladata.</p>
+</li>
+<li>
+<p>Folyamata:</p>
+</li>
+<li>
+<p>A regiszter készletből feltöltődik az ALU két bemenő regisztere (A és B)</p>
+</li>
+<li>
+<p>Az eredmény az ALU kimenő regiszterébe kerül</p>
+</li>
+<li>
+<p>Az ALU kimenő regiszteréből a kijelölt regiszterbe kerül az eredmény</p>
+</li>
+<li>
+<p>Két operandusnak az ALU-n történő átfutásából és az eredmény regiszterbe tárolásából álló folyamatot adatútciklusnak nevezzük.</p>
+</li>
+</ul>
+<h3 id="utasítás-végrehajtás">Utasítás-végrehajtás</h3>
+<p>A mikroprocesszor 1-1 utasítása úgynevezett gépi ciklusok egymásutániságából áll, vagyis 1 utasítás egy vagy több gépi ciklusból tevődik össze.</p>
+<p>A CPU minden utasítást apró lépések sorozataként hajt végre.</p>
+<p>Ezek a lépések a következők:</p>
+<ol>
+<li>
+<p>A soron következő utasítás beolvasása a memóriából az utasításregiszterbe.</p>
+</li>
+<li>
+<p>Az utasításszámláló beállítása a következő utasítás címére.</p>
+</li>
+<li>
+<p>A beolvasott utasítás típusának meghatározása.</p>
+</li>
+<li>
+<p>Ha az utasítás memóriabeli szót használ, a szó helyének megállapítása.</p>
+</li>
+<li>
+<p>Ha szükséges, a szó beolvasása a CPU egy regiszterébe.</p>
+</li>
+<li>
+<p>Az utasítás végrehajtása.</p>
+</li>
+<li>
+<p>Vissza az 1. pontra, a következő utasítás végrehajtásának megkezdése.</p>
+</li>
+</ol>
+<p>Ezt a lépéssorozatot gyakran nevezik betöltő-dekódoló-végrehajtó ciklusnak, és központi szerepet tölt be minden számítógép működésében.</p>
+<p>Nagy probléma a számítógépeknél, hogy a memória olvasása lassú, ezért az utasítás és az adatok beolvasása közben a CPU több része kihasználatlan. A gyorsítás egyik módja a lapkák gyorsítása az órajel frekvenciájának növelésével, de ez korlátozott. Emiatt a legtöbb tervező a párhuzamosság kiaknázásában lát lehetőséget.</p>
+<p>A párhuzamosság két féleképpen lehet jelen: utasításszintű párhuzamosság vagy processzorszintű párhuzamosság formájában.</p>
+<h3 id="utasításszintű-párhuzamosság">Utasításszintű párhuzamosság</h3>
+<p>Az utasítások végrehajtásának gyorsítása érdekében előre be lehet olvasni az utasításokat, hogy azok rendelkezésre álljanak, amikor szükség van rájuk. Ezeket az utasításokat egy előolvasási puffer (prefetch buffer) elnevezésű regiszterkészlet tárolja. Ilyen módon a soron következő utasítást általában az előolvasási pufferből lehet venni ahelyett, hogy egy memóriaolvasás befejeződésére kellene várni.</p>
+<p><strong>Csővezeték:</strong></p>
+<p>Lényegében az előolvasás az utasítás végrehajtását két részre osztja: <strong>beolvasás</strong> és <strong>tulajdonképpeni végrehajtás</strong>.</p>
+<p>A csővezeték ezt a stratégiát viszi sokkal tovább. Az utasítás végrehajtását kettő helyett több részre osztja, minden részt külön hardverelem kezel, amelyek mind egyszerre működhetnek.</p>
+<p>A csővezeték lehetővé teszi, hogy kompromisszumot kössünk késleltetés (mennyi ideig tart egy utasítás végrehajtása) és áteresztőképesség (hány MIPS a processzor sebessége) között.</p>
+<p><strong>Párhuzamos csővezeték:</strong></p>
+<p>Az előolvasó egység két utasítást olvas be egyszerre, majd ezeket az egyik, illetve a másik csővezetékre teszi.</p>
+<p>A <strong>csővezetékeknek saját ALU-juk van</strong>, így párhuzamosan tudnak működni, feltéve, hogy a két utasítás nem használja ugyanazt az erőforrást, és egyik sem használja fel a másik eredményét. Ugyanúgy, mint egyetlen csővezeték esetén, a feltételek betartását vagy a fordítóprogramnak kell garantálnia, vagy a konfliktusokat egy kiegészítő hardvernek kell a végrehajtás során felismernie és kiküszöbölnie.</p>
+<p><strong>Szuperskaláris architektúra:</strong></p>
+<p>Itt <strong>egy csővezetéket</strong> használnak, <strong>de több funkcionális egységgel</strong>.</p>
+<p>Ezek olyan processzorok, amelyek több – gyakran négy vagy hat – utasítás végrehajtását kezdik el egyetlen órajel alatt.</p>
+<p>Természetesen egy szuperskaláris CPU-nak több funkcionális egységének kell lennie, amelyek kezelik mindezeket az utasításokat. Az utasítások megkezdését sokkal nagyobb ütemben végzik, mint amilyen ütemben azokat végre lehet hajtani, így a terhelés megoszlik a funkcionális egységek között. A szuperskaláris processzor elvében implicit módon benne van az a feltételezés, hogy a megfelelő fázis lényegesen gyorsabban tudja előkészíteni az utasításokat, mint ahogy a rákövetkező fázis képes azokat végrehajtani. Ez a fázis funkcionális egységeinek többsége egy órajelnél jóval több időt igényel feladata elvégzéséhez – a memóriához fordulók vagy a lebegőpontos műveleteket végzők biztosan. Akár több ALU-t is tartalmazhat.</p>
+<h3 id="processzorszintű-párhuzamosság">Processzorszintű párhuzamosság</h3>
+<p><strong>Tömb processzorok:</strong></p>
+<p>Egy tömbprocesszor nagyszámú egyforma processzorból áll, ugyanazon műveleteket egyszerre végzik különböző adathalmazokon. A feladatok szabályossága és szerkezete különösen megfelelővé teszi ezeket párhuzamos feldolgozásra. Olyan utasításokat hajthatnak végre, mint amilyen például két vektor elemeinek páronkénti összeadása.</p>
+<p><strong>Multiprocesszorok:</strong></p>
+<p>Ezekben több teljes CPU van, amelyek egy közös memóriát használnak. Amikor két vagy több CPU rendelkezik azzal a képességgel, hogy szorosan együttműködjenek, akkor azokat szorosan kapcsoltaknak nevezik.</p>
+<p>A legegyszerűbb, ha <strong>egyetlen sín van, amelyhez csatlakoztatjuk a memóriát és az összes processzort</strong>.</p>
+<p>Ha sok gyors processzor próbálja állandóan elérni a memóriát a közös sínen keresztül, az <strong>konfliktusokhoz vezet</strong>.</p>
+<p>Az egyik megoldás, hogy minden processzornak biztosítunk valamekkora saját lokális memóriát, amelyet a többiek nem érhetnek el. Így csökken a közös sín forgalma. Jellemzően maximum pár száz CPU-t építenek össze.</p>
+<p><strong>Multiszámítógépek:</strong></p>
+<p>Nehéz sok processzort és memóriát összekötni. Ezért gyakran sok összekapcsolt számítógépből álló rendszereket építenek, amelyeknek csak saját memóriájuk van.</p>
+<p>A <strong>multiszámítógépek CPU-it lazán kapcsoltaknak</strong> nevezik. A multiszámítógép processzorai üzenetek küldésével kommunikálnak egymással.</p>
+<p>Nagy rendszerekben nem célszerű minden számítógépet minden másikkal összekötni, ezért <strong>2 és 3 dimenziós rácsot, fákat és gyűrűket használnak az összekapcsolásra</strong> Ennek következtében egy gép valamelyik másikhoz küldött üzeneteinek gyakran egy vagy több közbenső gépen vagy csomóponton kell áthaladniuk ahhoz, hogy a kiindulási helyükről elérjenek a céljukhoz.</p>
+<p>Néhány mikroszekundumos nagyságrendű üzenetküldési idők nagyobb nehézség nélkül elérhetők. 10 000 processzort tartalmazó multiszámítógépeket is építettek már.</p>
+<h2 id="korszerű-számítógépek-tervezési-elvei">Korszerű számítógépek tervezési elvei</h2>
+<ul>
+<li>
+<p>Minden utasítást közvetlenül a hardver hajtson végre.</p>
+</li>
+<li>
+<p>Ezek nem bonthatók fel interpretált mikroutasításokra. Az interpretációs szint kiküszöbölésével a legtöbb utasítás gyors lesz.</p>
+</li>
+<li>
+<p>Maximalizálni kell az utasítások kiadásának ütemét</p>
+</li>
+<li>
+<p>Megpróbálják egy másodperc alatt a lehető legtöbb utasítás végrehajtását elkezdeni, tehát a párhuzamosságra kell törekedni.</p>
+</li>
+<li>
+<p>Az utasítások könnyen dekódolhatók legyenek.</p>
+</li>
+<li>
+<p>Az utasítások szabályosak, egyforma hosszúak legyenek, és kevés mezőből álljanak.</p>
+</li>
+<li>
+<p>Csak a betöltő és tároló utasítások hivatkozzanak a memóriára</p>
+</li>
+<li>
+<p>A memóriaműveletek sok időt vehetnek igénybe, legjobb más utasításokkal átfedve végrehajtani, ha semmi mást nem tesznek, csak adatokat mozgatnak a regiszterek és a memória között, minden más utasítás csak regisztereket használhat.</p>
+</li>
+<li>
+<p>Sok regiszter legyen.</p>
+</li>
+<li>
+<p>Mivel a memóriaműveletek lassúak, sok regiszterre van szükségünk, hogy egy beolvasott szó mindig a regiszterben maradhasson, amíg szükség van rá.</p>
+</li>
+</ul>
+<h2 id="risc-reduced-instruction-set-computer-–-csökkentett-utasításkészletű-számítógép">RISC Reduced Instruction Set Computer – Csökkentett utasításkészletű számítógép</h2>
+<p>A mikroprocesszorok létrejöttét követően két irányzat alakult ki. – RISC, CISC</p>
+<p>Azt a szempontot tartották szem előtt, hogy a processzor kevés alapvető utasítást tudjon végrehajtani, de azokat rendkívül gyorsan (jellemzően 1 órajelciklus alatt). Ezek a RISC (Reduced Instruction Set Computer - redukált utasításkészletű) processzorok.</p>
+<p>Itt az összetettebb funkciókat több utasítás kombinációjával lehet megvalósítani. A RISC mikroprocesszorokba számos belső regiszter kerül integrálásra, ezáltal is csökkentve a memóriához való fordulás gyakoriságát és gyorsítva a mű ködést.</p>
+<p>Ugyancsak sajátja ezen processzoroknak a - később ismertetett - ún. pipeline architektúra. Ennek lényege az, hogy a műveleteket részműveletekké bontják szét, és e részműveleteket időben párhuzamosítják, A RISC processzorok az utolsó 10 évben - első sorban a nagyobb teljesítményt igénylő rendszereknél (pl. munkaállomások) nyertek teret</p>
+<p>Nagyon kevés utasítással rendelkeznek, tipikusan 50 körül. Az adatút egyszeri bejárásával végrehajthatók ezek az utasítások, tehát egy órajel alatt. Nem használ mikroprogram interpretálást, ezért sokkal gyorsabb, mint a CISC.</p>
+<p><strong>UltraSparc architektúra:</strong></p>
+<ol>
+<li>
+<p>Memória: 8 bit-byteokból áll össze. (halfword, word, doubleword)</p>
+</li>
+<li>
+<p>Regiszterek: 100 féle különböző általános célú regisztert tartalmaz. Egy adott task egyszerre csak 32 regisztert érhet el (regiszterablak). Nagy endián tárolás.</p>
+</li>
+</ol>
+<ul>
+<li>
+<p>32 db. áltlalános célú (64 bit)</p>
+</li>
+<li>
+<p>32 db. lebegőpontos</p>
+</li>
+<li>
+<p>További regiszterek globális adatokra, paraméterátadásra, visszatérési értékekre, verem és veremkeret mutató</p>
+</li>
+</ul>
+<ol start="3">
+<li>Adat formája:</li>
+</ol>
+<ul>
+<li>
+<p>Integerek 8-, 16-, 32- vagy 64-bit bináris számok</p>
+</li>
+<li>
+<p>Karakterek 8 biten ASCII kódolásban</p>
+</li>
+<li>
+<p>Lebegőpontosok három különböző formában tárolódnak (egyszeres-, kétszeres, négyszeres-pontosságú)</p>
+</li>
+</ul>
+<ol start="4">
+<li>
+<p>Utasítás formátuma: 3 alapvető utasítást formát használ. Mindegyik 32-bit hosszú ahol az első két bit a jelző bit.</p>
+</li>
+<li>
+<p>A hívásokért felelős</p>
+</li>
+<li>
+<p>Utasítások elágazásáért felelős</p>
+</li>
+<li>
+<p>Az összes többi utasítás használja, mint például a regiszter betöltés és a tárolás.</p>
+</li>
+</ol>
+<p>Példa: IBM 801, UltraSPARC, ARM</p>
+<h2 id="cisc-complex-instruction-set-computer-–-összetett-utasításkészletű-számítógép">CISC Complex Instruction Set Computer – Összetett utasításkészletű számítógép</h2>
+<p>Azok a processzorok tartoznak ide, amelyek utasításkészlete lehetőleg minden programozói igényt ki próbál elégíteni, vagyis komplex utasításkészletet alkot. Ezeket nevezzük CISC (Complex Instruction Set Computer = komplex utasításkészletű számítógép) processzoroknak. Markáns elemei az Intel processzorok. A CISC törekvésnek az egyik mozgatórugója, hogy megpróbálják a magasabb szintű nyelvek lehetőségeit közelíteni, vagyis, hogy a programozás “munkaigényes” alacsony szintjét, gépközeli voltát így is ellensúlyozzák.</p>
+<p>Interpretálást használ, ezért sokkal összetettebb utasításai vannak, mint egy RISC gépnek. Több száz ilyen utasítása lehet. Az interpretálás miatt lassabb a végrehajtás.</p>
+<p>Példa: x86 architektúrák pl. Intel 80x86 család.</p>
+<p><strong>Pentium 4</strong></p>
+<ul>
+<li>
+<p>16 db. regiszter, 4 csoportba oszthatók (Kis endián tárolás):</p>
+</li>
+<li>
+<p>Általános célú regiszterek, 32 bit: EAX, EBX, ECX, EDX</p>
+</li>
+<li>
+<p>Pointer/index (??iguess), 32 bit: ESI, EDI, EBP, ESP</p>
+</li>
+<li>
+<p>Kompatibilitás miatt, 16 bit: CS, SS, DS, ES, FS, GS</p>
+</li>
+<li>
+<p>Nemtom, nincs neve, 32bit: EIP (utasításmutató), EFLAGS (CPU állapotmutatók)</p>
+</li>
+<li>
+<p>Utasításformátum: Szabálytalan és bonyolult</p>
+</li>
+<li>
+<p>6 féle változó hosszúságú mező, melyből 5 opcionális</p>
+</li>
+<li>
+<p>Intenzív dekódolást igényelnek a hossz és típus megállapítására</p>
+</li>
+</ul>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,395 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="egyszerű-adattípusok-egész-valós-logikai-és-karakter-típusok-és-kifejezések.-az-egyszerű-típusok-reprezentációja-számábrázolási-tartományuk-pontosságuk-memória-igényük-és-műveleteik.-az-összetett-adattípusok-és-a-típusképzések-valamint-megvalósításuk-c-nyelven.-a-pointer-a-tömb-a-rekord-és-az-unió-típus.-az-egyes-típusok-szerepe-használata">6. Egyszerű adattípusok: egész, valós, logikai és karakter típusok és kifejezések. Az egyszerű típusok reprezentációja, számábrázolási tartományuk, pontosságuk, memória igényük és műveleteik. Az összetett adattípusok és a típusképzések, valamint megvalósításuk C nyelven. A pointer, a tömb, a rekord és az unió típus. Az egyes típusok szerepe, használata</h1>
+<h2 id="egyszerű-adattípusok-egész-valós-logikai-és-karakter-típusok-és-kifejezések.-az-egyszerű-típusok-reprezentációja-számábrázolási-tartományuk-pontosságuk-memória-igényük-és-műveleteik">Egyszerű adattípusok: egész, valós, logikai és karakter típusok és kifejezések. Az egyszerű típusok reprezentációja, számábrázolási tartományuk, pontosságuk, memória igényük és műveleteik</h2>
+<p><mark>Az <strong>adattípus</strong> (gyakran röviden <strong>típus</strong>) az értékek egy halmazához rendelt név vagy címke és ezen halmaz értékein végrehajtható néhány művelet</mark></p>
+<p>Az elemi adattípusok értékeit nem lehet önmagukban értelmes részekre bontani.</p>
+<p>Ha a nyelv szintaktikája szerint a program egy adott pontján típusnak kellene következnie de az hiányzik, a fordító a típus helyére automatikusan int-et helyettesít.</p>
+<h3 id="egész-típusok">Egész típusok</h3>
+<p>A C nyelvben az egész típus az int.</p>
+<p>Az <strong>int</strong> típus értékkészlete az alábbi kulcsszavakkal módosítható:</p>
+<ul>
+<li>
+<p><strong>signed</strong> (1 byte): A típus előjeles értékeket fog tartalmazni (int, char).</p>
+</li>
+<li>
+<p><strong>unsigned</strong> (1 byte): A típus csak előjeltelen, nemnegatív értékeket fog tartalmazni (int, char).</p>
+</li>
+<li>
+<p><strong>short</strong> (2 byte): Rövidebb helyen tárolódik, így kisebb lesz az értékkészlet (int).</p>
+</li>
+<li>
+<p><strong>long</strong> (4 byte): Hosszabb helyen tárolódik, így bővebb lesz az értékkészlet (int). Duplán is alkalmazható <strong>(long long, ami 8 byte)</strong>.</p>
+</li>
+</ul>
+<p>Az egész típusok az értékkészlet határain belüli minden egész értéket pontosan ábrázolnak.</p>
+<p>Az egyes gépeken az egyes típusok mérete más-más lehet, de minden C megvalósításban teljesülnie kell a <mark>sizeof(short) ≤ sizeof(int) ≤ sizeof(long) ≤ sizeof(long long)</mark> relációnak.</p>
+<p>A C nyelv különféle egész adattípusai az értékhalmazukban különböznek egymástól, az értelmezett műveletükben megegyeznek</p>
+<p>Az egész adattípusokon általában az 5 matematikai alapműveletet és az értékadás műveletét értelmezzük, de C nyelven ennél jóval többet.</p>
+<p>Értékadó művelet jobb oldalán álló kifejezés kiértékelése független attól, hogy a bal oldalon milyen típusú változó van.</p>
+<p><strong>A / művelet két egész értékre alkalmazva maradékos osztást jelent!</strong></p>
+<p><strong>Tárolás:</strong></p>
+<p>n bites tárterületnek 2^n állapota van, vagyis egy n biten tárolt adattípusnak legfeljebb ennyi különböző értéke lehet.</p>
+<p><strong>Egész típusoknál a kettes komplemenst</strong> szokás használni, ha negatív értékek is szerepelhetnek az értékhalmazban.</p>
+<p><strong>Kettes komplemens:</strong></p>
+<ul>
+<li>
+<p>van egy pozitív számunk, és annak keressük a negatív párját</p>
+</li>
+<li>
+<p>a számot kettes számrendszerben felírjuk</p>
+</li>
+<li>
+<p>invertáljuk az összes bitet</p>
+</li>
+<li>
+<p>majd hozzáadunk a végén egyet</p>
+</li>
+<li>
+<p>a kapott szám lesz a szám ellentettje</p>
+</li>
+</ul>
+<p><strong>Értékhalmaz mérete:</strong></p>
+<p>Ha negatív számok nem szerepelnek az értékhalmazban, akkor az értékhalmaz a [0 … 2^n − 1] zárt intervallum.</p>
+<p>Ha az értékhalmazban negatív számok is szerepelnek, akkor az értékhalmaz a [−2^(n−1) … 2^(n−1) − 1] zárt intervallum.</p>
+<p><strong>Műveletei:</strong></p>
+<ul>
+<li>
+<p>bitenkénti</p>
+</li>
+<li>
+<p>negáció</p>
+</li>
+<li>
+<p>és</p>
+</li>
+<li>
+<p>vagy</p>
+</li>
+<li>
+<p>kizáró vagy</p>
+</li>
+<li>
+<p>balra léptetés</p>
+</li>
+<li>
+<p>jobbra léptetés</p>
+</li>
+</ul>
+<h3 id="karakter-típus">Karakter típus</h3>
+<p>A char adattípus a C nyelv eleve definiált elemi adattípusa, értékkészlete 256 elemet tartalmaz.</p>
+<p>A char adattípus egészként is használható, de alapvetően karakterek (betűk, számjegyek, írásjelek) tárolására való.</p>
+<ul>
+<li>
+<p>Hogy melyik értékhez melyik karakter tartozik, az az alkalmazott kódtáblázattól függ.</p>
+</li>
+<li>
+<p>Bizonyos karakterek (általában a rendezés szerint első néhány) vezérlő karakternek számítanak, és nem megjeleníthetők.</p>
+</li>
+</ul>
+<p><strong>Egy C programban karakter értékeket megadhatunk:</strong></p>
+<ul>
+<li>
+<p>karakterkóddal számértékként, vagy</p>
+</li>
+<li>
+<p>aposztrófok közé írt karakterrel</p>
+</li>
+</ul>
+<p>A speciális karaktereket, illetve magát az aposztrófot (és végső soron tetszőleges karaktert is) escape-szekvenciákkal lehet megadni.</p>
+<p>Az escape-szekvenciákat a \ (backslash) karakterrel kell kezdeni.</p>
+<p>Konvertáljunk egy tetszőleges számjegy karaktert (ch) a neki megfelelő egész számmá és egy egyjegyű egészet (i) karakterré:</p>
+<pre><code>
+i = ch - '0';
+
+ch = i + '0';
+
+</code></pre>
+<h3 id="valós-típusok">Valós típusok</h3>
+<p>A C nyelvben a valós adattípusok a <strong>float</strong> és <strong>double</strong>.</p>
+<p><strong>A double</strong> adattípus az alábbi kulcsszóval módosítható:</p>
+<ul>
+<li><strong>long</strong>: Implementációfüggő módon 64, 80, 96 vagy 128 bites pontosságot megvalósító adattípus</li>
+</ul>
+<p>A valós adattípusok az értékkészlet határain belül sem képesek minden valós értéket pontosan ábrázolni. Viszont az értékkészlet határain belüli minden a valós értéket képesek egy típusfüggő e relatív pontossággal ábrázolni, az a-hoz legközelebbi a típus által pontosan ábrázolható x valós értékkel.</p>
+<ul>
+<li>
+<p>A C nyelv különféle valós adattípusai az értékhalmazukban különböznek egymástól, az értelmezett műveletükben megegyeznek.</p>
+</li>
+<li>
+<p>Valós kifejezésben bármely valós vagy egész típusú tényező (akár vegyesen többféle is) szerepelhet.</p>
+</li>
+<li>
+<p>Valós konstans típusa double, vagy a számleírásban megadott típus (f, l suffix).</p>
+</li>
+<li>
+<p>Értékadó művelet jobb oldalán álló kifejezés kiértékelése független attól, hogy a bal oldalon milyen típusú változó van.</p>
+</li>
+<li>
+<p>A típus pontatlansága miatt az == műveletet nagyon körültekintően kell használni!</p>
+</li>
+</ul>
+<p><strong>Ábrázolása:</strong></p>
+<p>Egy valós értéket tároló memóriaterület <strong>három részre osztható:</strong> az <strong>előjelbitet</strong>, a <strong>törtet</strong> és az <strong>exponenciális kitevőt</strong> kódoló részre.</p>
+<ul>
+<li>
+<p>Az <strong>előjelbit</strong> 0 értéke a pozitív, 1 értéke a negatív számokat jelöli</p>
+</li>
+<li>
+<p>A számot kettes számrendszerben <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.</mn><mi>m</mi><mo>×</mo><msup><mn>2</mn><mi>k</mi></msup></mrow><annotation encoding="application/x-tex">1.m × 2^k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">1.</span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.849108em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.849108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.03148em;">k</span></span></span></span></span></span></span></span></span></span></span></span> alakra hozzuk, majd az <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">m</span></span></span></span></span> <strong>számjegyeit eltároljuk a törtnek</strong>, a <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span></span>-nak <strong>egy típusfüggő <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal">b</span></span></span></span></span> konstanssal növelt értékét pedig a kitevőnek fenntartott részen.</strong></p>
+</li>
+<li>
+<p>Így a <strong>tört rész hossza az ábrázolás pontosságát</strong> (az értékes számjegyek számát), a <strong>kitevő pedig az értéktartomány méretét</strong> határozza meg.</p>
+</li>
+<li>
+<p>Nagyon kicsi számokat speciálisan 0.m × 2^(1−b) alakban tárolhatunk, ekkor a kitevő összes bitje 0.</p>
+</li>
+<li>
+<p>Ha a kitevő összes bitje 1, az csupa 0 bitből álló tört esetén a ∞, minden más esetben NaN értéket jelenti.</p>
+</li>
+<li>
+<p>A 32/64 bites float/double az 1 előjelbit mögött 8/11 biten a kitevő b = 127-tel/1023-mal növelt értékét, majd 23/52 biten a törtet tárolja.</p>
+</li>
+</ul>
+<h3 id="logikai-típus">Logikai típus</h3>
+<p>A C nyelvnek csak a C99 szabvány óta része a logikai (_Bool) típus (melynek értékkészlete a {0, 1} halmaz), de azért logikai értékek persze előtte is keletkeztek.</p>
+<p>A műveletek eredményeként keletkező logikai hamis értéket a 0 egész érték reprezentálja, és a 0 egész érték logikai értékként értelmezve hamisat jelent.</p>
+<p>A műveletek eredményeként keletkező logikai igaz értéket az 1 egész érték reprezentálja, de bármely 0-tól különböző egész érték logikai értékként értelmezve igazat jelent.</p>
+<p>stdbool.h-ban definiált a bool típus és a true, false konstansok</p>
+<p>Konstansként is definiálhatjuk, pl</p>
+<pre><code>
+#define TRUE 1
+
+#define FALSE 0
+
+</code></pre>
+<h2 id="az-összetett-adattípusok-és-a-típusképzések-valamint-megvalósításuk-c-nyelven.-a-pointer-a-tömb-a-rekord-és-az-unió-típus.-az-egyes-típusok-szerepe-használata">Az összetett adattípusok és a típusképzések, valamint megvalósításuk C nyelven. A pointer, a tömb, a rekord és az unió típus. Az egyes típusok szerepe, használata</h2>
+<h3 id="összetett-adattípusok-típusképzések">Összetett adattípusok, típusképzések</h3>
+<p>Az összetett adattípusok értékei tovább bonthatóak, további értelmezésük lehetséges.</p>
+<p>A C nyelv összetett adattípusai:</p>
+<ul>
+<li>
+<p><strong>Pointer típus</strong></p>
+</li>
+<li>
+<p>Függvény típus</p>
+</li>
+<li>
+<p><strong>Tömb típus</strong></p>
+</li>
+<li>
+<p>Sztringek</p>
+</li>
+<li>
+<p><strong>Rekord típus</strong></p>
+</li>
+<li>
+<p>Szorzat-rekord</p>
+</li>
+<li>
+<p>Egyesítési-rekord</p>
+</li>
+</ul>
+<h3 id="pointer-típus">Pointer típus</h3>
+<p>Az eddigi tárgyalásunkban szerepelt változók statikusak abban az értelemben, hogy létezésük annak a blokknak a végrehajtásához kötött, amelyben a változó deklarálva lett. A programozónak a deklaráció helyén túl nincs befolyása a változó létesítésére és megszüntetésére.</p>
+<p>Az olyan változókat, amelyek a blokkok aktivizálásától függetlenül létesíthetők és megszüntethetők, dinamikus változóknak nevezzük.</p>
+<p>Dinamikus változók megvalósításának általános eszköze a pointer típus.</p>
+<p>Egy pointer típusú változó értéke (első megközelítésben) egy meghatározott típusú dinamikus változó.</p>
+<p>Pointer típusú változót a * segítségével deklarálhatunk:</p>
+<pre><code>
+típus * változónév;
+
+</code></pre>
+<p>Az eddigiek során lényegében azonosítottuk a változóhivatkozást és a hivatkozott változót.</p>
+<p>A dinamikus változók megértéséhez viszont világosan különbséget kell tennünk az alábbi három fogalom között:</p>
+<ul>
+<li>
+<p>Változóhivatkozás</p>
+</li>
+<li>
+<p>Hivatkozott változó</p>
+</li>
+<li>
+<p>Változó értéke</p>
+</li>
+</ul>
+<p>A változóhivatkozás szintaktikus egység, meghatározott formai szabályok szerint képzett jelsorozat egy adott programnyelven, tehát egy kódrészlet.</p>
+<p>A változó a program futása során a program által lefoglalt memóriaterület egy része, amelyen egy adott (elemi vagy összetett) típusú érték tárolódik.</p>
+<p>Különböző változóhivatkozások hivatkozhatnak ugyanarra a változóra, illetve ugyanaz a változóhivatkozás a végrehajtás különböző időpontjaiban különböző változókra hivatkozhat.</p>
+<p>Egy változóhivatkozáshoz nem biztos, hogy egy adott időben tartozik hivatkozott változó.</p>
+<p>Műveletek:</p>
+<ul>
+<li>
+<p>NULL</p>
+</li>
+<li>
+<p>NULL, nem tartozik hozzá dinamikus változó</p>
+</li>
+<li>
+<p>Létesít</p>
+</li>
+<li>
+<p><code>x = malloc(sizeof(E))</code></p>
+</li>
+<li>
+<p>Értékadás</p>
+</li>
+<li>
+<p><code>x = y</code></p>
+</li>
+<li>
+<p>Törlés</p>
+</li>
+<li>
+<p><code>free(x)</code></p>
+</li>
+<li>
+<p>Dereferencia: A pointer által mutatott dinamikus változó elérése, eredménye egy változóhivatkozás.</p>
+</li>
+<li>
+<p><code>*x</code></p>
+</li>
+<li>
+<p>Egyenlő</p>
+</li>
+<li>
+<p><code>p == q</code></p>
+</li>
+<li>
+<p>NemEgyenlő</p>
+</li>
+<li>
+<p><code>p != q</code></p>
+</li>
+</ul>
+<p><strong>A memóriaműveletekhez szükség van az stdlib.h vagy a memory.h</strong> használatára.</p>
+<p><strong>malloc(S)</strong>, lefoglal egy S méretű memóriaterületet</p>
+<p><strong>sizeof(E)</strong>, megmondja, hogy egy E típusú érték mekkora helyet igényel a memóriában</p>
+<p><strong>malloc(sizeof(E))</strong>, létrehoz egy E típusú érték tárolására is alkalmas változó</p>
+<p><strong>free( p )</strong>, felszabadítja a p-hez tartozó memóriaterületet, ezután a p-hez nem lesz érvényes változóhivatkozás</p>
+<p>Linux alatt logikailag minden programnak saját memória-tartománya van, amin belül az egyes memóriacímeket egy sorszám azonosítja.</p>
+<p><strong>Pointer típusú változó</strong> 32 bites rendszereken 4 bájt, 64 bites rendszereken 8 bájt hosszban a hozzá tartozó dinamikus változóhoz foglalt memóriamező kezdőcímét (sorszámát) tartalmazza.</p>
+<p>A pointer értéke tehát (második megközelítésben) értelmezhető egy tetszőleges memóriacímként is, amely értelmezés egybeesik a pointer megvalósításával.</p>
+<p>Ilyen módon viszont értelmezhetjük a címképző műveletet, ami egy változó memóriabeli pozícióját, címét adja vissza.</p>
+<ul>
+<li>
+<p><strong>Cím</strong></p>
+</li>
+<li>
+<p><code>p = &amp;x</code></p>
+</li>
+</ul>
+<p>A void* egy speciális, úgynevezett típustalan pointer. Az ilyen típusú pointerek „csak” memóriacímek tárolására alkalmasak, a dereferencia művelet alkalmazása rájuk értelmetlen. Viszont minden típusú pointerrel kompatibilisek értékadás és összehasonlítás tekintetében.</p>
+<h3 id="tömb-típus">Tömb típus</h3>
+<p>Algoritmusok tervezésekor gyakran előfordul, hogy adatok sorozatával kell dolgozni, vagy mert az input adatok sorozatot alkotnak, vagy mert a feladat megoldásához kell.</p>
+<p>Tegyük fel, hogy a sorozat rögzített elemszámú (n) és mindegyik komponensük egy megadott (elemi vagy összetett) típusból (E ) való érték.</p>
+<p>Ekkor tehát egy olyan összetett adathalmazzal van dolgunk, amelynek egy eleme A = (a 0 , . . . , a n−1 ), ahol a i ∈ E , ∀i ∈ (0, . . . , n − 1)-re.</p>
+<p>Ha az ilyen sorozatokon a következő műveleteket értelmezzük, akkor egy (absztrakt) adattípushoz jutunk, amit Tömb típusnak nevezünk.</p>
+<p>Jelöljük ezt a Tömb típust T -vel, a 0, . . . , n − 1 intervallumot pedig I-vel.</p>
+<p><strong>Műveletek</strong></p>
+<ul>
+<li>
+<p><em>Kiolvas</em></p>
+</li>
+<li>
+<p>a sorozat i. elemének kiolvasása egy változóba</p>
+</li>
+<li>
+<p><em>Módosít</em></p>
+</li>
+<li>
+<p>a sorozat i. elemének módosítása egy E típusú értékre</p>
+</li>
+<li>
+<p><em>Értékadás</em></p>
+</li>
+<li>
+<p>a változó felveszi a tömb értékét</p>
+</li>
+</ul>
+<p>Tömb típusú változót az alábbi módon deklarálhatunk:</p>
+<pre><code>
+típus változónév[elemszám];
+
+</code></pre>
+<p>Tömbelem hivatkozásra a <code>[]</code> operátort használjuk.</p>
+<p>Ez egy olyan tömbökön értelmezett művelet C-ben, ami nagyon magas precedenciával rendelkezik és balasszociatív.</p>
+<p>Egy tömbre a tömbindexelés operátort (megfelelő index használatával) alkalmazva a tömb adott elemét változóként kapjuk vissza.</p>
+<h3 id="rekord-típus">Rekord típus</h3>
+<p>A tömb típus nagyszámú, de ugyanazon típusú adat tárolására alkalmas.</p>
+<p>Problémák megoldása során viszont gyakran előfordul, hogy különböző típusú, de logikailag összetartozó adatelemek együttesével kell dolgozni.</p>
+<p>Az ilyen adatok tárolására szolgálnak a rekord típusok, ezek létrehozására pedig a rekord típusképzések.</p>
+<p>Ha az egyes típusú adatokat egyszerre kell tudnunk tárolni, szorzat-rekordról beszélünk.</p>
+<p>Az új adattípusra a T=Rekord(T 1 , . . . , T k ) jelölést használjuk és szorzat-rekordnak vagy struktúrának nevezzük.</p>
+<ul>
+<li>
+<p>kiolvas</p>
+</li>
+<li>
+<p>módosít</p>
+</li>
+<li>
+<p>értékadás</p>
+</li>
+</ul>
+<pre><code>
+typedef struct T {
+
+T1 M1;
+
+...
+
+Tk Mk;
+
+} T;
+
+</code></pre>
+<p>A fenti típusképzésben az M1,. . . ,Mk azonosítókat mezőazonosítóknak (tagnak, member-nek) hívjuk és lokálisak a típusképzésre nézve.</p>
+<p>Az absztrakt típus műveletei mezőhivatkozások segítségével valósíthatóak meg.</p>
+<p>A mezőhivatkozásra a . operátort használjuk. Ez egy olyan rekordokon értelmezett művelet C-ben, ami nagyon magas precedenciával rendelkezik és balasszociatív.</p>
+<p>Egy rekordra a mezőkiválasztás operátort (megfelelő mezőnévvel) alkalmazva a rekord mezőjét változóként kapjuk vissza.</p>
+<h3 id="unió-típus">Unió típus</h3>
+<p>Ha az egyes típusú adatokat nem kell egyszerre tárolni, egyesített-rekordról beszélünk</p>
+<p>A T halmazon is a szorzat rekordhoz hasonló módon értelmezhetünk kiolvasó és módosító műveletet.</p>
+<p>Az új adattípust a T 0 változati típusból és T 1 , . . . , T k egyesítési-tag típusokból képzett egyesített-rekord típusnak nevezzük.</p>
+<pre><code>
+typedef union T {
+
+T1 M1;
+
+...
+
+Tk Mk;
+
+} T;
+
+</code></pre>
+<p>A union típusú változó számára foglalt memória mérete, amely a</p>
+<p>sizeof függvénnyel lekérdezhető:</p>
+<pre><code>
+sizeof(T) = max{sizeof(T1), ..., sizeof(Tk)}
+
+</code></pre>
+<p>Valamennyi változati mező ugyanazon a memóriacímen kezdődik, ami</p>
+<p>megegyezik a teljes union típusú érték címével (azaz minden mező</p>
+<p>eltolása, offset-je 0).</p>
+<h3 id="union-vs-struct">Union vs Struct</h3>
+<p>| | Struct | Union |</p>
+<p>|----------------|-----------------------------------------------|-------------------------------------------|</p>
+<p>| <strong>Méret</strong> | A tagok elemei méretének az összege | A legnagyobb elemnek a mérete |</p>
+<p>| <strong>Memória</strong> | Minden tagnak van külön memória részlete | A memórián osztoznak |</p>
+<p>| <strong>Tagok elérése</strong> | Bármelyik tagot el lehet érni bármikor | Egyszerre csak egy tagot lehet egy időben |</p>
+<p>| <strong>Inicializálása</strong> | Bármennyi tagot lehet inicializálni egyszerre | Csak az első tagot tudjuk inicializálni.</p>
+</div>
+</body>
+
+</html>

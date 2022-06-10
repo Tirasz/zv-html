@@ -1,0 +1,322 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="alakreprezentáció-határ--és-régió-alapú-alakleíró-jellemzők-fourier-leírás">4. Alakreprezentáció, határ- és régió-alapú alakleíró jellemzők, Fourier leírás</h1>
+<h2 id="alakreprezentáció">Alakreprezentáció</h2>
+<p>Az alak/forma megítélésének fontos szerep jut a látásunkban.</p>
+<p>Az alak (shape) nem bír egzakt matematikai definícióval</p>
+<p>A <strong>szegmentálást</strong> követően az objektumok kontúrjaiból vagy foltjaiból (attól függően, hogy <strong>határ-</strong> vagy <strong>régió-alapú</strong> szegmentálást vetettünk-e be) számos <strong>alakleíró jellemzőt</strong> vonhatunk ki.</p>
+<p>Hangsúlyozandó, hogy itt már elszakadhatunk a digitális képektől, **némelyik jellemző</p>
+<p>csak egy szám**, mások pedig <strong>összetett struktúrák is lehetnek</strong>.</p>
+<p>Az alakleíró jellemzőket három osztályba soroljuk. <strong>(Határ, Régió, Transzformációs)</strong></p>
+<h2 id="határ-alapú-alakleíró-jellemzők">Határ alapú alakleíró jellemzők</h2>
+<ul>
+<li>
+<p>lánckód, alakleíró szám</p>
+</li>
+<li>
+<p>kerület, terület, kompaktság, cirkularitás</p>
+</li>
+<li>
+<p>közelítés poligonnal</p>
+</li>
+<li>
+<p>parametrikus kontúr, határvonal leíró függvény</p>
+</li>
+<li>
+<p>meredekségi hisztogram</p>
+</li>
+<li>
+<p>görbület, energia</p>
+</li>
+<li>
+<p>strukturális leírás</p>
+</li>
+</ul>
+<h4 id="lánckód">Lánckód</h4>
+<ul>
+<li>
+<p>Az alakzat határpontjait követi/láncolja az óramutató járásával ellentétes irányban.</p>
+</li>
+<li>
+<p><strong>Határpont:</strong> Az alakzat olyan pontja, melynek van az alakzathoz nem tartozó 8- ill, 4-szomszédja.</p>
+</li>
+<li>
+<p><strong>Különböző kezdőpontból más lánckód jöhet ki!</strong></p>
+</li>
+</ul>
+<p><strong>Pozitivumok:</strong></p>
+<ul>
+<li>
+<p>Invariáns a forgatásra, ha a szög <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>∗</mo><mi>π</mi><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">k*\pi/2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.03588em;">π</span><span class="mord">/2</span></span></span></span></span>, eltolásra</p>
+</li>
+<li>
+<p>Gyors algoritmus, eltolás-invariáns</p>
+</li>
+<li>
+<p>kompakt</p>
+</li>
+</ul>
+<p><strong>Hátrányok:</strong></p>
+<ul>
+<li>
+<p>Zaj érzékeny,</p>
+</li>
+<li>
+<p>nem skála-invariáns</p>
+</li>
+<li>
+<p>pontosság legfeljebb pixelnyi lehet</p>
+</li>
+</ul>
+<p><strong>Különbségkód:</strong> a lánckód első deriváltja, a szomszédok elemek közötti elmozdulások száma</p>
+<p><strong>Normalizálás:</strong> Addig permutáljuk a különbségkódot, amíg a legkisebb értékű kódot kapjuk.</p>
+<p><strong>Alakleíró szám:</strong> A normalizált különbségkód (NEM FÜGG A KEZDŐPONT VÁLASZTÁSTÓL)</p>
+<h3 id="kerület-terület-számítása">Kerület, terület számítása</h3>
+<ul>
+<li>
+<p>A kerület és a terület két gyakran bevetett alakleíró jellemző. Mindkettő származtatható a lánckódból is.</p>
+</li>
+<li>
+<p><strong>8-as lánckód esetén:</strong></p>
+</li>
+<li>
+<p>kerület = gyök(2) * (páratlan elemek száma) + páros elemek száma a lánckódban</p>
+</li>
+<li>
+<p><strong>4-es lánckód esetén:</strong></p>
+</li>
+<li>
+<p>kerület = lánckód rendje (hossza)</p>
+</li>
+</ul>
+<p><strong>poligon területe 8-as lánckód esetén:</strong></p>
+<ul>
+<li>
+<p>számontartunk egy y-t, ami kezdetben 0. Ehhez ha a lánckódban lévő következő szám “felfele” mutat hozzáadunk 1-et, ha “lefele”, akkor kivonunk 1-et</p>
+</li>
+<li>
+<p>a területváltozást szintén a lánckódban következő szám iránya határozza meg (y alapján), ahogy az alábbi képen is látszik</p>
+</li>
+<li>
+<p>a területet úgy kapjuk, hogy folyton összeadogatjuk a területváltozásokat, és a végén vesszük az abszulútértékét</p>
+</li>
+</ul>
+<p><img src="asd.png" alt="alt text" title="Title"></p>
+<p><img src="asd2.png" alt="alt text" title="Title"></p>
+<h3 id="kompaktság-és-cirkularitás-görbület">Kompaktság és cirkularitás, görbület</h3>
+<ul>
+<li>
+<p>kompaktság = <strong>(kerület)^2 / terület</strong></p>
+</li>
+<li>
+<p>cirkularitás = <strong>terület / (kerület)^2</strong></p>
+</li>
+<li>
+<p><strong>görbület:</strong> a határhoz rajzolt érintőkör sugarának reciproka</p>
+</li>
+</ul>
+<h3 id="parametrikus-kontúr">Parametrikus kontúr</h3>
+<ul>
+<li>A parametrikus kontúr két egyváltozós függvénnyel reprezentálja a szegmenst. A kontúron végighaladva követjük az <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">x</span></span></span></span></span> és az <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.19444em;"></span><span class="mord mathnormal" style="margin-right: 0.03588em;">y</span></span></span></span></span> koordináták változásait.</li>
+</ul>
+<h3 id="leírás-egyváltozós-függvényekkel-szignatúra">Leírás egyváltozós függvényekkel (Szignatúra)</h3>
+<p>Pl. A súlypontnak a határtól vett távolságát a szög függvényében fejezi ki.</p>
+<p>Nagyban függ az alakzat méretétől és a határon vett kezdőponttól. <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> normalizárásra szorul.</p>
+<ul>
+<li>
+<p>Csillag-szerű objektum:</p>
+</li>
+<li>
+<p>Van olyan pontja, amelyből induló tetszőleges irányú sugár a határt egyetlen pontban metszi.</p>
+</li>
+</ul>
+<h2 id="régió-alapú-alakleíró-jellemzők">Régió alapú alakleíró jellemzők</h2>
+<p>A határ-alapúakhoz hasonlóan, számos régió-alapú alakleíró jellemzőt javasoltak.</p>
+<ul>
+<li>
+<p>befoglaló téglalap, rektangularitás</p>
+</li>
+<li>
+<p>főtengely, melléktengely, átmérő,</p>
+</li>
+</ul>
+<p>excentricitás, főtengely szöge</p>
+<ul>
+<li>konvex burok, konvex kiegészítés,</li>
+</ul>
+<p>konkávitási fa, partícionált határ,</p>
+<ul>
+<li>
+<p>vetületek, törés-költség</p>
+</li>
+<li>
+<p>topológiai leírások, Euler-szám,</p>
+</li>
+</ul>
+<p>szomszédsági fa,</p>
+<ul>
+<li>
+<p>váz,</p>
+</li>
+<li>
+<p>momentumok, invariáns momentumok</p>
+</li>
+</ul>
+<h3 id="befoglaló-téglalap-rektangularitás">Befoglaló téglalap, rektangularitás</h3>
+<ul>
+<li>
+<p><mark><strong>álló befoglaló téglalap:</strong></mark> az objektum koordinátáinak minimumai és maximumai <strong>megadják az álló befoglaló téglalap csúcsait.</strong></p>
+</li>
+<li>
+<p>minimális befoglaló téglalap</p>
+</li>
+<li>
+<p><mark><strong>rektangularitás:</strong></mark> Azt mondja meg, hogy az objektum „bedobozolásakor” mennyi a tárgy és a „levegő” által elfoglalt területek aránya, tehát —&gt; <strong>alakzat területe / minimális befoglaló téglalap</strong></p>
+</li>
+</ul>
+<h3 id="főtengely-melléktengely-átmérő-excentricitás-főtengely-szöge">Főtengely, melléktengely, átmérő, excentricitás, főtengely szöge</h3>
+<ul>
+<li>
+<p><strong>főtengely:</strong> az alakzaton belül haladó leghosszabb egyenes szakasz</p>
+</li>
+<li>
+<p><strong>melléktengely:</strong> az alakzaton belüli, a főtengelyre merőleges leghosszabb egyenes szakasz</p>
+</li>
+<li>
+<p><strong>átmérő:</strong> a határ két legtávolabbi pontját köti össze. A főtengely hossza általában nem egyezik meg az átmérővel (csak a</p>
+</li>
+</ul>
+<p>konvexeknél)</p>
+<ul>
+<li>
+<p><strong>excentritás:</strong> a fő- és melléktengely hosszaránya: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><mi>d</mi><mn>1</mn></mrow><mrow><mi>d</mi><mn>2</mn></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\dfrac{d1}{d2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 2.05744em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.37144em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="mord">2</span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+</li>
+<li>
+<p><strong>főtengely szöge:</strong> a főtengely és az x-tengely által bezárt szög</p>
+</li>
+</ul>
+<h3 id="konvex-burok-konvex-kiegészítés-konkávitási-fa-partícionált-határ">Konvex burok, konvex kiegészítés, konkávitási fa, partícionált határ</h3>
+<ul>
+<li>
+<p><strong>konvex burok:</strong> az alakzatot tartalmazó minimális konvex alakzat</p>
+</li>
+<li>
+<p><strong>konvex kiegészítés:</strong> a konvex burok és az alakzat különbsége</p>
+</li>
+<li>
+<p><strong>konkávitási fa:</strong> A fa gyökere a kiindulási alakzat, az első szinten a konvex különbség alakzatai helyezkednek el, melyekre a faépítést rekurzív módon folytatjuk.</p>
+</li>
+<li>
+<p><strong>partícionált határ:</strong> A konvex burok határát osztja fel részekre.</p>
+</li>
+</ul>
+<h3 id="vetületek-törés-költség">Vetületek, törés-költség</h3>
+<ul>
+<li>
+<p><strong>vetületek:</strong> A bináris képekből képzett nem-negatív egészekből álló (1D) tömbök.</p>
+</li>
+<li>
+<p><strong>törés-költség:</strong> A vetületek továbbragozása, kiszűri a zajos képek oszlopaiban lévő „magányos” objektumpontokat.</p>
+</li>
+</ul>
+<h3 id="topológiai-leírások-euler-szám-szomszédsági-fa">Topológiai leírások, Euler-szám, szomszédsági fa,</h3>
+<ul>
+<li>
+<p><strong>topológiai leírások</strong></p>
+</li>
+<li>
+<p><em>bináris kép:</em> kétféle érték lehet benne, az 1-es az alakzatot (komponenst) reprezentálja feketével, míg a 0-s a hátteret(lyukakat) fehérrel</p>
+</li>
+<li>
+<p><em>komponens:</em> maximálisan összefüggő fekete halmaz</p>
+</li>
+<li>
+<p><em>üreg:</em> a negált kép egy véges komponense</p>
+</li>
+<li>
+<p><strong>Euler-féle szám:</strong> egyetlen egész szám<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>komponensek száma - üregek száma</em>.</p>
+</li>
+<li>
+<p>Rengeteg képre lehet az ugyanaz. Valamit elárul a képről, de önmagában keveset.</p>
+</li>
+<li>
+<p><strong>összefüggőségi-fa:</strong> A bináris képekhez rendelt irányított gráf 
+<img src="./Osszefuggosegi_fa.JPG" alt="">
+</p>
+</li>
+<li>
+<p>minden egyes csúcs megfelel a kép egy (fehér vagy fekete) komponensének,</p>
+</li>
+<li>
+<p>a gráf tartalmazza az (X,Y) élet, ha az X komponens „körülveszi” a vele szomszédos Y komponenst</p>
+</li>
+</ul>
+<h3 id="váz">Váz</h3>
+<p>A váz egy gyakran alkalmazott régió-alapú alakleíró jellemző, mely leírja az objektumok általános formáját.\</p>
+<p>Alapvetően 3-féleképp határozhatjuk meg:</p>
+<ol>
+<li>
+<p>a vázat az objektum azon pontjai alkotják, melyekre kettő vagy több legközelebbi határpont található.</p>
+</li>
+<li>
+<p>Az objektum határát (minden pontjában) egyidejűleg felgyújtjuk. A váz azokból a pontokból áll, ahol a tűzfrontok találkoznak és kioltják egymást. (Feltételezzük, hogy a tűzfrontok minden irányban egyenletes sebességgel, vagyis izotropikusan terjednek.)</p>
+</li>
+<li>
+<p>A vázat az objektumba beírható maximális (nyílt) hipergömbök középpontjai alkotják. Egy beírható hipergömb maximális, ha őt nem tartalmazza egyetlen másik beírható hipergömb sem.</p>
+</li>
+</ol>
+<p><strong>Invariáns az eltolásra, elforgatásra és az uniform skálázásra.</strong></p>
+<h3 id="momentumok-invariáns-momentumok">Momentumok, invariáns momentumok</h3>
+<p><strong>Pro:</strong></p>
+<p>Egy szám</p>
+<ul>
+<li>
+<p>többszintű képekre is értelmezettek, invariánsak a főbb geometriai műveletekre</p>
+</li>
+<li>
+<p>rotálás, eltolás, skálázás, tükrözés stb…</p>
+</li>
+</ul>
+<p>Bizonyos (centrális) momentumoknak geometriai jelentés is tulajdonítható, illetve fontos jellemzők kifejezhetők a segítségükkel, például súlypont.</p>
+<p>Javasoltak viszont 7 ún. invariáns momentumot is (ld. 56. dia), amelyekhez nem</p>
+<p>társíthatók különösebb jelentések, de a belőlük alkotott rendezett hetesek (vagy akár</p>
+<p>hármasok, ha nem vesszük mindet figyelembe) jól jellemzik az objektumokat.</p>
+<h2 id="transzformációs-megközelítés">Transzformációs megközelítés</h2>
+<h3 id="fourier-transzformáció">Fourier transzformáció</h3>
+<p><strong>Ez egy transzformáción alapuló alakleírás</strong></p>
+<p>==<strong>Transzformáljuk</strong> (szigorúan 1D Fourier transzformációt alkalmazunk) <strong>a határ K darab mintavételezett pontjából képzett <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">s</span></span></span></span></span> vektort</strong>. <strong>Az eredményül kapott <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">a</span></span></span></span></span> vektor adja a Fourier leírást.</strong> (vagyis tartalmazza a Fourier együtthatókat, a transzformáció bázisfüggvényeinek súlyait)</p>
+<p>Az alakzat rekonstrukciójához az inverz</p>
+<p>Fourier-transzformációt kell végrehajtani.==</p>
+<p>A K darab Fourier együtthatóból visszakaphatnánk torzítatlanul az eredeti mitnavételezett pontokat, az alakleíráshoz viszont</p>
+<p>nem az összes súlyt, hanem csak egy részüket tartjuk meg, mindössze P&lt;K  darab</p>
+<p>együttható alapján térünk vissza a képtérbe</p>
+<ul>
+<li>
+<p>ekkor a képtérben ismét K darab pontot kapunk vissza, de nem a kiindulás mintavételezettjeit.</p>
+</li>
+<li>
+<p>Az együtthatók egy részének eldobásával kapott leírás</p>
+</li>
+</ul>
+<p>(a meghagyott együtthatók adják a jellemzést) voltaképpen egy veszteséges</p>
+<p>tömörítés: kevesebb adattal tudjuk jól-rosszul közelíteni a kiindulásit.</p>
+<p>Az alábbi kép azt mutatja, hogy hogy a 64 kontúrponttal mintavételezett négyzetre csak</p>
+<p>sok együttható megtartásával tudunk négyzetfélét rekonstruálni.</p>
+<p><img src="asd3.png" alt="alt text" title="Title"></p>
+<p>A következő képen viszont tesztobjektum határa közel 3000 ponttal adott,</p>
+<p>és már 36 együttható is visszaadhat 3000 pontot úgy, hogy azok jól közelítik a</p>
+<p>kiindulási kontúrt.</p>
+<p><img src="asd4.png" alt="alt text" title="Title"></p>
+</div>
+</body>
+
+</html>

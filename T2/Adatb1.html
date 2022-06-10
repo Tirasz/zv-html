@@ -1,0 +1,280 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="adatbázis-tervezés-a-relációs-adatmodell-fogalma.-az-egyed-kapcsolat-diagram-és-leképezése-relációs-modellre-kulcsok-fajtái.-funkcionális-függőség-a-normalizálás-célja-normálformák">1. Adatbázis-tervezés: A relációs adatmodell fogalma. Az egyed-kapcsolat diagram és leképezése relációs modellre, kulcsok fajtái. Funkcionális függőség, a normalizálás célja, normálformák</h1>
+<h2 id="a-relációs-adatmodell-fogalma">A relációs adatmodell fogalma</h2>
+<p>A relációs adatmodell mind az adatokat, mind a köztük lévő kapcsolatokat kétdimenziós táblákban tárolja.</p>
+<p><strong>Attribútum:</strong></p>
+<ul>
+<li>
+<p>névvel, értéktartománnyal megadott tulajdonság</p>
+</li>
+<li>
+<p>Z értéktartományát dom(Z) jelöli</p>
+</li>
+<li>
+<p><strong>csak elemi típusú értékekből állhat</strong> (numerikus, karakter, string)</p>
+</li>
+<li>
+<p>gyakran megadjuk az ábrázolás hosszát is</p>
+</li>
+</ul>
+<p><strong>Relációséma:</strong></p>
+<p>Ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mo stretchy="false">{</mo><msub><mi>A</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>A</mi><mi>n</mi></msub><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">A = \{A_1,..,A_n\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">..</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.151392em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">}</span></span></span></span></span> jelöli az <strong>attribútumhalmazt</strong> és a <strong>séma neve</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span></span></span></span></span>, akkor a <strong>relációsémát</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false">(</mo><msub><mi>A</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>A</mi><mi>n</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">R(A_1,...,A_n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.151392em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span> = <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">R(A)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mclose">)</span></span></span></span></span> jelöli</p>
+<ul>
+<li>
+<p>névvel ellátott attribútumhalmaz</p>
+</li>
+<li>
+<p><strong>névütközés esetén kiírhatjuk a tábla nevét is az attribútum elé</strong></p>
+</li>
+</ul>
+<p><strong>A relációséma nem tárol adatot!</strong></p>
+<p>Csak szerkezeti leírást jelent.</p>
+<p>Az adatok relációkkal adhatók meg. Egy R(A) séma feletti reláció A értéktartományainak direktszorzatának egy részhalmaza (mindegyik attribútum értékei közül választunk egyet, és ezt egy vektorba pakoljuk). Egy ilyen reláció már megjeleníthető adattábla formájában, egy reláció a táblázat egy sorának felel meg.</p>
+<h2 id="az-egyed-kapcsolat-diagram-és-leképezése-relációs-modellre">Az egyed-kapcsolat diagram és leképezése relációs modellre</h2>
+<h3 id="ek-diagram">EK-diagram</h3>
+<p>Az egyed-kapcsolat modell konkrét adatmodelltől függetlenül, szemléletesen adja meg az adatbázis szerkezetét.</p>
+<p><strong>Egyed vagy entitás</strong></p>
+<ul>
+<li>
+<p>a valós világ egy objektuma</p>
+</li>
+<li>
+<p>szeretnénk róla információt tárolni az adatbázisban</p>
+</li>
+<li>
+<p><strong>egyedtípus:</strong> általánosságban jelent egy valós objektumot</p>
+</li>
+<li>
+<p><strong>egyedpéldány:</strong> egy konkrét objektum</p>
+</li>
+<li>
+<p><strong>gyenge egyed:</strong> ha az egyedet nem határozza meg egyértelműen attribútumainak semmilyen részhalmaza</p>
+</li>
+</ul>
+<p><strong>Tulajdonság vagy attribútum</strong></p>
+<ul>
+<li>
+<p>az egyed egy jellemzője</p>
+</li>
+<li>
+<p><strong>tulajdonságtípus:</strong> Pl felhasználók jelszava általánosságban</p>
+</li>
+<li>
+<p><strong>tulajdonságpéldány:</strong> pl Egy konkrét jelszó</p>
+</li>
+<li>
+<p>az attribútumok egy olyan legszűkebb részhalmazát, amely egyértelműen meghatározza az egyedet, <strong>kulcsnak</strong> nevezzük</p>
+</li>
+</ul>
+<p><strong>Kapcsolatok</strong></p>
+<ul>
+<li>
+<p>egyedek között alakulhatnak ki</p>
+</li>
+<li>
+<p><strong>kapcsolattípus:</strong> pl felhasználó és üzenet között</p>
+</li>
+<li>
+<p><strong>kapcsolatpéldány:</strong> pl Kis József és a 69420. üzenet</p>
+</li>
+<li>
+<p>kapcsolatoknak is lehet tulajdonsága</p>
+</li>
+</ul>
+<p>Azt a modellt, amelyben az adatbázis a tárolandó adatokat egyedekkel, tulajdonságokkal és kapcsolatokkal írja le, <strong>egyed-kapcsolat modellnek</strong> nevezzük, a hozzá kapcsolódó diagramot pedig egyed-kapcsolat diagrammnak.</p>
+<p>A diagramon</p>
+<ul>
+<li>
+<p>az egyedeket téglalappal</p>
+</li>
+<li>
+<p>a tulajdonságokat ellipszissel</p>
+</li>
+<li>
+<p>a kulcsot aláhúzással</p>
+</li>
+<li>
+<p>a kapcsolatokat rombusszal</p>
+</li>
+</ul>
+<p>jelöljük.</p>
+<h3 id="ek-leképezése-relációs-adatmodellre">EK leképezése relációs adatmodellre</h3>
+<p><strong>Egyedek leképezése</strong></p>
+<ul>
+<li>
+<p>minden egyedhez egy relációsémát írunk fel, melynek neve az egyed neve, attribútumai pedig az egyed attribútumai, kulcsa pedig az egyed kulcsa</p>
+</li>
+<li>
+<p><strong>gyenge egyednél az attribútumokhoz hozzá kell venni a meghatározó kapcsolatokon keresztül csatlakozó egyedek kulcsattribútumait is</strong>, külső kulcsként</p>
+</li>
+</ul>
+<p><strong>Összetett attr. leképezése</strong></p>
+<ul>
+<li>összetett attribútumot helyettesítünk az őt alkotó elemi attribútumokkal</li>
+</ul>
+<p><strong>Többértékű attribútumok leképezése</strong></p>
+<ul>
+<li>
+<p><strong>egyik lehetőség:</strong></p>
+</li>
+<li>
+<p>eltekintünk attól, hogy többértékű, és egyszerű szövegként tároljuk</p>
+</li>
+<li>
+<p>hátránya, hogy nem kezelhetők külön külön az elemek</p>
+</li>
+<li>
+<p><strong>másik lehetőség:</strong></p>
+</li>
+<li>
+<p>minden sorból annyit veszünk fel, ahány értéke van a többértékű attribútumnak</p>
+</li>
+<li>
+<p>hátránya a sok fölösleges sor</p>
+</li>
+<li>
+<p>kulcsok elromlanak</p>
+</li>
+<li>
+<p>kerülendő</p>
+</li>
+<li>
+<p><strong>harmadik lehetőség:</strong></p>
+</li>
+<li>
+<p>új táblát veszünk fel, ahova kigyűjtjük, hogy melyik sorhoz milyen értékei tartoznak a többértékű attribútumnak</p>
+</li>
+<li>
+<p>akár külön kigyűjthetjük egy táblába az összes lehetséges értékét a többértékű attribútumnak, és egy kapcsolótáblával kötjük össze az egyeddel</p>
+</li>
+</ul>
+<p><strong>Kapcsolatok leképezése</strong></p>
+<ul>
+<li>
+<p>minden kapcsolathoz felveszünk egy új sémát</p>
+</li>
+<li>
+<p>neve a kapcsolat neve, attribútumai a kapcsolódó egyedek kulcsattribútumai és a kapcsolat saját attribútumai</p>
+</li>
+<li>
+<p>meg kell határozni ennek a sémának is a kulcsát</p>
+</li>
+<li>
+<p>ha ez a kulcs megegyezik valamelyik kapcsolt egyed kulcsával, akkor ez a séma beolvasztható abba az egyedbe, ezt hívjuk konszolidációnak, ez a gyakorlatban egy lépésben is elvégezhető persze</p>
+</li>
+<li>
+<p><strong>1:1</strong> kapcsolat esetén az egyik tetszőlegesen választott egyedbe beolvaszthatjuk a kapcsolat sémáját</p>
+</li>
+<li>
+<p><strong>1:N</strong> kapcsolat esetén az N oldali egyedet bővítjük a másik egyed kulcsattribútumaival, és a kapcsolat saját attribútumaival</p>
+</li>
+<li>
+<p><strong>N:M</strong> kapcsolat esetén új sémát veszünk fel</p>
+</li>
+</ul>
+<p><strong>Specializáló kapcsolatok leképezése</strong></p>
+<p>Minden megközelítésnek lehetnek hátrányai, mérlegelnünk kell</p>
+<p><strong>Első lehetőség</strong></p>
+<ul>
+<li>
+<p>főtípus és altípus is külön sémában, és az altípus attribútumai közé felvesszük a főtípus attribútumait is</p>
+</li>
+<li>
+<p>minden egyedpéldány csak egy táblában fog szerepelni</p>
+</li>
+</ul>
+<p><strong>Második lehetőség</strong></p>
+<ul>
+<li>
+<p>minden altípushoz új séma, de abban csak a főtípus kulcsattribútumai jelennek meg</p>
+</li>
+<li>
+<p>minden egyedpéldány szerepel a saját altípusának táblájában és a főtípus táblájában is</p>
+</li>
+</ul>
+<p><strong>Harmadik lehetőség</strong></p>
+<ul>
+<li>
+<p>egy közös tábla az összes lehetséges attribútummal</p>
+</li>
+<li>
+<p>minden sorban csak a releváns cellákat töltjük ki</p>
+</li>
+</ul>
+<h2 id="kulcsok-fajtái">Kulcsok fajtái</h2>
+<p><strong>Szuperkulcs</strong></p>
+<ul>
+<li>
+<p>egyértelműen azonosítja a tábla sorait</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">R(A)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mclose">)</span></span></span></span></span> bármely két sora különbözik a szuperkulcson</p>
+</li>
+<li>
+<p>mivel a táblában általában nem engedünk meg ismétlődő sorokat, ezért ha az összes attribútumot vesszük, az mindig szuperkulcs</p>
+</li>
+</ul>
+<p><strong>Kulcs</strong></p>
+<ul>
+<li>
+<p>olyan szuperkulcs, amelynek egyetlen valódi részhalmaza sem szuperkulcs</p>
+</li>
+<li>
+<p>ha egyelemű, <strong>egyszerű kulcsnak</strong> nevezzük</p>
+</li>
+<li>
+<p>ha többelemű, <strong>összetettnek</strong></p>
+</li>
+<li>
+<p>előfordulhat, hogy van több kulcs is, ekkor kiválasztunk egyet</p>
+</li>
+<li>
+<p>a kiválaszott kulcsot elsődleges kulcsnak nevezzük</p>
+</li>
+</ul>
+<p><strong>Külső kulcs</strong></p>
+<ul>
+<li>másik, vagy ugyanazon séma elsődleges kulcsára vonatkozik</li>
+</ul>
+<p>Mind az elsődleges kulcs és a külső kulcsok is a sémára vonatkozó feltételek, függetlenek az adatoktól</p>
+<h2 id="funkcionális-függőség">Funkcionális függőség</h2>
+<p>P és Q attribútumhalmazok, az R(A) sémán</p>
+<p>P-től funkcionálisan függ Q, ha bármilyen R feletti tábla esetén ha P-n megegyezik két sor, akkor Q-n is meg fog egyezni.</p>
+<p>Triviális, ha Q részhalmaza P-nek, és nemtriviális, ha P-nek és Q-nak nincs közös attribútuma.</p>
+<p>Pl a felhasználónévtől funkcionálisan függ az email sokszor.</p>
+<h2 id="normalizálás-célja-normálformák">Normalizálás célja, normálformák</h2>
+<p>Tárolhatnánk az összes adatunkat egy nagy táblában is, de ilyenkor gondok merülhetnek fel az adatbázisműveletek során, illetve nagyon redundáns lenne az adattárolás. A normalizálás célja kisebb táblák létrehozása a redundancia elkerülése érdekében.</p>
+<h3 id="normálformák">Normálformák</h3>
+<p>Dekompozíció segítségével megszüntetjük lépésről lépésre a redundanciát úgy, hogy a sémában lévő függőségekre egyre szigorúbb feltételeket adunk.</p>
+<p><strong>Elsődleges, másodlagos attribútum:</strong> szerepel a séma valamelyik kulcsában, ha nem akkor másodlagos</p>
+<p>Tranzitív, közvetlen függés: Ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span></span></span></span>-től függ <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi></mrow><annotation encoding="application/x-tex">Z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">Z</span></span></span></span></span>, és van olyan <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span></span></span></span></span>, hogy <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>→</mo><mi>Y</mi></mrow><annotation encoding="application/x-tex">X \rightarrow Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span></span></span></span></span> és <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mo>→</mo><mi>Z</mi></mrow><annotation encoding="application/x-tex">Y \rightarrow Z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">Z</span></span></span></span></span>, ellenkező esetben közvetlenül függ</p>
+<p>1NF:</p>
+<ul>
+<li>Ha az attribútumok értéktartománya csak egyszerű adatokból áll (nincs többszörös vagy összetett attribútum)</li>
+</ul>
+<p>2NF:</p>
+<ul>
+<li>Ha minden másodlagos attribútum teljesen függ bármely kulcstól</li>
+</ul>
+<p>3NF:</p>
+<ul>
+<li>Minden másodlagos attribútum közvetlenül függ bármely kulcstól, azaz nincs tranzitív függés</li>
+</ul>
+<p>BCNF:</p>
+<ul>
+<li>Egy relációséma Boyce-Codd normálformában van, ha bármely nemtriviális <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>→</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">L \rightarrow B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05017em;">B</span></span></span></span></span> függés esetén L szuperkulcs.</li>
+</ul>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,309 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="szoftverfejlesztési-folyamat-és-elemei-a-folyamat-különböző-modelljei">11. Szoftverfejlesztési folyamat és elemei; a folyamat különböző modelljei</h1>
+<p><strong>A szoftverfolyamat:</strong> Tevékenységek és kapcsolódó eredmények, amely során elkészítjük a szoftvert.</p>
+<h2 id="alapvető-elemek">Alapvető elemek</h2>
+<ul>
+<li>
+<p><strong>Szoftverspecifikáció (mit):</strong></p>
+</li>
+<li>
+<p>a szoftver funkcióit és korlátait meg kell határozni</p>
+</li>
+<li>
+<p><em>Legkisebb a változás költséges</em></p>
+</li>
+<li>
+<p>Eredménye a <strong>követelményspecifikáció</strong></p>
+</li>
+<li>
+<p><strong>Szoftvertesztelés és implementáció (hogyan):</strong></p>
+</li>
+<li>
+<p>a specifikációnak megfelelően a szoftvert elő kell állítani</p>
+</li>
+<li>
+<p>Alrendszerek meghatározása, komponens tervezés stb.</p>
+</li>
+<li>
+<p><strong>Szoftvervalidáció (ellenőrzés):</strong></p>
+</li>
+<li>
+<p>a szoftvert ellenőrizni kell, hogy tényleg azt fejlesztettük ki, amit az ügyfél kíván.</p>
+</li>
+<li>
+<p><strong>Verifikáció:</strong> Rendszer megfelel e a specifikációnak</p>
+</li>
+<li>
+<p><strong>Validáció:</strong> Megfelel e a megrendelő elvárásainak</p>
+</li>
+<li>
+<p><strong>Szoftverevolúció (változás):</strong> a szoftvert úgy alakítani, hogy megfeleljen a későbbi kívánságoknak</p>
+</li>
+</ul>
+<h2 id="a-szoftverfolyamat-modelljei">A szoftverfolyamat modelljei</h2>
+<p>A szoftverfolyamat modellje a szoftverfolyamat absztrakt reprezentációja. Ezek a modellek egy-egy egyedi</p>
+<p>perspektívából reprezentál egy szoftverfolyamatot, de nem pontos specifikációja annak. Sokkal inkább hasznos</p>
+<p>absztrakciók, amit a szoftverfejlesztési folyamat különböző megközelítési módjainak megértéséhez használunk.</p>
+<h3 id="vízesés-modell">Vízesés modell</h3>
+<ul>
+<li>
+<p><strong>Specifikáció:</strong> rögzítjük a termék követelményeit. Mit tudjon a szoftver, és mit nem.</p>
+</li>
+<li>
+<p><strong>Tervezés:</strong> szétválasztódnak a szoftver- és hardverkövetelmények. Megtervezzük a rendszer architektúráját.</p>
+</li>
+<li>
+<p><strong>Implementáció:</strong> a szoftver fejlesztése, egységtesztelése. Az egységtesztelés azt a célt szolgálja, hogy a szoftver minden egyes egysége megfelel-e a specifikációnak.</p>
+</li>
+<li>
+<p><strong>Verifikáció:</strong> a különálló programegységes és programok integrálása és teljes rendszerként való tesztelése, hogy a rendszer megfelel-e a specifikációnak. A tesztelés után a rendszer átadható az ügyfélnek.</p>
+</li>
+<li>
+<p><strong>Karbantartás:</strong> a szoftver életciklusának leghosszabb fázisa. A karbantartásba beletartozik olyan hibák javítása is, amelyek nem merültek fel az életciklus korábbi szakaszaiban, illetve a szolgáltatások továbbfejlesztése.</p>
+</li>
+</ul>
+<p>A fázisok eredménye egy vagy több dokumentum, amelyek jóváhagyása megtörtént. A következő fázis nem indulhat, amíg az előző be nem fejeződött.</p>
+<p><strong>Probléma:</strong> a folyamat korai szakaszaiban állást kell foglalnunk és el kell köteleznünk magunkat, és nehéz az ügyfélhez történő alkalmazkodás. Akkor jó, ha előre ismerjük a követelményeket. Nagyobb rendszerek kisebb folyamatainál használják főleg.</p>
+<h3 id="evolúciós-fejlesztés">Evolúciós fejlesztés</h3>
+<p>Az evolúciós fejlesztés lényege, hogy ki kell fejleszteni egy korai implementációt, azt a felhasználókkal véleményeztetni, és finomítani a felhasználói visszajelzések alapján, amíg megfelelő rendszert el nem élünk.</p>
+<p>Két különböző típusa ismert:</p>
+<ul>
+<li>
+<p><strong>Feltáró fejlesztés:</strong> a folyamat célja az hogy a megrendelővel együtt feltárjuk a követelményeket, és kialakítsuk a véglekges rendszert. A végleges rendszer úgy alakul ki, hogy egyre több, az ügyfél által kért tulajdonságot társítunk a már meglévőkhöz.</p>
+</li>
+<li>
+<p><strong>Eldobható prototípus fejlesztése:</strong> ekkor az evolúciós fejlesztés célja, hogy minél jobban megértsük az ügyfél követelményeit, és azokra alapozva a legpontosabban fejlesszük le a terméket.</p>
+</li>
+</ul>
+<p>Az evolúciós fejlesztés jobb, mint a vízesés modell, ha a lehető legpontosabban szeretnénk az ügyfél kívánságainak megfelelő szoftvert fejleszteni. Előnye, hogy a specifikáció inkrementálisan fejleszthető.</p>
+<p>A vezetőség és a tervezők szempontjából két probléma merülhet fel:</p>
+<ul>
+<li>
+<p>A folyamat nem látható. A menedzsereknek rendszeresen leszállítható eredményekre van szükségük, hogy mérhessék a fejlődést.</p>
+</li>
+<li>
+<p>A rendszerek sokszor szegényesen struktúráltak. A folyamatos változtatások rontják a szoftver struktúráját.</p>
+</li>
+</ul>
+<p>A várhatóan rövid élettartamú kis vagy közepes rendszerek esetén az evolúciós megközelítési mód a legcélravezetőbb.</p>
+<h3 id="iterációs-inkrementális-modell">Iterációs, inkrementális modell</h3>
+<ul>
+<li>
+<p>Folyamat iterációja elkerülhetetlen</p>
+</li>
+<li>
+<p>ha a követelmények változnak, akkor a folyamat bizonyos részeit is változtatni kell</p>
+</li>
+<li>
+<p>ennél a modellnél minimális a specifikáció, fejlesztésben sok iteráció van, és menet közben alakul ki a végleges specifikáció</p>
+</li>
+<li>
+<p>Inkrementalitás: részfunkciókkal már működő rendszert fejlesztünk, amit minden iterációban (inkrementálisan) javítunk</p>
+</li>
+<li>
+<p>Nagy körvonalakban specifikáljuk a rendszert</p>
+</li>
+<li>
+<p>„Inkremensek” meghatározása</p>
+</li>
+<li>
+<p>Funkcionalitásokhoz prioritásokat rendelünk</p>
+</li>
+<li>
+<p>Magasabbakat előbb kell biztosítani</p>
+</li>
+<li>
+<p>Architektúrát meg kell határozni</p>
+</li>
+<li>
+<p>További inkremensek pontos specifikálása menet közben történik</p>
+</li>
+<li>
+<p>Egyes inkremensek kifejlesztése történhet akár különböző folyamatokkal is - Vízesés vagy evolúciós, amelyik jobb</p>
+</li>
+<li>
+<p>Az elkészült inkremenseket akár szolgálatba is lehet állítani</p>
+</li>
+<li>
+<p>Ha határidő csúszás van kilátásban a teljes projekt nem lesz kudarcra ítélve, esetleg csak egyes inkremensek</p>
+</li>
+<li>
+<p>Megfelelő méretű inkremensek meghatározása nem triviális feladat</p>
+</li>
+<li>
+<p>Ha túl kicsi: nem működőképes</p>
+</li>
+<li>
+<p>Ha túl nagy: elveszítjük a modell lényegét</p>
+</li>
+</ul>
+<p>Bizonyos esetekben számos alapvető funkcionalitást kell megvalósítani. Egész addig</p>
+<p>nincs működő inkremens</p>
+<h3 id="extreme-programming-xp">eXtreme Programming (XP)</h3>
+<ul>
+<li>
+<p>Szélsőséges inkrementális modell</p>
+</li>
+<li>
+<p>Nagyon kis funkcionalitású inkremensek</p>
+</li>
+<li>
+<p>Megrendelő intenzív részvétele fontos</p>
+</li>
+<li>
+<p>Programozás csoportos tevékenység - többen ülnek a képernyő előtt</p>
+</li>
+<li>
+<p>Sok támadója van</p>
+</li>
+</ul>
+<h3 id="rad-rapid-application-development">RAD (Rapid Application Development)</h3>
+<ul>
+<li>
+<p>Extrém rövid életciklus</p>
+</li>
+<li>
+<p>Működő rendszer 60-90 nap alatt</p>
+</li>
+<li>
+<p>Vízesés modell „nagysebességű” adaptálása</p>
+</li>
+<li>
+<p>Párhuzamos fejlesztés</p>
+</li>
+<li>
+<p>Komponens alapú fejlesztés</p>
+</li>
+<li>
+<p>Fázisai:</p>
+</li>
+<li>
+<p><em>Üzleti modellezés</em></p>
+</li>
+<li>
+<p>Milyen információk áramlanak funkciók között</p>
+</li>
+<li>
+<p><em>Adatmodellezés</em></p>
+</li>
+<li>
+<p>Finomítás adatszerkezetekre</p>
+</li>
+<li>
+<p><em>Adatfolyam processzus</em></p>
+</li>
+<li>
+<p>Adatmodell megvalósítása</p>
+</li>
+<li>
+<p><em>Alkalmazás generálás</em></p>
+</li>
+<li>
+<p>4GT alkalmazása, automatikus generálás, komponensek</p>
+</li>
+<li>
+<p><em>Tesztelés</em></p>
+</li>
+<li>
+<p>Csak komponens tesztelés</p>
+</li>
+<li></li>
+</ul>
+<p>Problémák:</p>
+<ul>
+<li>
+<p>Nagy emberi erőforrásigény</p>
+</li>
+<li>
+<p>Fejlesztők és megrendelők intenzív együttműködése szükséges</p>
+</li>
+<li>
+<p>Nem minden típusú fejlesztésnél alkalmazható</p>
+</li>
+</ul>
+<h3 id="spirális-modell">Spirális modell</h3>
+<ul>
+<li>
+<p>Olyan evolúciós modell, amely kombinálja a prototípus modellt a vízesés modellel</p>
+</li>
+<li>
+<p>Inkrementális modellhez hasonló, csak általánosabb megfogalmazásban</p>
+</li>
+<li>
+<p>Nincsenek rögzített fázisok</p>
+</li>
+<li>
+<p>Más modelleket ölelhet fel</p>
+</li>
+<li>
+<p>Prototípuskészítés pontatlan követelmények esetén</p>
+</li>
+<li>
+<p>Vízesés modell egy későbbi körben</p>
+</li>
+<li>
+<p>Kritikus részek esetén formális módszerek</p>
+</li>
+<li>
+<p>A spirál körei a folyamat egy-egy fázisát reprezentálják</p>
+</li>
+<li>
+<p>Minden körben a kimenet egy „release” (modell vagy szoftver)</p>
+</li>
+<li>
+<p>Körök céljai pl.:</p>
+</li>
+<li>
+<p>Megvalósíthatóság (elvi prototípusok)</p>
+</li>
+<li>
+<p>Követelmények meghatározása (prototípusok)</p>
+</li>
+<li>
+<p>Tervezés (modellek és inkremensek)</p>
+</li>
+<li>
+<p>Stb. (javítás, karbantartás, stb.)</p>
+</li>
+<li>
+<p>A körök 3-6 darab szektorokra oszthatók</p>
+</li>
+</ul>
+<h3 id="winwin-spirális-modell">WINWIN spirális modell</h3>
+<ul>
+<li>
+<p>WINWIN = mindenki nyer</p>
+</li>
+<li>
+<p>Megrendelő és fejlesztő is</p>
+</li>
+<li>
+<p>Sok tárgyalás kell a két fél között</p>
+</li>
+<li>
+<p>WINWIN modell számos tárgyalási szempontot visz bele a spirális modellbe</p>
+</li>
+<li>
+<p>Egyes (al)rendszerek kulcsszereplői, érdekeltek</p>
+</li>
+<li>
+<p>Az érdekeltek nyerő feltételei</p>
+</li>
+<li>
+<p>Tárgyalás, kompromisszumok</p>
+</li>
+</ul>
+</div>
+</body>
+
+</html>

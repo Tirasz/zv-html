@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="simításszűrés-képtérben-átlagoló-szűrők-gauss-simítás-és-mediánszűrés-élek-detektálása-gradiens-operátorokkal-és-marr-hildreth-módszerrel">3. Simítás/szűrés képtérben (átlagoló szűrők, Gauss simítás és mediánszűrés); élek detektálása (gradiens-operátorokkal és Marr-Hildreth módszerrel)</h1>
+<p><strong>Zaj:</strong> A képpont-intenzitások nemkívánatos változása</p>
+<p><img src="./zaj.JPG" alt="Zaj kép" title="Title"></p>
+<h2 id="simításszűrés-képtérben">Simítás/szűrés képtérben</h2>
+<h3 id="átlagoló-szűrés">Átlagoló szűrés</h3>
+<p>Vesszük egy képpontnak egy környezetét, és vesszük ebben a környezetben az összes képpont átlagát. Ezzel az átlag lesz a képpont új értéke.</p>
+<p>Ezt az átlagolást konvolúcióval is végezhetjük, ahol a konvolúciós maszkunkban minden érték <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle displaystyle="true" scriptlevel="0"><mfrac><mn>1</mn><msup><mi>n</mi><mn>2</mn></msup></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\dfrac{1}{n^2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 2.00744em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.32144em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.740108em;"><span class="" style="top: -2.989em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>, ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>∗</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">n*n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.46528em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span>-es a maszk.</p>
+<ul>
+<li>
+<p>minél nagyobb környezetet nézünk, annál erősebb a simító hatás</p>
+</li>
+<li>
+<p><strong>haszna:</strong></p>
+</li>
+<li>
+<p>csökkenti a zajt</p>
+</li>
+<li>
+<p><strong>kára:</strong></p>
+</li>
+<li>
+<p>gyengíti az éleket</p>
+</li>
+<li>
+<p>homályossá teszi a képet</p>
+</li>
+<li>
+<p><strong>súlyozott átlagolást is lehet csinálni</strong> - konvolúció</p>
+</li>
+<li>
+<p>a legnagyobb súly az aktuális pontunknak legyen</p>
+</li>
+<li>
+<p>ahogy távolodunk a ponttól, annál kisebbek legyenek a súlyok</p>
+</li>
+</ul>
+<h3>Konvolúció</h3>
+<img src="./konv_maszk.JPG" alt="">
+<h3 id="gauss-simítás">Gauss simítás</h3>
+<ul>
+<li>
+<p>ahogy távolodunk a ponttól, annál kisebbek legyenek a súlyok</p>
+</li>
+<li>
+<p>erre nagyon jó a gauss harang</p>
+</li>
+<li>
+<p>minden sűrűségfüggvény integrálja 1</p>
+</li>
+<li>
+<p>minél nagyobb a <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi></mrow><annotation encoding="application/x-tex">\sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03588em;">σ</span></span></span></span></span> (szigma), annál szélesebb, de annál alacsonyabb a harang</p>
+</li>
+<li>
+<p>ezzel szépen lehet jeleket simítani</p>
+</li>
+<li>
+<p>binomiális együtthatók jól közelítik a normális eloszlás görbéjét</p>
+</li>
+<li>
+<p>van 2D gauss is, harang alakú</p>
+</li>
+</ul>
+<p><strong>hogyan lehet gauss függvényt közelíteni diszkrét értékekkel?</strong></p>
+<ul>
+<li>
+<p>vegyük a binomiális együtthatókat tartalmazó sorvektort, és osszunk el minden elemet 2^n-nel</p>
+</li>
+<li>
+<p>ezt szorozzuk össze a transzponáltjával, és így kapjuk a gauss görbe közelítését</p>
+</li>
+</ul>
+<p>Hozzájuthatunk így diszkrét gauss eloszlású nxn-es konvolúciós maszkokhoz, és az ilyenekkel vett konvolúció a Gauss szűrés</p>
+<p>Az élek itt is rombolódnak</p>
+<p>Lehet olyat is, hogy csak akkor simítunk, ha az adott képpont intenzitásának környezeti átlagtól való eltérése meghalad egy T küszöbértéket</p>
+<h3 id="medián-szűrés">Medián szűrés</h3>
+<p><strong>medián</strong> = sorbarendezzük az értékeket, és a középsőt vesszük</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>i</mi><mi>n</mi><mo>≤</mo><mi>m</mi><mi>e</mi><mi>d</mi><mo>≤</mo><mi>m</mi><mi>a</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">min \le med \le max</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.79549em; vertical-align: -0.13597em;"></span><span class="mord mathnormal">min</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.83041em; vertical-align: -0.13597em;"></span><span class="mord mathnormal">m</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span></span></span></span></span></p>
+<p>medián nem lineáris</p>
+<p><strong>medián szűrés:</strong></p>
+<p>nézzük egy környezetét a pontnak, ezt rendezzük sorba, és a középső érték legyen a képpont új értéke</p>
+<p><strong>só-bors zaj eltüntetésére szépen alkalmas</strong></p>
+<p>tiszta képet kapunk, ha pl 5x5-ös környezetben nézve a 25 képpontból max 12 teljesen fekete vagy teljesen fehér képpont van</p>
+<p><strong>megszünteti az egyedi, és kis kiterjedésű kiugrásokat</strong></p>
+<p><strong>jobban megőrzi az éleket</strong>, mint az átlagolás</p>
+<p><strong>nagy kiterjedésű zajfoltoknál jel-elnyomó</strong></p>
+<p>a zajt hagyja meg, és a lényeg tűnhet el</p>
+<h2 id="élek-detektálása">Élek detektálása</h2>
+<p><strong>él ott van a képen, ahol az intenzitás valamilyen irányban felugrik, vagy lecsökken</strong></p>
+<p>élek nagyon fontosak a látásunban, <strong>ahol markánsak az élek, azokat jól érzékeljük</strong></p>
+<p>Tipikus élprofilok:</p>
+<ul>
+<li>
+<p>lehet ideális/lépcsős él</p>
+</li>
+<li>
+<p>lejtős él</p>
+</li>
+<li>
+<p>tető</p>
+</li>
+<li>
+<p>vonal</p>
+</li>
+<li>
+<p>zajos</p>
+</li>
+</ul>
+<p><strong>tangens:</strong> érintő iránytangense/meredeksége</p>
+<p><strong>első derivált:</strong> hol vannak szélsőértékek, monotonitás</p>
+<p>derivált pozitív, nő, negatív, csökken</p>
+<p>él ott van, ahol az intenzitásprofil első deriváltja nagy</p>
+<h2 id="gradiens-operátorokkal">Gradiens operátorokkal</h2>
+<p>többváltozós függvényeket is lehet deriválni, pl parciálisan</p>
+<p>egyik változót lerögzítjük, és a másik szerint deriválunk</p>
+<p><strong>gradiens</strong>: első parciális deriváltakból alkotott vektor</p>
+<p>2D-ben az érintőre merőleges vektor</p>
+<p>ennek van két komponense (x és y szerint vett derivált)</p>
+<p><strong>gradiens nagysága</strong> - <em>magnitúdó</em></p>
+<p>első vektornormánál a <strong>gradienskomponensek abszolútértékének az összegét</strong> nézzük</p>
+<p>2D-ben a kettes vektornorma az a pitagorasz tételből jön</p>
+<p>2D-ben van a gradiensnek iránya is <strong>arctan(y/x)</strong></p>
+<p>él iránya a gradiensre merőleges</p>
+<p>diszkrét gradiens operátorok</p>
+<p><strong>roberts, prewitt, sobel, frei-chen</strong></p>
+<p>mind a négy módszer konvolúciós maszkpárokat alkalmaz</p>
+<p><strong>1. roberts operátor</strong></p>
+<ul>
+<li>adott két 3x3-as mátrix, ha az egyikkel konvolválunk, akkor az x irányú parciális deriváltat közelítjük, ha a másikkal, akkor az y irányút</li>
+</ul>
+<p>igazából nem is kell konvolúció</p>
+<ul>
+<li>
+<p><strong>x:</strong> a képpont értékéből kivonjuk az északkeleti szomszédját</p>
+</li>
+<li>
+<p><strong>y:</strong> a képpont értékéből kivonjuk az északnyugati szomszédját</p>
+</li>
+</ul>
+<pre><code>
+| 0 | 0 | -1 | | -1 | 0 | 0 |
+
+| 0 | 1 | 0 | | 0 | 1 | 0 |
+
+| 0 | 0 | 0 | | 0 | 0 | 0 |
+
+</code></pre>
+<p>**pro: könnyen számítható</p>
+<p>kontra: zajérzékeny**</p>
+<p><strong>2. prewitt operátor</strong></p>
+<ul>
+<li>
+<p>itt is két 3x3-as maszk van, csak kicsit más, mint az előbb</p>
+</li>
+<li>
+<p><strong>x:</strong> baloldali oszlop csupa 1, jobboldali csupa -1, középen 0</p>
+</li>
+<li>
+<p><strong>y:</strong> felső sor -1, alsó sor 1, középen 0</p>
+</li>
+<li></li>
+</ul>
+<pre class=" language-markdown"><code class="prism  language-markdown">
+| 1 | 0 | -1 | | -1 | -1 | -1 |
+
+| 1 | 0 | -1 | | 0 | 0 | 0 |
+
+| 1 | 0 | -1 | | 1 | 1 | 1 |
+
+</code></pre>
+<p><strong>3. sobel operátor</strong></p>
+<ul>
+<li>
+<p>két 3x3 maszk</p>
+</li>
+<li>
+<p>ha négyzet mozaikon mintavételezett a képünk</p>
+</li>
+</ul>
+<p>akkor ami két pixel élen osztozkodik (vízszintesen</p>
+<p>vagy függőlegesen szomszédos), akkor azok közelebb vannak egymáshoz, mintha csak csúcson érintkeznének</p>
+<pre class=" language-markdown"><code class="prism  language-markdown">
+| 1 | 0 | -1 | | -1 | -2 | -1 |
+
+| 2 | 0 | -2 | | 0 | 0 | 0 |
+
+| 1 | 0 | -1 | | 1 | 2 | 1 |
+
+</code></pre>
+<p><strong>4. frei-chen operátor</strong></p>
+<ul>
+<li>ugyanaz, mint a sobel, csak 2 helyett gyök(2)</li>
+</ul>
+<p><strong>gradiens maszk tervezése x irányban</strong></p>
+<ul>
+<li>
+<p>szimmetrikus ne húzzon el se balra, se jobbra</p>
+</li>
+<li>
+<p>asszimetrikus ne húzzon el se fel, se le</p>
+</li>
+<li>
+<p>legyen az összege az elemeknek 0</p>
+</li>
+</ul>
+<p>8 irányban élt kereső gradiens operátorok <strong>compass operátorok</strong></p>
+<p><strong>prewitt compass operátor</strong></p>
+<ul>
+<li>8 különböző maszkkal dolgozik, a 8 égtáj irányába</li>
+</ul>
+<p>maszkelemek összege 0</p>
+<p><strong>robinson-3 compass operátor</strong></p>
+<ul>
+<li>3-féle elem szerepel a maszkokban (1, -1)</li>
+</ul>
+<p><strong>robinson-5 compass operátor</strong></p>
+<ul>
+<li>5-féle elem (-2 ,-1 ,0 , 1, 2)</li>
+</ul>
+<p><strong>kirsch compass operátor</strong></p>
+<ul>
+<li>0, -3, 5 értékek szerepelnek benne</li>
+</ul>
+<h3 id="marr-hildreth-módszer">Marr-Hildreth módszer</h3>
+<p><strong>LoG:</strong> Gauss laplace transzformáltja.</p>
+<p><strong>Laplace:</strong> Gradiens önmagával vett szorzata, amit másodfokú deriváltak közelítésére használnak. SKALÁR</p>
+<ol>
+<li>
+<p>konvolváljuk a képet egy vagy több alkalmas <strong>LoG függvénnyel</strong></p>
+</li>
+<li>
+<p>keressünk közös <strong>nulla átmeneteket</strong></p>
+</li>
+</ol>
+<p>nulla átmenet ott van, ahol adott pont kis környezetében előfordulnak pozitív és negatív értékek is.</p>
+<p><strong>eredménye</strong> mindig egy bináris éltérkép</p>
+<p>lehetnek fantomélek is, de ez a gyakorlatban elhanyagolható</p>
+<p><strong>LoG a frekvenciatérben</strong></p>
+<p>konvolúciós tétel szerint <strong>f*LoG</strong> gyorsan számítható fourier-trafóval meg pontonkénti szorzással</p>
+<p>adott szigmára előre kiszámíthatjuk a sombrero fourier trafóját</p>
+<p>ezt is eltárolhatjuk</p>
+</div>
+</body>
+
+</html>

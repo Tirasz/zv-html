@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="számítógép-hálózati-architektúrák-szabványosítók-isoosi-internet-itu-ieee">13. Számítógép-hálózati architektúrák, szabványosítók (ISO/OSI, Internet, ITU, IEEE)</h1>
+<h2 id="iso">ISO</h2>
+<p>International Organization for Standardization, Nemzetközi Szabványügyi Szervezet</p>
+<p>Mindenféle szabványokat adnak ki, 165 tagállam nemzeti szabványügyi szervezete alkotja. A távközlési szabványokhoz az ISO és az ITU-T gyakran együttműködik, hogy a szabványok kompatibilisek legyenek egymással.</p>
+<p>PL:</p>
+<ul>
+<li>
+<p>Az <strong>IEEE 802.11</strong> egy vezeték nélküli adatátviteli protokoll, Az OSI két legalsó rétegét, a fizikai és az adatkapcsolati réteget definiálja.</p>
+</li>
+<li>
+<p><strong>IEEE 754/1985</strong> lebegőpontos számformátum</p>
+</li>
+</ul>
+<h2 id="osi">OSI</h2>
+<p>A számítógépek kommunikációjához szükséges hálózati protokollt határozza meg.</p>
+<p><strong>OSI - Open System Interconnection</strong></p>
+<p>A különböző protokollok által nyújtott funkciókat rendezi egymásra épülő rétegekbe. Minden réteg csak az alsóbb rétegek által nyújtott funkciókra támaszkodhat, és az általa nyújtott funkciókat csak a felette lévő réteg számára nyújthatja. Ezt a rendszert gyakran protokoll veremnek is nevezik. Az OSI modell hét réteget definiál, az alsóbb rétegek azok, amelyeket hardver szinten is megvalósítanak, a felsőbbek szoftveresen kerülnek megvalósításra.</p>
+<p>A rétegek alulról felfelé</p>
+<ul>
+<li>
+<p><strong>Fizikai réteg</strong></p>
+</li>
+<li>
+<p>Bitek kommunikációs csatornára való juttatása.</p>
+</li>
+<li>
+<p>Csatlakozás felépítése és lezárása</p>
+</li>
+<li>
+<p>Hubok, repeaterek, hálózati adapterek</p>
+</li>
+<li>
+<p>Ethernet szabványok is tartoznak ide. (pl: <strong>IEEE 802.11</strong> vezetéknélküli adatátvitel)</p>
+</li>
+<li>
+<p><strong>Adatkapcsolati réteg</strong></p>
+</li>
+<li>
+<p>A <strong>küldő</strong> az adatokat egyértelmûen azonosítható adatkeretkre tördeli szét, ellátja a szükséges vezérlõbitekkel, majd sorrendben továbbítja azokat.</p>
+</li>
+<li>
+<p>A <strong>fogadó</strong> oldal pedig a kapott kereteket megfelelõ sorrendben összeállítja.</p>
+</li>
+<li>
+<p>Az <strong>küldő</strong> oldal ezenkívül még a fogadó által küldött <strong>nyugtázásokat is feldolgozza.</strong></p>
+</li>
+<li>
+<p><strong>Fizikai címzés: MAC cím</strong></p>
+</li>
+<li>
+<p>forgalomszabályozás, hibakezelés</p>
+</li>
+<li>
+<p>Bridgek, switchek</p>
+</li>
+<li>
+<p><strong>Hálózati réteg</strong></p>
+</li>
+<li>
+<p>Milyen útvonalon kell az <em>adatkapcsolati réteg által elkészített keretek</em> a forrásállomástól a célig eljuttatni. <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <strong>Forgalomirányítás</strong></p>
+</li>
+<li>
+<p>lehet</p>
+</li>
+<li>
+<p><strong>statikus:</strong> Táblázatok amelyek nem változnak</p>
+</li>
+<li>
+<p><strong>dinamikus:</strong> Táblázatok változnak.</p>
+</li>
+<li>
+<p>Hálózati útvonalválasztás és adatáramlás ellenőrzés</p>
+</li>
+<li>
+<p>Routerek, IP switchek</p>
+</li>
+<li>
+<p><strong>IP protocol (IP) itt található</strong>, logikai címzés</p>
+</li>
+<li>
+<p><strong>Szállítási réteg</strong></p>
+</li>
+<li>
+<p><em>minden adat érintetlenül, sértetlenül érkezzen meg a rendeltetési helyére.</em></p>
+</li>
+<li>
+<p>Forrás- és célállomás egymással kommunikál</p>
+</li>
+<li>
+<p>forgalomszabályozás, hibajavítás, multiplexelés</p>
+</li>
+<li>
+<p><strong>megbízhatóság:</strong> pl ellenőrző összeggel megnézzük, hogy az adat sérült-e</p>
+</li>
+<li>
+<p><strong>TCP protokoll</strong> itt található</p>
+</li>
+</ul>
+<p>A felső háromat együtt <strong>felső rétegnek</strong> nevezik</p>
+<ul>
+<li>
+<p><strong>Viszony réteg</strong></p>
+</li>
+<li>
+<p>két számítógép felhasználói kapcsolatot létesítsen</p>
+</li>
+<li>
+<p>állományokat mozgathatunk</p>
+</li>
+<li>
+<p>Lehet <em>duplex</em></p>
+</li>
+<li>
+<p>egyidejűleg kétirányú kommunikáció</p>
+</li>
+<li>
+<p>vagy <em>félduplex</em></p>
+</li>
+<li>
+<p>Kétirányú összeköttetés, de egyszerre csak egy fél küldhet üzenetet.</p>
+</li>
+<li>
+<p><strong>Megjelenítési réteg</strong></p>
+</li>
+<li>
+<p>átvitt információ szintaktikája, szemantikája</p>
+</li>
+<li>
+<p>a párbeszéd során absztrakt módon kell definiálni a kódolásokat</p>
+</li>
+<li>
+<p>Adatok megfelelő formában jelenjenek meg a végfelhasználónál.</p>
+</li>
+<li>
+<p><strong>Alkalmazási réteg</strong></p>
+</li>
+<li>
+<p>protokollok sokasága, <strong>HTTP, FTP</strong></p>
+</li>
+<li>
+<p>szolgáltatásai támogatják a szoftver alkalmazások közötti kommunikációt</p>
+</li>
+</ul>
+<h2 id="internet">Internet</h2>
+<p>Összekapcsolt számítógépes hálózatok globális rendszere, ami a <strong>TCP/IP</strong> protokollt használja a kommunikációhoz. Olyan hálózatok hálózata, amely üzleti, kormányzati, állai, magán, tudományos stb hálózatokból áll. Közös protokollokat használnak és közös szolgáltatásokat nyújtanak.</p>
+<p><strong>Legfontosabb alkalmazás rétegei: a HTTP, FTP, SMPT, DNS</strong></p>
+<p>Nincs központosított irányítása, sem a technológiai megvalósításban, sem a hozzáférésre és használatra vonatkozó politikában.</p>
+<p>Elsődleges előfutár-hálózata az ARPANET volt, ami regionális tudományos és katonai hálózatok összekapcsolásának gerincét szolgáltatta. Miután a TCP/IP lett az egyetlen hivatalos protokoll rajta, gyorsan nőtt a hozzá csatlakozó hálózatok, gépek és felhasználók száma.</p>
+<p>Azóta mégtöbb terület csatlakozott hozzá, globális gerinchálózatok épültek ki.</p>
+<p>Egy gép rajta van az interneten, ha a TCP/IP protokollt használja, van saját IP-je, és tud más gépeknek csomagokat küldeni az interneten át.</p>
+<p>Fő alkalmazási területek hagyományosan:</p>
+<ul>
+<li>
+<p>e-levél</p>
+</li>
+<li>
+<p>hírek</p>
+</li>
+<li>
+<p>távoli bejelentkezés</p>
+</li>
+<li>
+<p>fájltranszfer</p>
+</li>
+</ul>
+<p>Egy új alkalmazás, a WWW bevezetése vont be több millió új felhasználót a hálózatba. Nem változatott semmit az rendelkezésre álló eszközökön, csak egyszerűbbé tette a használatukat. A böngészők megjelenésével képeket, szöveget tartalmazó oldalakra is el lehetett jutni, és onnan más oldalakra továbbnavigálni.</p>
+<p>A növekedés nagy része az ún. ISP-knek is köszönhető. Egyéni felhasználóknak nyújtanak szolgáltatásokat, internetelérést.</p>
+<h2 id="itu">ITU</h2>
+<p><strong>International Telecommunication Union - Nemzetközi Távközlési egyesület</strong></p>
+<p>Szükség van világméretű kompatibilitásra, hogy a különböző országokban élő emberek/számítógépek kapcsolatba kerülhessenek egymással.</p>
+<p>A feladata az, hogy szabványosítsa a nemzetközi távközlést.</p>
+<p><strong>Három fő ágazata van:</strong></p>
+<ul>
+<li>
+<p>ITU-R: rádiókommunikációs ágazat</p>
+</li>
+<li>
+<p>ITU-T: távközlési szabványosítási ágazat</p>
+</li>
+<li>
+<p>ITU-D: fejlesztési ágazat</p>
+</li>
+</ul>
+<p><strong>ITU-R</strong></p>
+<p>Az 1927-ben Nemzetközi Rádió Tanácsadó Bizottság vagy CCIR néven (francia nevén Comité consultatif international pour la radio ) alapított ágazat kezeli a nemzetközi rádiófrekvenciás spektrum- és műholdpálya-erőforrásokat. 1992-ben a CCIR lett az ITU-R. Feladata a rádiófrekvenciák kiosztása a világszerte egymással versengő csoportoknak.</p>
+<p><strong>ITU-T</strong></p>
+<p>A szabványosítás a kezdetektől fogva célja az ITU-nak. 1956-ban a Nemzetközi Telefon- és Távirati Tanácsadó Bizottság egységesíti a globális távközlést.</p>
+<p>Az ITU-T feladata, hogy műszaki javaslatokat tegyen az adatkommunikáció interfészeire. Ezek gyakran válnak nemzetközi szabványokká. Fontos, hogy ezek csak műszaki javaslatokat tartalmaznak. Az elfogadása csak az adott országon múlik.</p>
+<p><strong>ITU-D</strong></p>
+<p>Az 1992-ben létrehozott ágazat hozzájárul az információs és kommunikációs technológiákhoz (IKT) való igazságos, fenntartható és megfizethető hozzáférés terjesztéséhez.</p>
+<h2 id="ieee">IEEE</h2>
+<p><strong>Villamos és Elektronikai Mérnökök Intézete</strong></p>
+<p>A világ legnagyobb szakmai szervezete.</p>
+<p>Konferenciák és folyóiratok mellett szabványokat dolgoznak ki a villamosmérnöki tudományok és az informatika terén.</p>
+<p>Az <strong>IEEE 802</strong>-es bizottsága több <strong>LAN</strong> fajtát szabványosított. A sikertörténetek (802.3 és <strong>802.11: WLAN, adatátviteli protokoll</strong>, logikai kapcsolatvezérlés és vezeték nélküli LAN) hatása óriási volt.</p>
+</div>
+</body>
+
+</html>

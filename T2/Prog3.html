@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="java-és-c-programok-fordítása-és-futtatása.-parancssori-paraméterek-fordítási-opciók-nagyobb-projektek-fordítása.-absztrakt--interfész--és-generikus-osztályok-virtuális-eljárások.-a-virtuális-eljárások-megvalósítása-szerepe-használata">9. Java és C++ programok fordítása és futtatása. Parancssori paraméterek, fordítási opciók, nagyobb projektek fordítása. Absztrakt-, interfész- és generikus osztályok, virtuális eljárások. A virtuális eljárások megvalósítása, szerepe, használata</h1>
+<h2 id="c-fordítás-futtatás">C++ fordítás, futtatás</h2>
+<h3 id="előfordítás">Előfordítás</h3>
+<p>Első lépésben az előfordító(preprocessor) a tényleges fordítóprogram futása előtt szövegesen átalakítja a forráskódot.</p>
+<p>Az előfordító különböző szöveges változtatásokat hajt végre a forráskódon, előkészíti azt a tényleges fordításra.</p>
+<p>Feladatai:</p>
+<ul>
+<li>
+<p><strong>Header fájlok beszúrása. (*.hpp/.h)</strong></p>
+</li>
+<li>
+<p>A <strong>forrásfájlban (*.cpp)</strong> fizikailag több sorban elhelyezkedő forráskód logikailag egy sorbatörténő csoportosítása (ha szükséges).</p>
+</li>
+<li>
+<p>A kommentek helyettesítése whitespace karakterekkel.</p>
+</li>
+<li>
+<p>Az előfordítónak a programozó által megadott feladatok végrehajtása (szimbólumokbehelyettesítése, feltételes fordítás, makrók, stb.)</p>
+</li>
+</ul>
+<p>A leggyakoribb műveletei a szöveghelyettesítés (#define), a szöveges állomány beépítése (#include) valamint a program részeinek feltételtől függő megtartása</p>
+<ul>
+<li>Az előfeldolgozó az #include direktíva hatására az utasításban szereplő szöveges fájl tartalmát beszúrja a programunkba, a direktíva helyére.</li>
+</ul>
+<h3 id="fordítás">Fordítás</h3>
+<p>Fordításkor a forrásfájlokból az első lépésben <strong>tárgymodulok (*.o) keletkeznek</strong>, önmagukban nem futóképesek.</p>
+<p>Ezt követően szükség van egy szerkesztőre, ami ezeket a modulokat összeszerkeszti.</p>
+<p>Linux/Unix rendszerek esetén a fordító a <strong>gcc</strong>. Az alábbi módon tudjuk lefordítani a több forrásfájlból álló projektet:</p>
+<p><strong>gcc -o prog main.cpp class1.cpp class2.cpp</strong></p>
+<p>Felsoroljuk azokat a fájlokat (a felsorolás sorrendje lényegtelen), amiket le szeretnénk fordítani. Fontos a main.cpp megadása hiszen ez a program belépési pontja.</p>
+<p>A <strong>-o prog</strong>, megadásakor megadhatjuk a program nevét, ekkor prog néven hozza létre az .exe fájlt. Ha nem mondunk semmit, akkor az alapértelmezett exe fájl neve a.out lesz. Célszerű használni a -o kapcsolót. Az exe kiterjesztés csak Windows esetén van, Linux esetén csak futtatási jogú fájlt kapunk.</p>
+<p>A fordító először mindegyiket lefordítja, melyek a .o kiterjesztésű tárgymodul fájlok lesznek, majd ezek összeszerkesztésre kerülnek</p>
+<h3 id="fordítási-lehetőségek">Fordítási lehetőségek</h3>
+<ul>
+<li>
+<p>forrásfájlokból kiindulva: gcc -o prog class1.cpp class2.cpp</p>
+</li>
+<li>
+<p>Ekkor modulonként létrejönnek a tárgymodulok .o kiterjesztéssel.</p>
+</li>
+<li>
+<p>Amennyiben több forrásfájl van, akkor megoldható: gcc -o prog *.cpp -ként is.</p>
+</li>
+<li>
+<p>tárgymodul és forrásfájl megadásával: Amely modulok nem változtak meg, azokat felesleges újrafordítani, tehát megadhatjuk tárgymodul és forrásfájl megadásával</p>
+</li>
+<li>
+<p>F: gcc -o prog class1.o class2.cpp</p>
+</li>
+<li>
+<p>tárgymodulkönyvtár és forrásfájl felhasználásával:</p>
+</li>
+<li>
+<p>a tárgymodulkönyvtár kiterjesztése .a</p>
+</li>
+<li>
+<p>Tárgymodulkönyvtárat létrehozni (archiver) (-cr : create): ar -cr liba.a a.o</p>
+</li>
+<li>
+<p>F: gcc -o prog b.cpp liba.a</p>
+</li>
+<li>
+<p>csak tárgymodulok felhasználásával: ekkor a -c kapcsolóval csak fordítást végzünk, szerkesztést nem.</p>
+</li>
+<li>
+<p>F: gcc -c a.cpp b.cpp: Ekkor a.o és b.o tárgymodulokat kapunk</p>
+</li>
+<li>
+<p>Ezt követően az ld nevű (link editor) szerkesztőprogrammal kell összeszerkeszteni a modulokat.</p>
+</li>
+<li>
+<p>F: ld -o prog a.o b.o</p>
+</li>
+</ul>
+<h3 id="a-gcc-fordító-fontosabb-fordítási-opciói">A gcc fordító fontosabb fordítási opciói</h3>
+<p>Szintaxis: gcc [kapcsolók] forrásfájlok</p>
+<ul>
+<li>
+<p><strong>-Ob[szint]</strong>: A gcc fordítónak a -Ob[szint] kapcsolóval tudjuk megmondani, hogy milyen optimalizálásokat alkalmazzon, a szint maximum 3 lehet (0,1,2), inline eljárások.</p>
+</li>
+<li>
+<p><strong>-c</strong>: mint compile, lefordítja és összeállítja a forrást, linkelést nem végez.</p>
+</li>
+<li>
+<p><strong>-o</strong>: lehetőségünk van megadni a futtatható állomány nevét, amennyiben nem adunk meg, az alapértelmezett az a.out lesz.</p>
+</li>
+<li>
+<p><strong>-Wall</strong>: A figyelmeztetéseket írja ki.</p>
+</li>
+<li>
+<p><strong>-g</strong>: engedélyezi a hibakeresési információk elhelyezését a programban, ami emiatt sokkal nagyobb lesz, de nyomon lehet követni a futását például a gdb programmal.</p>
+</li>
+<li>
+<p><strong>-Werror:</strong> Forditás-idejű figyelmeztetéseket errorokká alakítja.</p>
+</li>
+</ul>
+<h3 id="c-parancssori-paraméterek">C++ parancssori paraméterek</h3>
+<p>int main(int argc, char* argv[])</p>
+<p>A C++ programok kezdő eljárása minden esetben a main() eljárás. A main függvény első két paramétere az argc, ami egy int és az argv tömb:</p>
+<ul>
+<li>
+<p>az argc a parancssorban szereplő argumentumok száma,</p>
+</li>
+<li>
+<p>az argv a string alakban tárolt argumentumok címeit tároló tömb, az első argumentum címe argv[0], a másodiké argv[1], …, az utolsó argumentum után egy NULL pointer következik. Az argv[0] a program nevét és útvonalát tartalmazza. A paraméterek valójában az 1 indextől kezdődnek.</p>
+</li>
+</ul>
+<h2 id="java-fordítás-futtatás">Java fordítás, futtatás:</h2>
+<p>Ahhoz, hogy Java programokat tudjunk futtatni, illetve fejleszteni, szükségünk lesz egy fordító- és/vagy futtatókörnyezetre, valamint egy fordítóprogramra. A kész programunk futtatásához mindösszesen a JRE (Java Runtime Environment) szükséges, ami biztosítja a Java alkalmazások futtatásának minimális követelményeit, mint például a JVM (Java Virtual Machine)</p>
+<p>Azonban a fejlesztéshez szükségünk lesz a JDK-ra (Java Development Kit) is. Ez tartalmazza a Java alkalmazások futtatásához, valamint azok készítéséhez, fordításához szükséges programozói eszközöket is (tehát a JRE-t nem kell külön letölteni, a JDK tartalmazza).</p>
+<p>A fordítás folyamata az alábbiak alapján történik:</p>
+<ul>
+<li>
+<p>Először a <strong>.java</strong> kiterjesztésű fájlokat a Java-fordító (compiler) egy közbülső nyelvre fordítja</p>
+</li>
+<li>
+<p><strong>Java bájtkódot kapunk eredményül</strong> (ez a bájtkód hordozható). A java bájtkód a számítógép számára még nem értelmezhető. (kiterjesztése .class)</p>
+</li>
+<li>
+<p>Ennek a kódnak az értelmezését és fordítását gépi kódra a JVM (Java Virtual Machine) végzi el futásidőben.</p>
+</li>
+</ul>
+<p><strong>Fordítás:</strong> javac filename.java</p>
+<p><strong>Futtatás:</strong> java filename</p>
+<p><strong>Java fordítási opciók:</strong></p>
+<ul>
+<li>
+<p><strong>-g:</strong> debug információk generálása</p>
+</li>
+<li>
+<p><strong>-s &lt;könyvtár&gt;:</strong> a generált fájlok könyvtárának megadása</p>
+</li>
+<li>
+<p><strong>-sourcepath &lt;path&gt;:</strong> a forrásfájlok elérési útvonalát meg lehet adni</p>
+</li>
+<li>
+<p><strong>-Werror:</strong> figyelmeztetés esetén megáll a fordítás</p>
+</li>
+<li>
+<p><strong>-O:</strong> Optimalizálás</p>
+</li>
+<li>
+<p><strong>-nowarn:</strong> Ne legyen semmi figyelmeztetés</p>
+</li>
+</ul>
+<p>Java parancssori paraméterek</p>
+<p>public static void main(String[] args)</p>
+<p>A main függvény paramétere az args string tömb, amely tartalmazza a parancssori paramétereket. Ezen a tömbön valamilyen ciklus segítségével végig iterálhatunk és a parancsori paramétereket tetszés szerint kezelhetjük.</p>
+<p>Nagyobb projektek esetén szokás build fájlokat alkalmazni: ant, gradle, makefile, stb.</p>
+<h2 id="virtuális-eljárások">Virtuális eljárások</h2>
+<p>Egy virtuális eljárás címének meghatározása indirekt módon, futás közben történik.</p>
+<p>Java-ban eleve csak virtuális eljárások vannak (kivéve a final metódusokat, amelyeket nem lehet felüldefiniálni és a private metódusokat, amelyeket nem lehet örökölni)</p>
+<p>C+±ban a virtuális függvénytábla tartja nyilván a virtuális eljárások címeit. A VFT táblázat öröklődik, feltöltéséről a konstruktor gondoskodik. A származtatott osztály konstruktora módosítja a virtuális függvénytáblát, kijavítja az ősosztályból örökölt metóduscímeket. Amikor a konstruálási folyamat véget ér, a VFT táblázat minden sora értéket kap, mégpedig a ténylegesen létrehozott osztálynak megfelelő metódus címeket. A VFT táblázat sorai ezután már nem változnak meg.</p>
+<ul>
+<li>Virtuális eljárásokat a virtual kulcsszóval tudunk létrehozni. Az újrafelhasználás során nagy valószínűséggel módosításra kerülő eljárásokat a szülő osztályokban célszerű egyből virtuálisra megírni, mert ezzel jelentős munkát lehet megtakarítani a későbbiekben.</li>
+</ul>
+<p><strong>Java:</strong></p>
+<p>Absztrakt osztályok</p>
+<ul>
+<li>
+<p>Az abstract kulcsszóval hozható létre.</p>
+</li>
+<li>
+<p>Egy absztrakt osztályból nem hozható létre objektum.</p>
+</li>
+<li>
+<p>Tartalmazhat absztrakt metódusokat (absztrakt metódusnak nincs implementációja, azaz törzse), illetve nem absztraktokat</p>
+</li>
+<li>
+<p>Gyerek osztályban az abstract metódusokat felül KELL definiálni, ha példányosítható osztályt szeretnénk</p>
+</li>
+<li>
+<p>Ha egy osztály rendelkezik legalább egy absztrakt metódussal, akkor osztálynak is absztraktnak kell lennie</p>
+</li>
+<li>
+<p>Lehetnek adattagjai</p>
+</li>
+</ul>
+<p>Interfész</p>
+<ul>
+<li>
+<p>Az interface kulcsszóval lehet létrehozni</p>
+</li>
+<li>
+<p>Egy speciális absztrakt osztály</p>
+</li>
+<li>
+<p>Nincsenek sem megvalósított metódusok, sem adattagok. Csupán metódus deklarációkat tartalmaz</p>
+</li>
+<li>
+<p>Gyerekosztályban az implements kulcsszóval lehet implementálni</p>
+</li>
+</ul>
+<p>C++:</p>
+<p>Absztrakt osztályok:</p>
+<p>A törzs nélküli virtuális eljárásokat pure virtual eljárásoknak nevezzük (pl.: virtual int getArea() = 0;). A pure virtual eljárás egy üres (NULL) bejegyzést foglal el a VFT (Virtual Function Table) táblázatban. Ha egy osztály ilyen eljárást tartalmaz, akkor azt absztrakt osztálynak nevezzük amiatt, mert ebből az osztályból objektum példányokat létrehozni nem lehet. A gyermek osztályokban minden pure virtual eljárást megfelelő törzzsel kell ellátni, ezt a fordító ellenőrzi. Amíg egyetlen pure virtual eljárás is marad, az osztály absztrakt lesz.</p>
+<h2 id="generikus-osztályok">Generikus osztályok</h2>
+<p>Az generikus programozás módszere a kód hatékonyságának növelése érdekében valósul meg. Az általános programozás lehetővé teszi a programozó számára, hogy általános algoritmust írjon, amely minden adattípussal működik. Nincs szükség több, különféle algoritmusok létrehozására, ha az adattípus egész szám, karakterlánc vagy karakter.</p>
+<p>Java</p>
+<p>Lehetőség nyílt az osztályok paraméterezésére más típusokkal.</p>
+<p>Gyakorlatilag statikus polimorfizmusról van szó, egy típusparamétert adunk meg, mivel az osztály maga úgy lett megírva, hogy a lehető legáltalánosabb legyen, és ne kelljen külön IntegerList, StringList, AllatList, stb. osztályokat megírnunk, hanem egy általános osztályt, mint sablont használunk, és a tényleges típust a kacsacsőrök között mondjuk meg.</p>
+<p>Primitív típussal nem lehet paraméterezni, az fordítási hibát okoz.</p>
+<p>A típusparamétereket konvenció szerint egyetlen nagybetűvel szokás elnevezni, hogy egyértelműen megkülönböztethető legyen.</p>
+<p>Gyakori elnevezések:</p>
+<ul>
+<li>
+<p>E : Element (tárolók használatánál)</p>
+</li>
+<li>
+<p>K : Key</p>
+</li>
+<li>
+<p>N : Number</p>
+</li>
+<li>
+<p>T : Type</p>
+</li>
+<li>
+<p>V : Value</p>
+</li>
+</ul>
+<p>Néha szükség lehet, hogy a típusparaméterre valamilyen megszorítást tegyünk:</p>
+<ul>
+<li>
+<p>public class NaturalNumber</p>
+</li>
+<li>
+<p>Wildcard-ok, ismeretlen típusok:</p>
+</li>
+<li>
+<p>public void process(List&lt;? extends Foo&gt; list)</p>
+</li>
+<li>
+<p>minden olyan listára, ami vagy a Foo, vagy annak leszármazottaiból áll</p>
+</li>
+<li>
+<p>public void addNumbers(List&lt;? super Foo&gt; list)</p>
+</li>
+<li>
+<p>minden olyan listára, ami vagy a Foo, vagy annak őseiből áll</p>
+</li>
+</ul>
+<p>C++</p>
+<p>C+±ban generikus osztályokat sablonok (template) segítségével tudunk létrehozni.</p>
+<p>A függvénysablonok speciális funkciók, amelyek genrikus típusokkal működhetnek. Ez lehetővé teszi számunkra, hogy létrehozzunk egy függvénysablont, amelynek funkcionalitása egynél több típushoz vagy osztályhoz igazítható anélkül, hogy megismételnénk az egyes típusok teljes kódját.</p>
+</div>
+</body>
+
+</html>

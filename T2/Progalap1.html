@@ -1,0 +1,453 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="algoritmusok-vezérlési-szerkezetei-és-megvalósításuk-c-programozási-nyelven.-a-szekvenciális-iterációs-elágazásos-és-az-eljárás-vezérlés">5. Algoritmusok vezérlési szerkezetei és megvalósításuk C programozási nyelven. A szekvenciális, iterációs, elágazásos, és az eljárás vezérlés</h1>
+<h2 id="algoritmusok-vezérlési-szerkezetei-és-megvalósításuk-c-nyelven">Algoritmusok vezérlési szerkezetei és megvalósításuk C nyelven</h2>
+<p><strong>Algoritmus:</strong> bármilyen jól definiált számítási eljárást, amely bemenetként bizonyos értéket vagy értékeket kap és kimenetként bizonyos értéket vagy értékeket állít elő. Vizsgálhatjuk helyesség, idő- és tárigény szempontjából</p>
+<p><strong>Algoritmus vezérlése:</strong> Az az előírás, amely az algoritmus minden lépésére (részműveletére) kijelöli, hogy a lépés végrehajtása után melyik lépés végrehajtásával folytatódjon (esetleg fejeződjék be) az algoritmus végrehajtása. Az algoritmusnak, mint műveletnek a vezérlés a legfontosabb komponense.</p>
+<p>Négy fő vezérlési módot különböztetünk meg:</p>
+<ul>
+<li>
+<p><strong>Szekvenciális:</strong> Véges sok adott művelet rögzített sorrendben egymás után történő végrehajtása. (sorban egymás után)</p>
+</li>
+<li>
+<p><strong>Szelekciós:</strong> Véges sok rögzített művelet közül adott feltétel alapján valamelyik végrehajtása. (if, else, if else, switch)</p>
+</li>
+<li>
+<p><strong>Ismétléses:</strong> Adott művelet adott feltétel szerinti ismételt végrehajtása. (for, while, do while)</p>
+</li>
+<li>
+<p><strong>Eljárás:</strong> Adott művelet alkalmazása adott argumentumokra, ami az argumentumok értékének pontosan meghatározott változását eredményezi. (void func, int func, double func, …)</p>
+</li>
+</ul>
+<p>A vezérlési módok nyelvek feletti fogalmak.</p>
+<p>A imperatív (algoritmikus) programozási nyelvekben ezek a vezérlési szerkezetek (közvetlenül vagy közvetve) megvalósíthatók.</p>
+<h2 id="a-szekvenciális-iterációs-elágazásos-és-az-eljárás-vezérlés">A szekvenciális, iterációs, elágazásos, és az eljárás vezérlés</h2>
+<h3 id="szekvenciális-vezérlés">Szekvenciális vezérlés</h3>
+<p>Szekvenciális vezérlésről akkor beszélünk, amikor a P probléma megoldását úgy kapjuk, hogy a problémát P1,…, Pn részproblémákra bontjuk, majd az ezekre adott megoldásokat (részalgoritmusokat) sorban egymás után hajtjuk végre.</p>
+<p>P1,…, Pn lehetnek elemi műveletek, vagy nem elemi részproblémák megnevezései.</p>
+<h3 id="eljárásvezérlés">Eljárásvezérlés</h3>
+<p>Eljárásvezérlésről akkor beszélünk, amikor egy műveletet adott argumentumokra alkalmazunk, aminek hatására az argumentumok értékei pontosan meghatározott módon változnak meg.</p>
+<p>Az eljárásvezérlés fajtái:</p>
+<ul>
+<li>
+<p>Eljárásművelet</p>
+</li>
+<li>
+<p>Függvényművelet</p>
+</li>
+</ul>
+<p>C-ben kicsi a különbség a kettő között.</p>
+<p><strong>Függvényművelet</strong></p>
+<ul>
+<li>
+<p>A matematikai függvény fogalmának általánosítása</p>
+</li>
+<li>
+<p>Ha egy részprobléma célja egy érték kiszámítása adott értékek függvényében, akkor a megoldást megfogalmazhatjuk függvényművelettel.</p>
+</li>
+<li>
+<p>A függvényművelet specifikációja tartalmazza:</p>
+</li>
+<li>
+<p>A művelet elnevezését</p>
+</li>
+<li>
+<p>A paraméterek felsorolását</p>
+</li>
+<li>
+<p>Mindegyik paraméter adattípusát</p>
+</li>
+<li>
+<p>A művelet hatásának leírását</p>
+</li>
+<li>
+<p>A függvényművelet eredménytípusát</p>
+</li>
+<li>
+<p><strong>Minden függvényben szerepelnie kell legalább egy return utasításnak</strong></p>
+</li>
+<li>
+<p>Ha a függvényben egy ilyen utasítást hajtunk végre, akkor a függvény értékének kiszámítása befejeződik. A hívás helyén a függvény a return által kiszámított értéket veszi fel</p>
+</li>
+</ul>
+<p><strong>Eljárásművelet</strong></p>
+<ul>
+<li>
+<p>Ha eljárást szeretnénk készíteni C nyelven, akkor egy olyan függvényt kell deklarálni, melynek eredménytípusa <strong>void</strong>. Ebben az esetben a függvény definíciójában nem kötelező a return utasítás, illetve ha mégis van ilyen, akkor nem adható meg utána kifejezés</p>
+</li>
+<li>
+<p><strong>Megvalósítás:</strong></p>
+</li>
+<li>
+<p>csak bemenő módú argumentumok vannak</p>
+</li>
+<li>
+<p>pointerekkel lehet kezelni kimenő argumentumokként is</p>
+</li>
+</ul>
+<h3 id="szelekciós-vezérlés">Szelekciós vezérlés</h3>
+<p>Szelekciós vezérlésről akkor beszélünk, amikor véges sok rögzített művelet közül véges sok feltétel alapján választjuk ki, hogy melyik művelet kerüljön végrehajtásra.</p>
+<p>Típusai:</p>
+<ul>
+<li>
+<p>Egyszerű szelekciós vezérlés</p>
+</li>
+<li>
+<p>Többszörös szelekciós vezérlés</p>
+</li>
+<li>
+<p>Esetkiválasztásos szelekciós vezérlés</p>
+</li>
+<li>
+<p>A fenti három „egyébként” ággal</p>
+</li>
+</ul>
+<h4 id="egyszerű-szelekciós-vezérlés">Egyszerű szelekciós vezérlés</h4>
+<ul>
+<li>
+<p>Egyszerű szelekció esetén egyetlen feltétel és egyetlen művelet van (ami persze lehet összetett).</p>
+</li>
+<li>
+<p>A vezérlés bővíthető úgy, hogy a 3. pontban üres művelet helyett egy B műveletet hajtunk végre, ekkor beszélünk egyébként ágról.</p>
+</li>
+</ul>
+<p>Egyszerű szelekciós utasítás megvalósítása C nyelven:</p>
+<pre><code>
+if(F) {
+
+A;
+
+}
+
+</code></pre>
+<h4 id="többszörös-szelekciós-vezérlés">Többszörös szelekciós vezérlés</h4>
+<ul>
+<li>
+<p>Ha több feltételünk és több műveletünk van, akkor többszörös szelekcióról beszélünk.</p>
+</li>
+<li>
+<p>A többszörös szelekció is bővíthető egyébként ággal úgy, hogy egy nemüres B műveletet hajtunk végre a 3. lépésben.</p>
+</li>
+<li>
+<p>Legyenek Fi logikai kifejezések, Ai (és B) pedig tetszőleges műveletek. Az Fi feltételekből és Ai (és B) műveletekből képzett többszörös szelekciós vezérlés a következő vezérlési előírást jelenti:</p>
+</li>
+<li>
+<p>Az Fi feltételek sorban történő kiértékelésével adjunk választ a következő kérdésre: Van-e olyan i amelyre teljesül, hogy az Fi feltétel igaz és az összes Fj feltétel hamis?</p>
+</li>
+<li>
+<p>Ha van ilyen i, akkor hajtsuk végre az Ai műveletet és fejezzük be az összetett művelet végrehajtását.</p>
+</li>
+<li>
+<p>Egyébként, vagyis ha minden Fi feltétel hamis, akkor (hajtsuk végre B-t és) fejezzük be az összetett művelet végrehajtását.</p>
+</li>
+</ul>
+<p>Többszörös szelekciós utasítás megvalósítása C nyelven:</p>
+<pre><code>
+if(F1) {
+
+A1;
+
+} else if (F2) {
+
+A2;
+
+}...
+
+</code></pre>
+<ul>
+<li>
+<p>C nyelvben nincs külön utasítás a többszörös szelekció megvalósítására, ezért az egyszerű szelekció ismételt alkalmazásával kell azt megvalósítani.</p>
+</li>
+<li>
+<p>Ez azon az összefüggésen alapszik, hogy a többszörös szelekció levezethető egyszerű szelekciók megfelelő összetételével.</p>
+</li>
+</ul>
+<h4 id="esetkiválasztós-szelekciós-vezérlés">Esetkiválasztós szelekciós vezérlés</h4>
+<p>Ha a többszörös szelekciós vezérlésben minden Fi feltételünk K ∈ Hi alakú, akkor esetkiválasztásos szelekcióról beszélünk.</p>
+<ul>
+<li>
+<p>Legyen K egy adott típusú kifejezés, legyenek Hi ilyen típusú halmazok, Ai (és B) pedig tetszőleges műveletek. A K szelektor kifejezésből, Hi kiválasztó halmazokból és Ai (és B) műveletekből képzett esetkiválasztásos szelekciós vezérlés a következő vezérlési előírást jelenti:</p>
+</li>
+<li>
+<p>Értékeljük ki a K kifejezést és folytassuk a 2.) lépéssel.</p>
+</li>
+<li>
+<p>Adjunk választ a következő kérdésre: Van-e olyan i (1&lt;=i&lt;=n), amelyre teljesül, hogy a kiszámolt érték eleme a Hi halmaznak és nem eleme az összes Hj (1&lt;=j&lt;i)  halmaznak?</p>
+</li>
+<li>
+<p>Ha van ilyen i, akkor hajtsuk végre az Ai műveletet és fejezzük be az összetett művelet végrehajtását.</p>
+</li>
+<li>
+<p>Egyébként, vagyis ha K nem eleme egyetlen Hi halmaznak sem, akkor (hajtsuk végre B-t és) fejezzük be az összetett művelet végrehajtását.</p>
+</li>
+<li>
+<p>A kiválasztó halmazok megadása az esetkiválasztásos szelekció kritikus pontja.</p>
+</li>
+<li>
+<p>Algoritmusok tervezése során bármilyen effektív halmazmegadást használhatunk, azonban a tényleges megvalósításkor csak a választott programozási nyelv eszközeit alkalmazhatjuk.</p>
+</li>
+</ul>
+<p>A switch utasítás: Ha egy kifejezés értéke alapján többféle utasítás közül kell választanunk, a switch utasítást használhatjuk. Megadhatjuk, hogy hol kezdődjön és meddig tartson az utasítás-sorozat végrehajtása.</p>
+<p>A switch utasítás szintaxisa C-ben:</p>
+<pre><code>
+switch(kifejezés) {
+
+case konstans1:
+
+A;
+
+break;
+
+case konstans2:
+
+B;
+
+break;
+
+default:
+
+D;
+
+}
+
+</code></pre>
+<ul>
+<li>
+<p>A szelektor kifejezés és a konstansok típusának meg kell egyeznie. Egy konstans legfeljebb egy case mögött és a default kulcsszó is legfeljebb egyszer szerepelhet egy switch utasításban.</p>
+</li>
+<li>
+<p>A default cimke olyan, mintha a szelektor kifejezés lehetséges értékei közül minden olyat felsorolnánk, ami nem szerepel case mögött az adott switch-ben.</p>
+</li>
+<li>
+<p>A cimkék (beleértve a default-ot is) sorrendje tetszőleges lehet, az nem befolyásolja, hogy a szelektor kifejezés melyik cimkét választja.</p>
+</li>
+<li>
+<p>A szelektor kifejezés értékétől csak az függ, hogy melyik helyen kezdjük el végrehajtani a switch magját. Ha a végrehajtás elkezdődik, akkor onnantól kezdve az első break (vagy return) utasításig, vagy a switch végéig sorban hajtódnak végre az utasítások. Ebben a fázisban a további case és default cimkéknek már nincs jelentőssége.</p>
+</li>
+<li>
+<p>A Hi halmazok elemszáma tetszőleges lehet, viszont a case-ek után csak egy-egy érték állhat.</p>
+</li>
+</ul>
+<h3 id="ismétléses-vezérlések">Ismétléses vezérlések</h3>
+<p>Ismétléses vezérlésen olyan vezérlési előírást értünk, amely adott műveletnek adott feltétel szerinti ismételt végrehajtását írja elő.</p>
+<p>Az algoritmustervezés során a leginkább megfelelő ismétléses vezérlési formát használjuk, függetlenül attól, hogy a megvalósításra használt programozási nyelvben közvetlenül megvalósítható-e ez a vezérlési mód.</p>
+<p>Ismétléses vezérlés képzését ciklusszervezésnek is nevezik, így az ismétlésben szereplő műveletet ciklusmagnak hívjuk.</p>
+<p>Az ismétlési feltétel szerint ötféle ismétléses vezérlést különböztetünk meg:</p>
+<ul>
+<li>
+<p>Kezdőfeltételes</p>
+</li>
+<li>
+<p>Végfeltételes</p>
+</li>
+<li>
+<p>Számlálásos</p>
+</li>
+<li>
+<p>Hurok</p>
+</li>
+<li>
+<p>Diszkrét</p>
+</li>
+</ul>
+<h4 id="kezdőfeltételes-ismétléses-vezérlés">Kezdőfeltételes ismétléses vezérlés</h4>
+<p>Kezdőfeltételes vezérlésről akkor beszélünk, ha a ciklusmag (ismételt) végrehajtását egy belépési (ismétlési) feltételhez kötjük.</p>
+<ul>
+<li>
+<p>Legyen F logikai kifejezés, M pedig tetszőleges művelet. Az F ismétlési feltételből és az M műveletből (a ciklusmagból) képzett kezdőfeltételes ismétléses vezérlés a következő vezérlési előírást jelenti:</p>
+</li>
+<li>
+<p>Értékeljük ki az F feltételt és folytassuk a 2.) lépéssel.</p>
+</li>
+<li>
+<p>Ha F értéke hamis, akkor az ismétlés és ezzel együtt az összetett művelet végrehajtása befejeződött.</p>
+</li>
+<li>
+<p>Egyébként, vagyis ha az F értéke igaz, akkor hajtsuk végre az M műveletet, majd folytassuk az 1.) lépéssel.</p>
+</li>
+<li>
+<p>A feltétel ellenőrzése a művelet előtt történik</p>
+</li>
+<li>
+<p>Ha az F értéke kezdetben hamis, az összetett művelet végrehajtása befejeződik anélkül, hogy az M művelet egyszer is végrehajtásra kerülne</p>
+</li>
+<li>
+<p>Ha az F értéke igaz, és az M művelet nincs hatással az F feltételre, akkor F igaz is marad, tehát az összetett művelet végrehajtása nem tud befejeződni. Ilyenkor végtelen ciklus végrehajtását írtuk elő.</p>
+</li>
+<li>
+<p>Fontos tehát, hogy az M művelet hatással legyen az F feltételre.</p>
+</li>
+</ul>
+<p>A while utasítás: Ha valamilyen műveletet mindaddig végre kell hajtani, amíg egy feltétel igaz, a while utasítás használható.</p>
+<pre><code>
+while(F) {
+
+M;
+
+}
+
+</code></pre>
+<h4 id="végfeltételes-ismétléses-vezérlés">Végfeltételes ismétléses vezérlés</h4>
+<p>A végfeltételes ismétléses vezérlés alapvetően abban különbözik a kezdőfeltételes ismétléses vezérléstől, hogy a ciklusmag legalább egyszer végrehajtódik.</p>
+<p>Végfeltételes vezérlésről akkor beszélünk, ha a ciklusmag elhagyását egy kilépési feltételhez kötjük.</p>
+<ul>
+<li>
+<p>Legyen F logikai kifejezés, M pedig tetszőleges művelet. Az F kilépési feltételből és az M műveletből (a ciklusmagból) képzett végfeltételes ismétléses vezérlés a következő vezérlési előírást jelenti:</p>
+</li>
+<li>
+<p>Hajtsuk végre az M műveletet majd folytassuk a 2.) lépéssel.</p>
+</li>
+<li>
+<p>Értékeljük ki az F feltételt és folytassuk a 3.) lépéssel.</p>
+</li>
+<li>
+<p>Ha F értéke igaz, akkor az ismétléses vezérlés és ezzel együtt az összetett művelet végrehajtása befejeződött.</p>
+</li>
+<li>
+<p>Egyébként, vagyis ha az F értéke hamis, akkor folytassuk az 1.) lépéssel.</p>
+</li>
+<li>
+<p>Ha az F értéke kezdetben hamis, és az M művelet nincs hatással F-re, akkor végtelen ciklust kapunk. Ha az F értéke kezdetben igaz, M legalább egyszer akkor is végrehajtásra kerül.</p>
+</li>
+<li>
+<p>A kezdő és végfeltételes vezérlések kifejezhetőek egymás segítségével.</p>
+</li>
+</ul>
+<p>A do while: utasítás Ha valamilyen műveletet mindaddig végre kell hajtani, amíg egy feltétel igaz, a do while utasítás használható. A művelet végrehajtása szükséges a feltétel kiértékeléséhez. A feltétel ellenőrzése a művelet után történik, így ha a feltétel kezdetben hamis volt, a műveletet akkor is legalább egyszer végrehajtjuk.</p>
+<pre><code>
+do {
+
+M;
+
+} while (!F);
+
+</code></pre>
+<h4 id="számlálásos-ismétléses-vezérlések">Számlálásos ismétléses vezérlések</h4>
+<p>Számlálásos ismétléses vezérlésről akkor beszélünk, ha a ciklusmagot végre kell hajtani sorban minden olyan értékére (növekvő vagy csökkenő sorrendben), amely egy adott intervallumba esik.</p>
+<p>Legyen a és b egész érték, i egész típusú változó, M pedig tetszőleges művelet, amelynek nincs hatása a, b és i értékére.</p>
+<p>Növekvő számlálásos ismétléses vezérlések:</p>
+<ul>
+<li>
+<p>Az a és b határértékekből, i ciklusváltozóból és M műveletből (ciklusmagból) képzett növekvő számlálásos ismétléses vezérlés az alábbi vezérlési előírást jelenti:</p>
+</li>
+<li>
+<p>Legyen i = a és folytassuk a 2.) lépéssel.</p>
+</li>
+<li>
+<p>Ha b &lt; i (i nagyobb mint a intervallum végpontja), akkor az ismétlés és ezzel együtt az összetett művelet végrehajtása befejeződött.</p>
+</li>
+<li>
+<p>Egyébként, vagyis ha i ≤ b, akkor hajtsuk végre az M műveletet, majd folytassuk a 4.) lépéssel.</p>
+</li>
+<li>
+<p>Növeljük i értékét 1-gyel, és folytassuk a 2.) lépéssel.</p>
+</li>
+</ul>
+<p>Csökkenő számlálásos ismétléses vezérlések:</p>
+<ul>
+<li>
+<p>Az a és b határértékekből, i ciklusváltozóból és M műveletből (ciklusmagból) képzett csökkenő számlálásos ismétléses vezérlés az alábbi vezérlési előírást jelenti:</p>
+</li>
+<li>
+<p>Legyen i = b és folytassuk a 2.) lépéssel.</p>
+</li>
+<li>
+<p>Ha i &lt; a, akkor az ismétlés és ezzel együtt az összetett művelet végrehajtása befejeződött.</p>
+</li>
+<li>
+<p>Egyébként, vagyis ha a ≤ i, akkor hajtsuk végre az M műveletet, majd folytassuk a 4.) lépéssel.</p>
+</li>
+<li>
+<p>Csökkentsük i értékét 1-gyel, és folytassuk a 2.) lépéssel.</p>
+</li>
+</ul>
+<p>A for utasítás: Ha valamilyen műveletet sorban több értékére is végre kell hajtani, akkor a for utasítás használható.</p>
+<pre><code>
+for (i = a; i &lt;=b; i++) {
+
+M;
+
+}
+
+for (kif1; kif2; kif3) {
+
+M;
+
+}
+
+</code></pre>
+<p>C-ben a for utasítás általános alakja:</p>
+<ul>
+<li>
+<p>A kif1 és kif3 többnyire értékadás vagy függvényhívás, kif2 pedig relációs kifejezés.</p>
+</li>
+<li>
+<p>Bármelyik kifejezés elhagyható, de a pontosvesszőknek meg kell maradniuk</p>
+</li>
+<li>
+<p>kif2 elhagyása esetén a feltételt konstans igaznak tekintjük, ekkor a break vagy return segítségével lehet kiugrani a ciklusból.</p>
+</li>
+</ul>
+<h4 id="hurok-ismétléses-vezérlés">Hurok ismétléses vezérlés</h4>
+<p>Amikor a ciklusmag ismétlését a ciklusmagon belül vezéreljük úgy, hogy a ciklus különböző pontjain adott feltételek teljesülése esetén a ciklus végrehajtását befejezzük, hurok ismétléses vezérlésről beszélünk.</p>
+<ul>
+<li>
+<p>Legyenek Fi logikai kifejezések, Ki és Mj pedig tetszőleges (akár üres) műveletek 1≤i≤n és 0≤j≤n értékekre. Az Fi kijárati feltételekből, Ki kijárati műveletekből és az Mi műveletekből képzett hurok ismétléses vezérlés a következő előírást jelenti:</p>
+</li>
+<li>
+<p>Az ismétléses vezérlés következő végrehajtandó egysége az M0 művelet.</p>
+</li>
+<li>
+<p>Ha a végrehajtandó egység az Mj művelet, akkor ez végrehajtódik. j = n esetén folytassuk az 1.) lépéssel, különben pedig az Fj+1 feltétel végrehajtásával a 3.) lépésben.</p>
+</li>
+<li>
+<p>Ha a végrehajtandó egység az Fi feltétel (1 ≤ i ≤ n), akkor értékeljük ki. Ha Fi igaz volt, akkor hajtsuk végre a Ki műveletet, és fejezzük be a vezérlést. Különben a végrehajtás az Mi művelettel folytatódik a 2.) lépésben.</p>
+</li>
+<li>
+<p>A kezdő- és végfeltételes ismétléses vezérlések speciális esetei a hurok ismétléses vezérlésnek.</p>
+</li>
+<li>
+<p>A C nyelvben a ciklusmag folyamatos végrehajtásának megszakítására két utasítás használható:</p>
+</li>
+<li>
+<p>break: Megszakítja a ciklust, a program végrehajtása a ciklusmag utáni első utasítással folytatódik. Használható a switch utasításban is, hatására a program végrehajtása a switch utáni első utasítással folytatódik.</p>
+</li>
+<li>
+<p>continue: Megszakítja a ciklusmag aktuális lefutását, a vezérlés a ciklus feltételének kiértékelésével (while, do while) illetve az inkrementáló kifejezés kiértékelésével (for) folytatódik.</p>
+</li>
+</ul>
+<h4 id="diszkrét-ismétléses-vezérlés">Diszkrét ismétléses vezérlés:</h4>
+<p>Diszkrét ismétléses vezérlésről akkor beszélünk, ha a ciklusmagot végre kell hajtani egy halmaz minden elemére tetszőleges sorrendben.</p>
+<ul>
+<li>
+<p>Legyen x egy T típusú változó, H a T értékkészletének részhalmaza, M pedig tetszőleges művelet, amelynek nincs hatása x és H értékére. A H halmazból, x ciklusváltozóból és M műveletből (ciklusmagból) képzett diszkrét ismétléses vezérlés az alábbi vezérlési előírást jelenti:</p>
+</li>
+<li>
+<p>Ha a H halmaz minden elemére végrehajtottuk az M műveletet, akkor vége a vezérlésnek.</p>
+</li>
+<li>
+<p>Egyébként vegyük a H halmaz egy olyan tetszőleges e elemét, amelyre még nem hajtottuk végre az M műveletet, és folytassuk a 3.) lépéssel.</p>
+</li>
+<li>
+<p>Legyen x = e és hajtsuk végre az M műveletet, majd folytassuk az 1.) lépéssel.</p>
+</li>
+<li>
+<p>A H halmaz számossága határozza meg, hogy az M művelet hányszor hajtódik végre. Ha a H az üres halmaz, akkor a diszkrét ismétléses vezérlés az M művelet végrehajtása nélkül befejeződik.</p>
+</li>
+<li>
+<p>A diszkrét ismétléses vezérlésnek nincs közvetlen megvalósítása a C nyelvben.</p>
+</li>
+</ul>
+</div>
+</body>
+
+</html>
