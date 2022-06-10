@@ -1,0 +1,309 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="processzusok-kommunikációja-versenyhelyzetek-kölcsönös-kizárás.-konkurens-és-kooperatív-processzusok.-kritikus-szekciók-és-megvalósítási-módszereik-kölcsönös-kizárás-tevékeny-várakozással-megszakítások-tiltása-változók-zárolása-szigorú-váltogatás-peterson-megoldása-tsl-utasítás.-altatás-és-ébresztés-termelő-fogyasztó-probléma-szemaforok-mutex-ek-monitorok-üzenet-adás-vétel.-írók-és-olvasók-problémája.-sorompók">16. Processzusok kommunikációja, versenyhelyzetek, kölcsönös kizárás. Konkurens és kooperatív processzusok. Kritikus szekciók és megvalósítási módszereik: kölcsönös kizárás tevékeny várakozással (megszakítások tiltása, változók zárolása, szigorú váltogatás, Peterson megoldása, TSL utasítás). Altatás és ébresztés: termelő-fogyasztó probléma, szemaforok, mutex-ek, monitorok, Üzenet, adás, vétel. Írók és olvasók problémája. Sorompók</h1>
+<h2 id="processzusok-kommunikációja-versenyhelyzetek-kölcsönös-kizárás.">Processzusok kommunikációja, versenyhelyzetek, kölcsönös kizárás.</h2>
+<p>Processzus: <strong>A végrehajtás alatt lévő program a memóriában.</strong></p>
+<h3 id="processzusok-kommunikációja">Processzusok kommunikációja</h3>
+<ul>
+<li>
+<p>A processzusoknak szükségük vannak a kommunikációra</p>
+</li>
+<li>
+<p><strong>Adatok átadása az egyik folyamatból a másiknak</strong> (Pipelining)</p>
+</li>
+<li>
+<p><strong>Közös erőforrások használata</strong> (memória, nyomtató, stb.)</p>
+</li>
+</ul>
+<p>Kettő vagy több processzus egy-egy szakasza nem lehet átfedő, azaz két szakasz egymásra nézve <strong>kritikus szekciók</strong>.</p>
+<p><strong>Kritikus szekció:</strong> A program az a része, ahol előfordulhat versenyhelyzet.</p>
+<p><strong>Szabályok:</strong></p>
+<ol>
+<li>
+<p>Legfeljebb egy proc lehet kritikus szekciójában</p>
+</li>
+<li>
+<p>Kritikus szekción kívüli proc nem befolyásolhatja másik proc kritikus szekcióba lépését.</p>
+</li>
+<li>
+<p>Véges időn belül bármely kritikus szekcióba lépni kívánó proc beléphet.</p>
+</li>
+<li>
+<p>Processzusok sebessége közömbös</p>
+</li>
+</ol>
+<p><strong>Versenyhelyzet:</strong></p>
+<p>Amikor több párhuzamosan futó folyamat közös erőforrást használ. A futás eredménye függ attól, hogy az egyes folyamatok mikor és hogyan futnak.</p>
+<ul>
+<li>
+<p>Kooperatív processzusok közös tárolóterületen dolgoznak (olvasnak és írnak).</p>
+</li>
+<li>
+<p>Processzusok közös adatot olvasnak és a végeredmény attól függ, hogy ki és pontosan mikor fut</p>
+</li>
+</ul>
+<p><strong>Megoldás:</strong> Egyszerrecsak egy folyamat lehet kritikus szekcióban. Amíg a folyamat kritikus szekcióban van, azt nem szabad megszakítani. Ebből a megoldásból származhatnak új problémák.</p>
+<h2 id="kölcsönös-kizárás">Kölcsönös kizárás</h2>
+<ul>
+<li>
+<p><strong>Az a módszer, ami biztosítja, hogy ha egy folyamat használ valamilyen megosztott, közös adatot, akkor más folyamatok ebben az időben ne tudják azt elérni</strong></p>
+</li>
+<li>
+<p>pl.: egy adott időben csak egy processzus számára engedélyezett, hogy a nyomtatónak utasításokat küldjön</p>
+</li>
+<li>
+<p>Kölcsönös kizárás miatt előfordulható problémák:</p>
+</li>
+<li>
+<p><strong>holtpont (deadlock):</strong> processzusok egymásra befejeződésére várnak, hogy a várt erőforrás felszabaduljon</p>
+</li>
+<li>
+<p><strong>éhezés (starvation):</strong> egy processzusnak határozatlan ideig várnia kell egy erőforrás használatára</p>
+</li>
+</ul>
+<h2 id="kritikus-szekciók-és-megvalósítási-módszereik-kölcsönös-kizárás-tevékeny-várakozással-megszakítások-tiltása-változók-zárolása-szigorú-váltogatás-peterson-megoldása-tsl-utasítás.">Kritikus szekciók és megvalósítási módszereik: kölcsönös kizárás tevékeny várakozással (megszakítások tiltása, változók zárolása, szigorú váltogatás, Peterson megoldása, TSL utasítás).</h2>
+<p>Láthattuk, hogy a kritikus szekcióba való belépés nem feltétel nélküli. Hogyan biztosíthatjuk a kölcsönös kizárás teljesülését?</p>
+<ul>
+<li>
+<p><strong>Hardware-es módszerek</strong></p>
+</li>
+<li>
+<p><strong>Megszakítások tiltásával</strong></p>
+</li>
+<li>
+<p>letiltjuk a megszakítást a kritikus szekcióba lépés után, majd újra engedélyezzük, mielőtt elhagyja azt, így nem fordulhat elő óramegszakítás, azaz a CPU nem fog másik processzusra váltani</p>
+</li>
+<li>
+<p>jól használható, de általánosan nem biztos, hogy a legszerencsésebb</p>
+</li>
+<li>
+<p>a legegyszerűbb hiba, hogy elfelejtjük újra engedélyezni a megszakítást a kritikus szekció végén</p>
+</li>
+<li>
+<p><strong>TSL utasítás segítségével</strong></p>
+</li>
+<li>
+<p>A mai rendszerekben a processzornak van egy „TSL reg, lock” (TSL EAX, lock) formájú utasítása (TSL – Test and Set Lock).</p>
+</li>
+<li>
+<p>Ez az utasítás beolvassa a LOCK memóriaszó tartalmát a „reg” regiszterbe, majd egy nem nulla értéket ír a „lock” memóriacímre.</p>
+</li>
+<li>
+<p>A CPU zárolja a memóriasínt, azaz tiltva van a memória elérés a CPU-knak a művelet befejezéséig.</p>
+</li>
+<li>
+<p>A művelet befejezésekor 0 érték kerül a LOCK memóriaterületre</p>
+</li>
+<li>
+<p><strong>Software-es módszer</strong></p>
+</li>
+<li>
+<p><strong>Változók zárolása</strong></p>
+</li>
+<li>
+<p>Van egy <strong>osztott zárolási változó</strong>, aminek a kezdeti értéke 0.</p>
+</li>
+<li>
+<p>Kritikus szekcióba lépés előtt a processzus <strong>teszteli ezt a változót</strong>.</p>
+</li>
+<li>
+<p>Ha 0 az értéke, akkor 1-re állítja és belép a kritikus szekcióba.</p>
+</li>
+<li>
+<p>Ha az értéke 1, akkor várakozik, amíg nem lesz 0.</p>
+</li>
+<li>
+<p><strong>Szigorú váltogatás módszere</strong></p>
+</li>
+<li>
+<p>Folyamatosan pazarulja a CPU-t állandó tesztelése miatt.</p>
+</li>
+<li>
+<p>A kölcsönös kizárás feltételeit teljesíti, kivéve azt hogy <strong>egyetlen kritikus szekcíón kívüli folyamat sem blokkolhat másik folyamatot</strong></p>
+</li>
+<li>
+<p><strong>Peterson-féle megoldás</strong></p>
+</li>
+<li>
+<p>Van <strong>két metódus a kritikus szekcióba való belépésre</strong> (enter_region) és <strong>kilépésre</strong> (leave_region).</p>
+</li>
+<li>
+<p>A kritikus szekcióba lépés előtt a processzus meghívja az enter_region eljárást, kilépéskor pedig a leave_region eljárást. Az enter_region eljárás biztosítani fogja, hogy a másik processzus várakozik, ha szükséges.</p>
+</li>
+<li>
+<p><strong>csak 2 processzus esetén müködik</strong></p>
+</li>
+</ul>
+<h2 id="altatás-és-ébresztés-termelő-fogyasztó-probléma-szemaforok-mutex-ek-monitorok-üzenet-adás-vétel.">Altatás és ébresztés: termelő-fogyasztó probléma, szemaforok, mutex-ek, monitorok, Üzenet, adás, vétel.</h2>
+<h3 id="altatás-ébresztés">Altatás-ébresztés</h3>
+<p>Ahogy láttuk az előző, tevékeny várakozást használó versenyhelyzet-elkerülő megoldásokban a legfontosabb gond az, hogy processzoridőt pazarolnak. Ahhoz, hogy a drága processzoridőt se pazaroljuk, olyan megoldást lehet javasolni, ami vagy blokkolni tud egy folyamatot (aludni küldi), vagy fel tudja ébreszteni ebből a blokkolt állapotból.</p>
+<p>A <strong>tevékeny várakozás feloldására az egyik eszköz a sleep-wakeup</strong> rendszerhívás páros. A lényege, hogy a <strong>sleep rendszerhívás blokkolja a hívót</strong>, azaz fel lesz függesztve, amíg egy másik processzus fel nem ébreszti. A <strong>wakeup rendszerhívás a paraméterül kap egy processzus azonosítót, amely segítségével felébreszti az adott processzust</strong>, tehát nem lesz blokkolva továbbá.</p>
+<h3 id="termelő-fogyasztó-probléma">Termelő-fogyasztó probléma</h3>
+<p>Két processzus osztozik egy közös, rögzített méretű tárolón. A <em>termelő</em> adatokat tesz bele, a <em>fogyasztó</em> kiveszi azokat.</p>
+<p>Ha a tároló tele van és a gyártó elemet akar berakni, akkor elalszik, majd felébreszti a fogyasztó, ha egy elemet kivesz a tárolóból.</p>
+<p><strong>Fordítva is:</strong> ha a tároló üres, és a fogyasztó ki akar venni egy elemet, akkor elalszik, és majd felébreszti a gyártó, ha legyártott egy eleme</p>
+<h3 id="szemafor"><strong>Szemafor</strong></h3>
+<ul>
+<li>
+<p>A szemafort 1965-ben Dijsktra hozta létre, amely <strong>egy nagyon jelentős technika az egyidejű folyamatok kezelésére egy egyszerű egész érték használatával</strong></p>
+</li>
+<li>
+<p>Ez egy <strong>megosztott egész változó</strong>. Értéke pozitív vagy 0, és csak <strong>várakozások</strong> és <strong>signal</strong> műveleteken kereszütl érhetőek el.</p>
+</li>
+<li>
+<p>Két metódusa van a <em>down</em> és az <em>up</em>. (általánosítható a <em>sleep</em> és <em>wakeup</em>-ra)</p>
+</li>
+<li>
+<p><strong>down</strong> metódus megnézi, hogy az adott folyamat a szemaforon nagyobb-e mint 0.</p>
+</li>
+<li>
+<p>Ha igen, akkor <strong>csökkent rajta eggyel</strong></p>
+</li>
+<li>
+<p>Ha nem (tehát =0), akkor egyből altatásba rakja, nem növel rajta.</p>
+</li>
+<li>
+<p>Garantált, hogyha a szemafor elindult, akkor semelyik másik processzus nem érheti ezl a szemafort, amíg a feladat le nem futott, vagy blokkoltba került.</p>
+</li>
+<li>
+<p>Az <strong>up</strong> metódus a szemafor elérését növeli.</p>
+</li>
+</ul>
+<h3 id="mutex"><strong>Mutex</strong></h3>
+<ul>
+<li>
+<p>Olyan speciális szemafor, amelynek <strong>csak két értéke</strong> lehet</p>
+</li>
+<li>
+<p>Ha csak kölcsönös kizárás biztosítására kell a szemafort létrehozni, és nincs szükség annak számlálási képességére, akkor azt egy kezdőértékkel hozzuk létre.</p>
+</li>
+<li>
+<p><strong>Ezt a kétállapotú (értéke 0 és 1) szemafort</strong> sok környezetben speciális névvel, az angol kölcsönös kizárás kifejezésből mutexnek nevezzük.</p>
+</li>
+<li>
+<p>Ha egy <strong>folyamatnak zárolásra van szüksége, a „mutex_lock” eljárást hívja</strong>, míg ha a <strong>zárolást meg akarja szüntetni, a „mutex_unlock” utasítást hívja</strong>.</p>
+</li>
+<li>
+<p>Aki másodszor (vagy harmadszor) hívja a „mutex_lock” eljárást, az blokkolódik, és csak a „mutex_unlock” hatására tudja folytatni a végrehajtást.</p>
+</li>
+</ul>
+<h3 id="monitor">Monitor</h3>
+<ul>
+<li>
+<p>Eljárások, változók ás adatszerkezetek együttese egy speciális modulba összegyűjtve, hogy használható legyen a kölcsönös kizárás megvalósítására</p>
+</li>
+<li>
+<p>Legfontosabb tulajdonsága, hogy egy adott időpillanatban csak egy proc lehet aktív benne</p>
+</li>
+<li>
+<p>A processzusok bármikor hívhatják a monitorban lévő eljárásokat, de nem érhetik el a belső adatszerkezeteit (mint OOP-nál)</p>
+</li>
+<li>
+<p>wait( c ): alvó állapotba kerül a végrehajtó proc</p>
+</li>
+<li>
+<p>signal( c ): a c miatt alvó procot felébreszti</p>
+</li>
+</ul>
+<h3 id="üzenet-adás-vétel.">Üzenet, adás, vétel.</h3>
+<ul>
+<li>
+<p>Folyamatok együttműködéshez információ cserére van szükség. Két mód:</p>
+</li>
+<li>
+<p>közös tárterületen keresztül</p>
+</li>
+<li>
+<p>kommunikációs csatornán keresztül (egy vagy kétirányú)</p>
+</li>
+<li>
+<p>Folyamat fommunikáció fajták:</p>
+</li>
+<li>
+<p>Közvetlen kömmunikáció</p>
+</li>
+<li>
+<p>csak egy csatorna létezik, és más folyamatok nem használhatják</p>
+</li>
+<li>
+<p>Közvetett kommunikáció</p>
+</li>
+<li>
+<p>Közbülső adatszerkezeten (pl. postaládán (mailbox)) keresztül valósul meg.</p>
+</li>
+<li>
+<p>Aszimmetrikus</p>
+</li>
+<li>
+<p>Adó vagy vevő megnevezi, hogy melyik folyamattal akar kommunikálni</p>
+</li>
+<li>
+<p>A másik fél egy kaput (port) használ, ezen keresztül több folyamathoz, is kapcsolódhat.</p>
+</li>
+<li>
+<p>Tipikus eset: a vevőhöz tartozik a kapu, az adóknak kell a vevő folyamatot és annak a kapuját megnevezni. (Pl. szerver, szolgáltató folyamat)</p>
+</li>
+<li>
+<p>Üzenetszórás</p>
+</li>
+<li>
+<p>A közeg több folyamatot köt össze.</p>
+</li>
+<li>
+<p>Műveletek:</p>
+</li>
+<li>
+<p>send(cél, &amp;üzenet)</p>
+</li>
+<li>
+<p>receive(forrás, &amp;üzenet)</p>
+</li>
+</ul>
+<h2 id="írók-és-olvasók-problémája.-sorompók.">Írók és olvasók problémája. Sorompók.</h2>
+<h3 id="írók-és-olvasók-problémája">Írók és olvasók problémája</h3>
+<p>Több proc egymással versengve írja és olvassa ugyanazt az adatot. Megengedett az egyidejű olvasás, de ha egy proc írni akar, akkor más procok sem nem írhatnak se nem olvashatnak. (pl, adatbázisok, fájlok, hálózat)</p>
+<p>Ha a folyamatos olvasók utánpótlása, az írok éheznek.</p>
+<p>Megoldás: Érkezési sorrend betartása <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> csökken a hatékonyság</p>
+<p><strong>Sorompók:</strong></p>
+<ul>
+<li>
+<p>Sorompó primitív</p>
+</li>
+<li>
+<p>Könyvtári eljárás</p>
+</li>
+<li>
+<p>Fázisokra osztjuk az alkalmazást</p>
+</li>
+<li>
+<p><strong>Szabály</strong></p>
+</li>
+<li>
+<p>Egyetlen processzus sem mehet tovább a következő fázisra, amíg az összes processzus nem áll készen</p>
+</li>
+<li>
+<p>Sorompó elhelyezése mindegyik fázis végére</p>
+</li>
+<li>
+<p>Amikor egy processzus a sorompóhoz ér, akkor addig blokkolódik ameddig az összes processzus el nem éri a sorompót</p>
+</li>
+<li>
+<p>A sorompó az utolsó processzus beérkezése után elengedi a azokat</p>
+</li>
+<li>
+<p>Nagy mátrix-okon végzett párhuzamos műveletek</p>
+</li>
+</ul>
+</div>
+</body>
+
+</html>

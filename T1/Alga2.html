@@ -1,0 +1,392 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="elemi-adatszerkezetek-bináris-keresőfák-hasító-táblázatok-gráfok-és-fák-számítógépes-reprezentációja">2. Elemi adatszerkezetek, bináris keresőfák, hasító táblázatok, gráfok és fák számítógépes reprezentációja</h1>
+<h2 id="elemi-adatszerkezetek">Elemi adatszerkezetek</h2>
+<p>tömb, láncolt lista, sor, verem, gráf, map, kupac - saját vélemény</p>
+<p><strong>Adatszerkezet</strong></p>
+<ul>
+<li>
+<p>adatok tárolására és szervezésére szolgáló módszer</p>
+</li>
+<li>
+<p>lehetővé teszi a hatékony hozzáférést és módosításokat</p>
+</li>
+</ul>
+<p><strong>Leggyakoribb műveletek</strong></p>
+<ul>
+<li>
+<p><em>Módosító:</em></p>
+</li>
+<li>
+<p>beszúr</p>
+</li>
+<li>
+<p>töröl</p>
+</li>
+<li>
+<p><em>Lekérdező:</em></p>
+</li>
+<li>
+<p>keres</p>
+</li>
+<li>
+<p>min</p>
+</li>
+<li>
+<p>max</p>
+</li>
+<li>
+<p>előző</p>
+</li>
+<li>
+<p>következő</p>
+</li>
+</ul>
+<p>Megfelelő adatszerkezet kulcs az implementáció futásidejéhez!</p>
+<h3 id="listák">Listák</h3>
+<p>Az adatok lineárisan követik egymást.</p>
+<p>Egy érték többször is előfordulhat.</p>
+<p><strong>Műveletek</strong>: érték, értékad, keres, beszúr, töröl</p>
+<ol>
+<li><strong>Közvetlen elérés</strong></li>
+</ol>
+<ul>
+<li>
+<p>minden index közvetlen elérésű, közvetlenül írható/olvasható</p>
+</li>
+<li>
+<p>érték: O(1), keres: O(n)</p>
+</li>
+<li>
+<p>beszúr és töröl esetén <strong>változik a méret</strong>, át kell másolni az elemeket egy új helyre</p>
+</li>
+<li>
+<p>beszúr: O(n), töröl: O(n)</p>
+</li>
+<li>
+<p>ötlet: ha tele van a tömb, <strong>duplázzuk meg a kapacitást</strong></p>
+</li>
+<li>
+<p>ha negyedére csökken, <strong>felezzük a kapacitást</strong></p>
+</li>
+<li>
+<p>így nem kell mindig az egész tömböt másolni</p>
+</li>
+</ul>
+<ol start="2">
+<li><strong>Láncolt lista</strong></li>
+</ol>
+<p>minden érték mellé mutatókat tárolunk a következő/megelőző elemre.</p>
+<ul>
+<li>
+<p><strong>egyszeresen láncolt:</strong> következő elemre mutat</p>
+</li>
+<li>
+<p><strong>kétszeresen láncolt:</strong> előző és következőre is mutat</p>
+</li>
+<li>
+<p><strong>ciklikus:</strong> az utolsó az első elemre mutat</p>
+</li>
+<li>
+<p><strong>őrszem:</strong> egy nil elem, ami a lista elejére (fej) mutat</p>
+</li>
+</ul>
+<p>Közvetlen elérés vs Láncolt lista</p>
+<ul>
+<li>
+<p><strong>Közvetlen elérés:</strong> ÉRTÉK() konstans, módosító lassú</p>
+</li>
+<li>
+<p><strong>Láncolt lista:</strong> ÉRTKÉ() lassú, módosító gyors, sok memória kell a mutatóknak</p>
+</li>
+</ul>
+<h3 id="verem-és-sor-stack-queue">Verem és sor (Stack, Queue)</h3>
+<p>Olyan listák, ahol a beszúrás és a törlés csak adott pozíción történhet</p>
+<ul>
+<li>
+<p><em>verem:</em> legutoljára beszúrt elemet vehetjük csak ki <strong>(LIFO - Last In First Out)</strong></p>
+</li>
+<li>
+<p><em>sor:</em> legkorábban beszúrt elemet vehetjük csak ki <strong>(FIFO - First In First Out)</strong></p>
+</li>
+</ul>
+<p>Verem műveletek</p>
+<ul>
+<li>
+<p><strong>push:</strong> verem tetejére rakunk egy elemet</p>
+</li>
+<li>
+<p><strong>pop:</strong> verem tetejéről levesszük</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> verem méret esetén</p>
+</li>
+<li>
+<p>Elérési idő: O(1), de csak a verem tetején lévő elemet tudjuk elérni (<strong>pop</strong>)</p>
+</li>
+<li>
+<p>Beszúrás: O(1), mert mindig a tetejére pakolunk (<strong>push</strong>)</p>
+</li>
+<li>
+<p>Törlés: O(1), de csak a tetején lévő elemet tudjuk törölni (<strong>pop</strong>)</p>
+</li>
+</ul>
+<p>Sor műveletek:</p>
+<ul>
+<li>
+<p><strong>enqueue:</strong> sor végére rakunk</p>
+</li>
+<li>
+<p><strong>dequeue:</strong> sor elejéről elveszünk</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> sor méret esetén legrosszabb esetben:</p>
+</li>
+<li>
+<p>Elérés: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O}(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathcal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+<li>
+<p>Beszúrás: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O}(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathcal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+<li>
+<p>Törlés: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O}(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathcal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+</ul>
+<h3 id="prioritási-sor-és-kupac">Prioritási sor és kupac</h3>
+<p><strong>Prioritási sor</strong></p>
+<ul>
+<li>érkezés sorrendje lényegtelen, mindig a min/max elemet akarjuk kivenni</li>
+</ul>
+<p>lehet mondjuk listával megvalósítani, veremmel vagy sorral nem érdemes, mert nem számít a sorrend</p>
+<p>Prioritási sor hatékony megvalósítása: <strong>kupac (heap)</strong></p>
+<p><strong>Kupac</strong></p>
+<ul>
+<li>majdnem teljes bináris fa, minden csúcsa legalább akkora, mint a gyerekei -&gt; max elem a gyökérben</li>
+</ul>
+<h2 id="bináris-keresőfák">Bináris keresőfák</h2>
+<p>Keres, beszúr, töröl, min, max, következő, előző</p>
+<p><strong>Mind legyen</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O}(logn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathcal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right: 0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></p>
+<p>Bináris keresőfa</p>
+<ul>
+<li>
+<p>minden csúcsnak max két gyereke van</p>
+</li>
+<li>
+<p>balra vannak a kisebb elemek</p>
+</li>
+<li>
+<p>jobbra a nagyobbak</p>
+</li>
+<li>
+<p>keresés <strong>O(h)</strong> idejű (h a fa magassága)</p>
+</li>
+<li>
+<p>min/max is <strong>O(h)</strong>: vagy teljesen jobbra, vagy teljesen balra kell lemennünk</p>
+</li>
+<li>
+<p>következő/előző szintén <strong>O(h)</strong> - amíg jobb/bal gyerek, addig megyünk max</p>
+</li>
+<li>
+<p>beszúr szintén <strong>O(h)</strong> - mindig levélként szúrunk be, úgy, hogy kb megkeressük a helyét</p>
+</li>
+<li>
+<p>töröl is <strong>O(h)</strong>, levelet simán törlünk, egy gyerekeset úgy, hogy a gyereket linkeljük a szülőhöz, két gyerekeset pedig a <strong>következővel</strong> helyettesítjük</p>
+</li>
+</ul>
+<p><strong>EZ NEM TUDOM KELL-E SZABIVANHOZ LEHET</strong></p>
+<p><strong>AVL fák:</strong></p>
+<ul>
+<li>
+<p>AVL-fa, ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span></span></span></span></span> egy nemüres bináris fa:</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">T_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: -0.13889em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> és <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>R</mi></msub></mrow><annotation encoding="application/x-tex">T_R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: -0.13889em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> magasság-kiegyensúlyozottak</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><msub><mi>h</mi><mi>L</mi></msub><mo>−</mo><msub><mi>h</mi><mi>R</mi></msub><mi mathvariant="normal">∣</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|h_L-h_R| \le  1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord">∣</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span>, ahol <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">h_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.84444em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> és <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>R</mi></msub></mrow><annotation encoding="application/x-tex">h_R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.84444em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> rendre a T left és right magasságai.</p>
+</li>
+<li>
+<p><strong>Egyensúlyfaktora</strong> a <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>L</mi></msub><mo>−</mo><msub><mi>h</mi><mi>R</mi></msub></mrow><annotation encoding="application/x-tex">h_L - h_R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.84444em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.84444em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span>. Ez mindegyik -1, 0 vagy 1 lehet, ellenben forgatni kell.</p>
+</li>
+</ul>
+<p>Minden művelete szinte: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mrow><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathcal{O}{(logn)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathcal" style="margin-right: 0.02778em;">O</span><span class="mord"><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right: 0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></span></p>
+<h2 id="hasító-táblák">Hasító táblák</h2>
+<h3 id="halmaz-és-szótár">Halmaz és szótár</h3>
+<p>Halmaz</p>
+<ul>
+<li>
+<p>egy elem legfeljebb egyszer szerepelhet benne</p>
+</li>
+<li>
+<p>keres helyett <strong>tartalmaz-e</strong></p>
+</li>
+<li>
+<p>beszúr, töröl</p>
+</li>
+<li>
+<p>metszet, unió</p>
+</li>
+</ul>
+<p>Szótár</p>
+<ul>
+<li>
+<p>kulcs érték párok halmaza</p>
+</li>
+<li>
+<p>minden kulcs legfeljebb egyszer szerepelhet</p>
+</li>
+<li>
+<p>egy érték tetszőleges számban előfordulhat</p>
+</li>
+</ul>
+<p>Asszociatív tömb</p>
+<ul>
+<li>egészek helyett bármilyen típussal indexelhetünk</li>
+</ul>
+<p>Map</p>
+<ul>
+<li>kulcs-&gt;érték leképezés</li>
+</ul>
+<h3 id="hasítótáblák">Hasítótáblák</h3>
+<ul>
+<li>
+<p>Halmazok és szótárak hatékony megvalósítása</p>
+</li>
+<li>
+<p>Keres, beszúr, töröl legyen hatékony</p>
+</li>
+<li>
+<p>Átlagos esetben: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O}(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathcal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+</ul>
+<p>Hasítótábla olyan szótár, amikor egy hash függvény segítségével állapítjuk meg, hogy melyik kulcshoz milyen érték tartozzon</p>
+<p>példa: <strong>h(k) = k mod m</strong></p>
+<p>ahol <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">m</span></span></span></span></span> a hasító tábla mérete</p>
+<p>lehetnek ütközések! <strong>cél: az ütközések minimalizálása</strong></p>
+<h4 id="ütközések-minimalizálása"><strong>Ütközések minimalizálása</strong></h4>
+<p><strong>Láncolt listás megoldás:</strong></p>
+<ol>
+<li>
+<p>Az adott cellában egy láncolt listát tartunk számon</p>
+</li>
+<li>
+<p>A rövid láncok a legjobbak</p>
+</li>
+<li>
+<p><strong>Load factor:</strong> vödrök száma / elemek száma, ha ez túl nagy akkor több vödör és újrahashelés.</p>
+</li>
+</ol>
+<p><strong>Nyílt címzés</strong></p>
+<p>Listák helyett tömbben “egymás után” tároljuk a megegyező hasított értékű elemeket. <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> Nincs szükség mutatókra.</p>
+<p><em>Lineáris próba:</em></p>
+<ul>
+<li>
+<p>Addig próbálgatjuk berakni a tömbe, amíg nem látunk üres helyet, mindig 1-et lépünk előre.</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false">(</mo><mi>k</mi><mo separator="true">,</mo><mi>i</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>H</mi><mo stretchy="false">(</mo><mi>k</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mo>+</mo><mi>i</mi></mrow><annotation encoding="application/x-tex">H(k,i,n) = H(k,n)+i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.08125em;">H</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.08125em;">H</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.65952em; vertical-align: 0em;"></span><span class="mord mathnormal">i</span></span></span></span></span> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>m</mi><mi>o</mi><mi>d</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(mod n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mord mathnormal">o</span><span class="mord mathnormal">d</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span>, ahol <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span></span> a kulcs, <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> a tábla mérete, <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.65952em; vertical-align: 0em;"></span><span class="mord mathnormal">i</span></span></span></span></span> a kipróbált hely.</p>
+</li>
+</ul>
+<p><em>Négyzetes/Quadratikus próba:</em></p>
+<ul>
+<li>
+<p>Két kipróbált hely között a távolságot egy másodfokú polinom adja.</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false">(</mo><mi>k</mi><mo separator="true">,</mo><mi>i</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>H</mi><mo stretchy="false">(</mo><mi>k</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mo>+</mo><msub><mi>c</mi><mn>1</mn></msub><mi>i</mi><mo>+</mo><msub><mi>c</mi><mn>2</mn></msub><msup><mi>i</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">H(k,i,n) = H(k,n) +c_1i+c_2i^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.08125em;">H</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.08125em;">H</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.80952em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.964108em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>m</mi><mi>o</mi><mi>d</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(modn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mord mathnormal">o</span><span class="mord mathnormal">d</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span>, ahol <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span></span> a kulcs, <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> a tábla mérete, <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.65952em; vertical-align: 0em;"></span><span class="mord mathnormal">i</span></span></span></span></span> a kipróbálás helye, <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">c_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.58056em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> és <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">c_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.58056em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> pedig egy valami függvényre jellemző konstans.</p>
+</li>
+</ul>
+<h2 id="gráfok-és-fák-számítógépes-reprezentációja">Gráfok és fák számítógépes reprezentációja</h2>
+<h4 id="gráfok-reprezentációja">Gráfok reprezentációja</h4>
+<ol>
+<li><strong>Szomszédsági mátrix</strong></li>
+</ol>
+<ul>
+<li>
+<p>minden csúcshoz hozzárendelünk egy számot</p>
+</li>
+<li>
+<p>ha a és b között van él, akkor matrix[a][b] = 1 és matrix[b][a] = 1</p>
+</li>
+<li>
+<p>ha nincs, akkor 0</p>
+</li>
+</ul>
+<ol start="2">
+<li><strong>Szomszédsági lista</strong></li>
+</ol>
+<ul>
+<li>
+<p>minden listaelem egy csúcs, ami szintén egy lista</p>
+</li>
+<li>
+<p>minden csúcshoz tartozó listában tároljuk a vele szomszédos csúcsokat</p>
+</li>
+</ul>
+<h4 id="fák-reprezentációja">Fák reprezentációja:</h4>
+<ul>
+<li>
+<p>Csúcsokat és éleiket reprezentáljuk</p>
+</li>
+<li>
+<p>Maga a fa egy mutató a gyökérre.</p>
+</li>
+</ul>
+<ol>
+<li>gyerek éllista</li>
+</ol>
+<ul>
+<li>
+<p>Kulcs</p>
+</li>
+<li>
+<p>Szülő</p>
+</li>
+<li>
+<p>Gyereklista</p>
+</li>
+</ul>
+<ol start="2">
+<li>Első fiú, apa, testvér</li>
+</ol>
+<ul>
+<li>
+<p>Kulcs</p>
+</li>
+<li>
+<p>Szülő</p>
+</li>
+<li>
+<p>Első gyerek</p>
+</li>
+<li>
+<p>Testvér</p>
+</li>
+</ul>
+<ol start="3">
+<li>Bináris fa</li>
+</ol>
+<ul>
+<li>
+<p>Kulcs</p>
+</li>
+<li>
+<p>Szülő</p>
+</li>
+<li>
+<p>Jobb és bal gyerek.</p>
+</li>
+</ul>
+</div>
+</body>
+
+</html>

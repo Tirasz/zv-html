@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="keresési-feladat-feladatreprezentáció-vak-keresés-informált-keresés-heurisztikák.-kétszemélyes-zéró-összegű-játékok-minimax-alfa-béta-eljárás.-korlátozás-kielégítési-feladat">11. Keresési feladat: feladatreprezentáció, vak keresés, informált keresés, heurisztikák. Kétszemélyes zéró összegű játékok: minimax, alfa-béta eljárás. Korlátozás kielégítési feladat</h1>
+<p>Különbség a feladatreprezentáció és a játékok között, az <strong>ágensek száma</strong>.</p>
+<h2 id="keresési-feladat-feladatreprezentáció-vak-keresés-informált-keresés-heurisztikák">Keresési feladat: feladatreprezentáció, vak keresés, informált keresés, heurisztikák</h2>
+<h3 id="feladatreprezentáció">Feladatreprezentáció</h3>
+<p>Tekintsünk egy diszkrét, statikus, determinisztikus és teljesen megfigyelhető feladatkörnyezetet. Tegyük fel, hogy a világ tökéletesen modellezhető a következőkkel:</p>
+<ul>
+<li>
+<p><strong>lehetséges állapotok halmaza</strong></p>
+</li>
+<li>
+<p><strong>egy kezdőállapot</strong></p>
+</li>
+<li>
+<p><strong>lehetséges cselekvések halmaza</strong> (állapotátmenet függvény, minden állapothoz hozzárendelünk egy (cselekvés, állapot) rendezett párokból álló halmazt, tehát egy állapotban milyen cselekvések hatására milyen állapotba juthat az ágensünk)</p>
+</li>
+<li>
+<p><strong>állapotátmenet költségfüggvénye</strong>, minden lehetséges állapot-cselekvés-állapot hármashoz hozzárendelünk egy költséget, azaz egy állapotból egy (másik) állapotba jutásnak mekkora a költsége</p>
+</li>
+<li>
+<p><strong>célállapotok halmaza</strong>, tehát hova szeretnénk, hogy eljusson az ágensünk</p>
+</li>
+</ul>
+<p>Ez egy <strong>súlyozott gráfot</strong> definiál, ez a gráf az <strong>állapottér</strong></p>
+<p>Feltesszük továbbá, hogy az állapotok száma véges, vagy megszámlálható. Úton állapotok cselekvésekkel összekötött sorozatát értjük, ennek van egy összköltsége is.</p>
+<p>pl: Utazástervezési feladat: útvonaltervezés,</p>
+<p>állapotok = hely és időpont párok;</p>
+<p>cselekvés = közlekedési eskzözök aktuális állapotból való indulása</p>
+<p>költség= idő és pénz fgv-e</p>
+<p><strong>Pl: 8-kirakó</strong></p>
+<p>Kezdőállapot = maga a kezdőpálya</p>
+<p>Állapotok = célállapotból csusztatásokkal elérhető konfigurációk</p>
+<p>Cselekvés = üres hely mozgatása fel, le, jobbra és balra.</p>
+<p>Költség = konstans minden cselekvésre</p>
+<p>Célállapot = a célállapotot az ábra mutatja</p>
+<img src="./kirakoMestint.JPG" alt="">
+<h3 id="vak-informálatlan-keresés">Vak (informálatlan) keresés</h3>
+<h4 id="fakeresés">Fakeresés</h4>
+<p>Adott kezdőállapotból találjunk minimális költségű utat egy célállapotba. Az állapottér nem mindig adott explicit módon, és végtelen is lehet.</p>
+<p><strong>Ötlet:</strong> keresőfa építése, a kezdőállapotból növesszünk fát a szomszédos állapotok hozzávételével, amíg célállapotot nem találunk.</p>
+<p>A keresőfa NEM azonos a feladat állapotterével, pl ha van két csúcs között oda-vissza él.</p>
+<pre><code>
+fakeresés():
+
+perem = { újcsúcs(kezdőállapot) }
+
+while perem.nemüres()
+
+csúcs = perem.elsőkivesz()
+
+if csúcs.célállapot() return csúcs
+
+perem.beszúr(csúcs.kiterjeszt())
+
+return failure
+
+</code></pre>
+<p>A csúcs.kiterjeszt() létrehozza a csúcsból elérhető összes állapotból a keresőfa csúcsot.</p>
+<p>A perem egy prioritási sor, ettől függ a bejárási stratégia.</p>
+<p>A hatékonyságot növelhetjük, ha úgy szúrunk be csúcsokat a perembe, hogy abban az esetben, ha a peremben található már ugyanazzal az állapottal egy másik csúcs, akkor ha az új csúcs költsége kisebb, lecseréljük a régi csúcsot az újra, különben nem tesszük bele az újat.</p>
+<h4 id="algoritmusok-vizsgálata">Algoritmusok vizsgálata</h4>
+<p>Algoritmus <strong>teljes</strong> akkor és csak akkor, amikor létezik <strong>véges számú állapot érintésével elérhető célállapot</strong>, az algoritmus meg is talál egyet.</p>
+<p>Egy algoritmus <strong>optimális</strong> akkor és csak akkor, ha <strong>teljes</strong> és minden megtalált célállapot optimális költségű.</p>
+<p>Idő- és memóriaigény számolásához pár betű.</p>
+<ul>
+<li>
+<p><strong>b:</strong> szomszédok maximális száma</p>
+</li>
+<li>
+<p><strong>d:</strong> a legkisebb mélységű célállapot mélysége</p>
+</li>
+<li>
+<p><strong>m:</strong> A keresőfa maximáli smélyésge</p>
+</li>
+</ul>
+<p>Ahol m és d lehet megszámlálhatóan végtelen</p>
+<h4 id="szélességi-keresés">Szélességi keresés</h4>
+<p>Fakeresés, ahol a perem egy FIFO perem.</p>
+<ul>
+<li>
+<p><strong>Teljes</strong>, minden, véges számú állapot érintésével elérhető állapotot véges időben elér</p>
+</li>
+<li>
+<p><strong>Általában nem optimális</strong>, de pl akkor igen, ha a költség a mélység nem csökkenő függvénye</p>
+</li>
+<li>
+<p>időigény = tárigény <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>b</mi><mrow><mi>d</mi><mo>+</mo><mn>1</mn></mrow></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(b^{d+1})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.09911em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.849108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+</ul>
+<h4 id="mélységi-keresés">Mélységi keresés</h4>
+<p>Fakeresés, LIFO perem</p>
+<ul>
+<li>
+<p><strong>Teljes</strong>, ha a keresési fa véges mélységű</p>
+</li>
+<li>
+<p><strong>Nem optimális</strong></p>
+</li>
+<li>
+<p>Időigény: legrosszabb esetben <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>b</mi><mi>m</mi></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(b^m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.664392em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span> (nagyon rossz, lehet végtelen), tárigény legrosszabb esetben <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>b</mi><mi>m</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(bm)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">bm</span><span class="mclose">)</span></span></span></span></span> (ez egész bíztató)</p>
+</li>
+</ul>
+<h4 id="iteratívan-mélyülő-keresés">Iteratívan mélyülő keresés</h4>
+<p>Mélységi keresések sorozata 1, 2, 3 stb korlátozva, amíg célállapotot nem találunk.</p>
+<ul>
+<li>
+<p>Teljesség és optimalitás a szélességivel egyezik meg</p>
+</li>
+<li>
+<p>időigény =<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>b</mi><mi>d</mi></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(b^d)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.09911em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.849108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span> (akár jobb is lehet, mint a szélességi)</p>
+</li>
+<li>
+<p>tárigény = <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>b</mi><mi>d</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(bd)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">b</span><span class="mord mathnormal">d</span><span class="mclose">)</span></span></span></span></span> (jobb, mint a mélységi)</p>
+</li>
+</ul>
+<p><strong>Ez a legjobb informálatlan kereső.</strong></p>
+<h4 id="egyenletes-költségű-keresés">Egyenletes költségű keresés</h4>
+<p>A peremben a rendezés költség alapú, mindig először a legkisebb útköltségű csúcsot terjesztjük ki.</p>
+<ul>
+<li>
+<p><strong>Teljes és optimális</strong>, ha minden él költsége nagyobb <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mi>ϵ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\ge \epsilon &gt; 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.77194em; vertical-align: -0.13597em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mord mathnormal">ϵ</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span></p>
+</li>
+<li>
+<p>(Idő és tárigény nagyban függ a <strong>költségfüggvénytől</strong>)</p>
+</li>
+</ul>
+<h4 id="gráfkeresés">Gráfkeresés</h4>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext mathvariant="bold">Ha</mtext><mtext>&nbsp;</mtext><mtext mathvariant="bold">nem</mtext><mtext>&nbsp;</mtext><mtext mathvariant="bold">fa</mtext><mtext>&nbsp;</mtext><mtext mathvariant="bold">az</mtext><mtext>&nbsp;</mtext><mover accent="true"><mtext mathvariant="bold">a</mtext><mo>ˊ</mo></mover><mtext mathvariant="bold">llapott</mtext><mover accent="true"><mtext mathvariant="bold">e</mtext><mo>ˊ</mo></mover><mtext mathvariant="bold">r!</mtext></mrow><annotation encoding="application/x-tex">\textbf{Ha nem fa az állapottér!}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.90232em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord textbf">Ha&nbsp;nem&nbsp;fa&nbsp;az&nbsp;</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.70788em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord textbf">a</span></span><span class="" style="top: -3.01344em;"><span class="pstrut" style="height: 3em;"></span><span class="accent-body" style="left: -0.2875em;"><span class="mord textbf">ˊ</span></span></span></span></span></span></span><span class="mord textbf">llapott</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.70788em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord textbf">e</span></span><span class="" style="top: -3.01344em;"><span class="pstrut" style="height: 3em;"></span><span class="accent-body" style="left: -0.2875em;"><span class="mord textbf">ˊ</span></span></span></span></span></span></span><span class="mord textbf">r!</span></span></span></span></span></span></span></p>
+<p>Ha a <strong>kezdőállapotból több út is vezet egy állapotba</strong>, akkor a <strong>fakeresés végtelen ciklusba eshet</strong></p>
+<p>Fakeresés, de a perem mellett még tárolunk egy ún. <strong>zárt halmazt</strong> is. A zárt halmazba <strong>azok a csúcsok kerülnek</strong>, amiket <strong>már kiterjesztettünk</strong>. A perembe helyezés előtt minden csúcsra megnézzük, hogy már a zárt halmazban van-e. Ha igen, nem tesszük a perembe. Másrészt minden peremből kivett csúcsot a zárt halmazba teszünk. Így minden állapothoz a legelső megtalált út lesz tárolva.</p>
+<h2 id="informált-keresés-heurisztikák">Informált keresés, heurisztikák</h2>
+<p><strong>Itt már tudjuk, hogy “hova megyünk”.</strong></p>
+<p><strong>Heurisztika:</strong> minden állapotból megbecsüli, hogy mekkora az optimális út költsége az adott állapotból egy célállapotba: <strong>tehát értelmesebben tudunk következő szomszédot választani</strong>.</p>
+<p>Pl. légvonalbeli távolság a célig a térképen egy útvonal-tervezési problémához jó heurisztika.</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">h(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal">h</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span>: optimális költség közelítése a legközelebbi célállapotba <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> állapotból</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">g(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span>: tényleges költség a kezdőállapotból <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span>-be</p>
+<h3 id="mohó">Mohó</h3>
+<p>Fakeresés, peremben a rendezést <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false">(</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">h()</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal">h</span><span class="mopen">(</span><span class="mclose">)</span></span></span></span></span> alapján csináljuk, mindig a legkisebb értékű csúcsot vesszük ki.</p>
+<p>Ha csak annyit teszünk fel, hogy <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">h(n) =0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal">h</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span> ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> célállapot, akkor <strong>fakeresés esetén:</strong></p>
+<ul>
+<li>
+<p>Teljes, de csak ha a keresési fa véges mélységű</p>
+</li>
+<li>
+<p>Nem optimális</p>
+</li>
+<li>
+<p>időigény, tárigény <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>b</mi><mi>m</mi></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(b^m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.664392em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+</ul>
+<p><strong>gráfkeresésnél</strong> az optimalitás hiánya miatt az első megtalált út nem mindig a legjobb.</p>
+<h3 id="a">A*</h3>
+<p>A peremben a rendezést <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mo stretchy="false">)</mo><mo>=</mo><mi>h</mi><mo stretchy="false">(</mo><mo stretchy="false">)</mo><mo>+</mo><mi>g</mi><mo stretchy="false">(</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f()=h()+g()</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.10764em;">f</span><span class="mopen">(</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal">h</span><span class="mopen">(</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.03588em;">g</span><span class="mopen">(</span><span class="mclose">)</span></span></span></span></span> alapján végezzük, a legkisebb csúcsot vesszük ki. <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f()</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.10764em;">f</span><span class="mopen">(</span><span class="mclose">)</span></span></span></span></span> <strong>a teljes út költségét becsüli a kezdőállapotból a végállapotba</strong>. Ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">h = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal">h</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span>, és gráfkeresést alkalmazunk, akkor a <strong>Dijkstra-t</strong> kapjuk.</p>
+<ul>
+<li>Egy <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal">h</span></span></span></span></span> heurisztika <strong>elfogadható</strong>, ha nem ad nagyobb értéket, mint a tényleges optimális érték.</li>
+</ul>
+<p>Fakeresést feltételezve, ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal">h</span></span></span></span></span> elfogadható és a keresési fa véges, akkor <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mo>∗</mo></msup></mrow><annotation encoding="application/x-tex">A^*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.688696em; vertical-align: 0em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.688696em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span></span></span></span></span> optimális.</p>
+<ul>
+<li>Egy <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal">h</span></span></span></span></span> heurisztika <strong>konzisztens</strong>, ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>≤</mo></mrow><annotation encoding="application/x-tex">h(n) \le</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal">h</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≤</span></span></span></span></span> mint a <strong>valódi költség</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> egyik bármely, plusz a szomszéd heurisztikája.</li>
+</ul>
+<p>Gráfkeresést feltételezve, ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal">h</span></span></span></span></span> <strong>konzisztens és az állapottér véges</strong>, akkor <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mo>∗</mo></msup></mrow><annotation encoding="application/x-tex">A^*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.688696em; vertical-align: 0em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.688696em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span></span></span></span></span> <strong>optimális</strong>.</p>
+<p>Az <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mo>∗</mo></msup></mrow><annotation encoding="application/x-tex">A^*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.688696em; vertical-align: 0em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.688696em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span></span></span></span></span> optimálisan hatékony, de a <strong>tárigénye általában exponenciális</strong>. és nagyon nagyban függ <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal">h</span></span></span></span></span>-tól. Az <strong>időigény</strong> szintén nagyon <strong>nagyban függ</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal">h</span></span></span></span></span>-tól.</p>
+<p>PL rá: <a href="http://www.inf.u-szeged.hu/~ihegedus/teach/a-star.pdf">http://www.inf.u-szeged.hu/~ihegedus/teach/a-star.pdf</a></p>
+<h3 id="heurisztikák">Heurisztikák</h3>
+<p>A <strong>jó</strong> heurisztikus függvények előállítása fontos, lehetőleg elfogadható és konzisztens legyen.</p>
+<p><strong>Relaxált probléma:</strong> elhagyunk feltételeket az eredeti problémából.</p>
+<p>Kombinálhatunk több heurisztikát is.</p>
+<p>Készíthetünk mintaadatbázisokat, ahol részproblémák egzakt költségét tároljuk.</p>
+<p>Belátható, hogy a relaxált probléma optimális költsége <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≤</mo></mrow><annotation encoding="application/x-tex">\le</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.77194em; vertical-align: -0.13597em;"></span><span class="mrel">≤</span></span></span></span></span> az eredeti probléma optimális költségénél, mivel az eredeti probléma állapottere része a relaxáltnak. <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇒</mo></mrow><annotation encoding="application/x-tex">\Rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">⇒</span></span></span></span></span> <strong>elfogadható heurisztika</strong>.</p>
+<p>Sőt mivel a heurisztika a probléma egy relaxációjának tényleges költésge, ezért <strong>konzisztens</strong> is.</p>
+<h2 id="kétszemélyes-zeró-összegű-játékok-miminax-alfa-béta-eljárás">Kétszemélyes zeró összegű játékok: miminax, alfa-béta eljárás</h2>
+<h3 id="kétszemélyes-lépésváltásos-determinisztikus-zéró-összegű-játék">Kétszemélyes, lépésváltásos, determinisztikus, zéró összegű játék</h3>
+<ul>
+<li>
+<p>lehetséges állapotok halmaza</p>
+</li>
+<li>
+<p>egy kezdőállapot</p>
+</li>
+<li>
+<p>lehetséges cselekvések halmaza, és egy állapotátmenet függvény</p>
+</li>
+<li>
+<p>célállapotok</p>
+</li>
+<li>
+<p><strong>hasznosságfüggvény</strong>: Minden célállapothoz, hasznosságértéket rendel.</p>
+</li>
+</ul>
+<p><strong>Két ágens van</strong>, felváltva lépnek. Az <strong>egyik maximalizálni</strong> akarja a hasznosságfüggvényt (MAX játékos), a <strong>másik minimalizálni</strong> (MIN játékos).</p>
+<p>Konvenció szerint MAX kezd. Az első célállapot elérésekor a játéknak definíció szerint vége.</p>
+<p><strong>Zéró összegű játék:</strong> A <strong>MIN játékos minimalizálja a hasznosságot, ami ugyanaz, mint maximalizálni a negatív hasznosságot</strong>. Ez a <em>negamax formalizmus</em>. Itt a két játékos nyereségének az összege a végállapotban mindig nulla, innen a zéró összegű elnevezés.</p>
+<p>(Játékelméletben: <em>Az a játék, amelyben a játékosok csak egymás kárára növelhetik a nyereségüket.</em>)</p>
+<h3 id="minimax-algoritmus-alfa-béta-vágás">Minimax algoritmus, alfa-béta vágás</h3>
+<p>Mindkét játékos ismeri a teljes játékgráfot, bármilyen komplex számítást képes elvégezni és nem hibázik (tökéletes racionalitás). A minimax algoritmus alapján lehet megvalósítani a legjobb stratégiát tökéletes racionalitás esetén.</p>
+<p>Minimax:</p>
+<pre><code>
+maxÉrték(n)
+
+1 if végállapot(n) return hasznosság(n)
+
+2 max = -végtelen
+
+3 for a in n szomszédai
+
+4 max = max(max, minÉrték(a))
+
+5 return max
+
+  
+
+minÉrték(n)
+
+1 if végállapot(n) return hasznosság(n)
+
+2 min = +végtelen
+
+3 for a in n szomszédai
+
+4 min = min(min, maxÉrték(a))
+
+5 return min
+
+</code></pre>
+<p>Ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> végállapot, visszaadja a hasznosságát. Különben a max-nál n szomszédaira kiszámolja a maximális értéket, ami vagy az aktuális maximum, vagy nézi, hogy a másik játékos mit lépne.</p>
+<p>Csak elméleti jelentőségű, a minimax algoritmus nem skálázódik. Az összes lehetséges állapot kiszámolása rettentő sok idő lenne pl sakknál.</p>
+<p><strong>Alfa-béta vágás</strong></p>
+<p>Ha tudjuk, hogy pl MAX-nak már van egy olyan stratégiája, ahol biztosan egy 10 értékű hasznosságot el tud érni az adott csúcsban, akkor a csúcs további kiértékelésekor nem kell vizsgálni olyan csúcsokat, ahol MIN ki tud kényszeríteni &lt;= 10 hasznosságot, mert ennél már MAX-nak van jobb stratégiája</p>
+<p>minÉrték és maxÉrték hívásakor átadjuk az alfa és béta paramétereket is a függvénynek.</p>
+<p><strong>Alfa jeletése:</strong> MAXnak már felfedeztünk egy olyan stratégiát, amely alfa hasznosságot biztosít, ha ennél kisebbet találnánk, azt nem vizsgáljuk.</p>
+<p><strong>Béta jelentése:</strong> MINnek már felfedeztünk egy olyan stratégiát, amely béta hasznosságot biztosít, ha ennél nagyobbat találnánk, azt nem vizsgáljuk</p>
+<p>A gyakorlatban a minimax és az alfa-béta vágásos algoritmusokat is csak meghatározott mélységig vizsgáljuk, illetve heurisztikákat is alkalmazhatunk. A csúcsok bejárási sorrendje is nagyon fontos, mert pl alfa béta vágásnál egy jó rendezés mellett nagyon sok csúcsot vághatunk le.</p>
+<h2 id="korlátozás-kielégítési-feladat">Korlátozás kielégítési feladat</h2>
+<p>A feladat az állapottérrel adott keresési problémák és az optimalizálási problémák jellemzőit ötvözi. Az állapotok és célállapotok speciális alakúak.</p>
+<p><strong>Lehetséges állapotok halmaza:</strong> a feladat állapotai az <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> db változó lehetséges értékkombinációi.</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><msub><mi>D</mi><mn>1</mn></msub><mo>∗</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>∗</mo><msub><mi>D</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">D = D_1*...*D_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: -0.02778em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.46528em; vertical-align: 0em;"></span><span class="mord">...</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.151392em;"><span class="" style="top: -2.55em; margin-left: -0.02778em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> (* itt most a descartes szorzat), ahol <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">D_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.311664em;"><span class="" style="top: -2.55em; margin-left: -0.02778em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> (D domain értékkészletének i. értéke) az i. változó lehetséges <strong>értékei</strong></p>
+<p><strong>Célállapotok:</strong> a megengedett állapotok, adottak különböző korlátozások, és azok az állapotok a célállapotok, amik minden korlátozást kielégítenek.</p>
+<p>Az út a megoldásig lényegtelen, és gyakran célfüggvény is értelmezve van az állapotok felett, ilyenkor egy optimális célállapot megtalálása a cél.</p>
+<p>PL: Gráfszínezési probléma.</p>
+<p>Adott egy <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo stretchy="false">(</mo><mi>V</mi><mo separator="true">,</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G(V,E)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal">G</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.22222em;">V</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">E</span><span class="mclose">)</span></span></span></span></span> gráf, ahol <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">n = |V|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right: 0.22222em;">V</span><span class="mord">∣</span></span></span></span></span>. A változók a gráf pontjai. Az <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.65952em; vertical-align: 0em;"></span><span class="mord mathnormal">i</span></span></span></span></span> pont lehetséges színeinek halmaza a <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">D_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.311664em;"><span class="" style="top: -2.55em; margin-left: -0.02778em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> és <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mn>1</mn></msub><mo>=</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>=</mo><msub><mi>D</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">D_1 = ... = D_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: -0.02778em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mord">...</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.151392em;"><span class="" style="top: -2.55em; margin-left: -0.02778em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span>.</p>
+<p>Minden <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>∈</mo><mi>E</mi></mrow><annotation encoding="application/x-tex">e \in E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">E</span></span></span></span></span> élhez rendelünk egy <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mi>e</mi></msub></mrow><annotation encoding="application/x-tex">C_e</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.151392em;"><span class="" style="top: -2.55em; margin-left: -0.07153em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">e</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> korlátozást, amely azokat a színezéseket engedi meg, ahol az <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi></mrow><annotation encoding="application/x-tex">e</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">e</span></span></span></span></span> él két végpontja különböző színű.</p>
+<h3 id="inkrementális-kereső-algoritmusok">Inkrementális kereső algoritmusok</h3>
+<p>Optimalizálás helyett keresési feladatot definiálunk. <strong>Nem az eredeti állapottér felett kell dolgozni</strong>, hanem kikell terjeszteni ezt a teret úgy, hogy felveszünk egy új “ismeretlen” értéket (<strong>jele: ?</strong>) és az összes Domainben lévő értékhez hozzáadjuk ezt a változót.</p>
+<ul>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi>i</mi></msub><mo>=</mo><msub><mi>D</mi><mi>i</mi></msub><mo>⋃</mo><mo stretchy="false">{</mo><mo stretchy="false">?</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">D_i = D_i \bigcup \{?\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.311664em;"><span class="" style="top: -2.55em; margin-left: -0.02778em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1.00001em; vertical-align: -0.25001em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.311664em;"><span class="" style="top: -2.55em; margin-left: -0.02778em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mop op-symbol small-op" style="position: relative; top: -5e-06em;">⋃</span><span class="mopen">{</span><span class="mclose">?}</span></span></span></span></span> vektorok lesznek az <strong>új keresési tár állapotai</strong></p>
+</li>
+<li>
+<p><strong>Kezdeti állapot:</strong> csupa kérdőjel <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mo stretchy="false">?</mo><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mo stretchy="false">?</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(?,..,?)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mclose">?</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">..</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mclose">?)</span></span></span></span></span></p>
+</li>
+<li>
+<p><strong>Állapotátmenet költsége</strong> legyen konstans</p>
+</li>
+<li>
+<p><strong>Állapotátmenetek</strong> valamely pontosa egy “?”-jelet lecserélnek egy adott változó másik értékére. <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> sokkal kisebb fa méret.</p>
+</li>
+</ul>
+<p>Erre már lehet végrehajtani bármely korábban nézett informálatlan keresési algoritmus. A <strong>mélységi keresés</strong> elég jó, mivel kicsi a keresőfa mélysége és nem fogyaszt memóriát (backtrack)</p>
+<p>Ennél jobb viszont az informális keresési algoritmusok bevetése:</p>
+<ul>
+<li>
+<p>Válasszuk azt a változót, amihez a <strong>legkisebb megengedett érték</strong> maradt.</p>
+</li>
+<li>
+<p>Ha nem egyértelmű akkor azt, amelyre a <strong>legtöbb korlátozás</strong> vonatkozik</p>
+</li>
+<li>
+<p>A választott változó megengedett értékeiből kezdjük azzal, amelyik a <strong>legkevésbé korlátozza a következő lépések lehetséges számát</strong></p>
+</li>
+</ul>
+</div>
+</body>
+
+</html>

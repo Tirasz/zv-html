@@ -1,0 +1,315 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="véges-automata-és-változatai-a-felismert-nyelv-definíciója.-a-reguláris-nyelvtanok-a-véges-automaták-és-a-reguláris-kifejezések-ekvivalenciája.-reguláris-nyelvekre-vonatkozó-pumpáló-lemma-alkalmazása-és-következményei">5. Véges automata és változatai, a felismert nyelv definíciója. A reguláris nyelvtanok, a véges automaták és a reguláris kifejezések ekvivalenciája. Reguláris nyelvekre vonatkozó pumpáló lemma, alkalmazása és következményei</h1>
+<h2 id="alapfogalmak-jelölések">Alapfogalmak, jelölések</h2>
+<p><strong>Ábécé:</strong> Szimbólumok egy tetszőleges véges, nemüres halmaza jele: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">Σ</span></span></span></span></span></p>
+<ul>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="normal">Σ</mi><mo>∗</mo></msup></mrow><annotation encoding="application/x-tex">\Sigma^*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.688696em; vertical-align: 0em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.688696em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span></span></span></span></span>: Az összs szavak + <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">ϵ</span></span></span></span></span></p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="normal">Σ</mi><mo>+</mo></msup></mrow><annotation encoding="application/x-tex">\Sigma^+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.771331em; vertical-align: 0em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.771331em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span></span></span></span></span>: Az összes szavak, kivéve az <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">ϵ</span></span></span></span></span></p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">Σ</span></span></span></span></span> <strong>ábécé feletti szó:</strong> egy <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>a</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">a_1,...,a_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.19444em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.336108em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> alakú sorozat.</p>
+</li>
+<li>
+<p><strong>Nyelv:</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="normal">Σ</mi><mo>∗</mo></msup></mrow><annotation encoding="application/x-tex">\Sigma^*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.688696em; vertical-align: 0em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.688696em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span></span></span></span></span> tetszőleges <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">L</span></span></span></span></span> részhalmazát egy <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">Σ</span></span></span></span></span> feletti <strong>nyelvnek</strong> nevezzük. Ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">L</span></span></span></span></span> véges számú szóból áll, akkor *<em>véges nyelvnek nevezzük</em></p>
+</li>
+<li>
+<p><strong>Nyelvtan:</strong> Könnyen leírható eszköz, amely alkalmas nyelvek megadására. Effektíve nyelveket tuduk vele reprezentálni.</p>
+</li>
+<li>
+<p>PL Környezetfüggetlen: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mo stretchy="false">(</mo><mi>N</mi><mo separator="true">,</mo><mi mathvariant="normal">Σ</mi><mo separator="true">,</mo><mi>P</mi><mo separator="true">,</mo><mi>S</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G = (N, \Sigma, P, S)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">Σ</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span><span class="mclose">)</span></span></span></span></span>, ahol</p>
+</li>
+<li>
+<p>N egy ábécé</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">Σ</span></span></span></span></span> egy ábécé, terminális</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>∈</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">S\in N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72243em; vertical-align: -0.0391em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span></span></span></span></span> kezdő szimbólum</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span></span></span></span></span> pedig egy <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>→</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">A\rightarrow  \alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.0037em;">α</span></span></span></span></span> alakú átírási szabály.</p>
+</li>
+</ul>
+<h2 id="véges-automata-és-változatai-a-felismert-nyelv-definíciója">Véges automata és változatai, a felismert nyelv definíciója</h2>
+<p>Lásd pdf</p>
+<p>Egy nemdeterminisztikus automata determinizálása:</p>
+<p><strong>Állapotai száma max 2^n lesz.</strong></p>
+<ul>
+<li>
+<p>Elindulunk a kezdőállapotból és megnézzük, hogy az első betű hatására hova megy -&gt; ezeket összevonjuk egy állapottá és oda vezetjük ezzel a betűvel.</p>
+</li>
+<li>
+<p>Ezután az új összevont állapot részeit nézzük meg, hogy onnan a betűk hova mennek.</p>
+</li>
+</ul>
+<p>Egy <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">ϵ</span></span></span></span></span> automata <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">ϵ</span></span></span></span></span>-mentesítése.</p>
+<ul>
+<li>
+<p>Lezártakat számolunk.</p>
+</li>
+<li>
+<p>Azokat az állapotokat, ahova átlehet jutni <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">ϵ</span></span></span></span></span> átmenettel azokat egy lezártba vesszük.</p>
+</li>
+</ul>
+<h2 id="a-reguláris-nyelvtanok-a-véges-automaták-és-a-reguláris-kifejezések-ekvivalenciája">A reguláris nyelvtanok, a véges automaták és a reguláris kifejezések ekvivalenciája</h2>
+<h3 id="reguláris-nyelvtanok">Reguláris nyelvtanok</h3>
+<ul>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>:</mo></mrow><annotation encoding="application/x-tex">N:</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">:</span></span></span></span></span> nemterminális abc</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">Σ</span></span></span></span></span>: terminális abc</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span></span></span></span></span>: szabályok halmaza</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span>: eleme N, kezdő nemterminális</p>
+</li>
+</ul>
+<p>Egy <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mo stretchy="false">(</mo><mi>N</mi><mo separator="true">,</mo><mi mathvariant="normal">Σ</mi><mo separator="true">,</mo><mi>P</mi><mo separator="true">,</mo><mi>S</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G=(N, \Sigma, P, S)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">Σ</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span><span class="mclose">)</span></span></span></span></span> nyelvtan reguláris (vagy jobblineáris), ha P-ben minden szabály</p>
+<ul>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>−</mo><mo>&gt;</mo><mi>x</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">A -&gt; xB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.76666em; vertical-align: -0.08333em;"></span><span class="mord mathnormal">A</span><span class="mord">−</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal" style="margin-right: 0.05017em;">B</span></span></span></span></span> vagy</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>−</mo><mo>&gt;</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">A -&gt; x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.76666em; vertical-align: -0.08333em;"></span><span class="mord mathnormal">A</span><span class="mord">−</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">x</span></span></span></span></span>, alakú.</p>
+</li>
+</ul>
+<p>Azért jobblineáris, mert minden szabály jobb oldalán max. egy nemterminális állhat, és ez mindig a szó végén helyezkedik el. Levezetést csak A -&gt; x alakú szabállyal fejezhetünk be, ahol <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><msup><mi mathvariant="normal">Σ</mi><mo>∗</mo></msup></mrow><annotation encoding="application/x-tex">x \in  \Sigma^*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.688696em; vertical-align: 0em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.688696em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span></span></span></span></span>. A reguláris nyelvtanok speciális környezetfüggetlen nyelvtanok.</p>
+<p>Példa: S → aaS|abS|baS|bbS|ε, vagyis a páros hosszú szavakat generáló nyelvtan.</p>
+<h3 id="reguláris-kifejezések">Reguláris kifejezések</h3>
+<p><strong>Veszünk egy abc-t, és hozzáveszünk néhány szimbólumot, ezekből építünk reguláris kifejezéseket.</strong></p>
+<p>A szigma feletti reguláris kifejezések halmaza a <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi mathvariant="normal">Σ</mi><mo>∪</mo><mrow><mtext>∅</mtext><mo separator="true">,</mo><mi>ε</mi><mo separator="true">,</mo><mo stretchy="false">(</mo><mo separator="true">,</mo><mo stretchy="false">)</mo><mo separator="true">,</mo><mo>+</mo><mo separator="true">,</mo><mtext>∗</mtext></mrow><mo stretchy="false">)</mo><mo>∗</mo></mrow><annotation encoding="application/x-tex">(Σ∪{∅, ε,(,),+,∗})*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">Σ</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord"><span class="mord">∅</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">ε</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mopen">(</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">+</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">∗</span></span><span class="mclose">)</span><span class="mord">∗</span></span></span></span></span> halmaz legszűkebb olyan U részhalmaza, hogy</p>
+<ul>
+<li>
+<p>∅, ε eleme U-nak</p>
+</li>
+<li>
+<p>minden a eleme Σ eleme U-nak</p>
+</li>
+<li>
+<p>ha R1, R2 eleme U, akkor R1+R2, R1R2, R1* is eleme U-nak</p>
+</li>
+</ul>
+<p>Prioritási sorrend: *, konkatenáció, +</p>
+<p><strong>Jelentések:</strong></p>
+<ul>
+<li>
+<p><strong>|R|, az R által reprezentált nyelv</strong></p>
+</li>
+<li>
+<p>R = ∅, |R| = ∅, azaz az üres nyelv</p>
+</li>
+<li>
+<p>R = ε, |R| = {ε}, azaz az epszilon szimbólum önmagában, mint nyelv</p>
+</li>
+<li>
+<p>R = a, |R| = {a}, azaz az a szimbólum önmagában, mint nyelv</p>
+</li>
+<li>
+<p>R = R1+R2, |R| = |R1| ∪ |R2|, azaz a két regex által generált nyelv uniója</p>
+</li>
+<li>
+<p>R = R1R2, |R| = |R1||R2|, azaz a két regex által generált nyelv konkatenációja</p>
+</li>
+<li>
+<p>R = R1*, akkor |R| = |R1|*, azaz a regex által generált nyelv iterációja, az összes szó összekonkatenálva egy másik nyelvbeli szóval az összes lehetséges módon</p>
+</li>
+</ul>
+<h3 id="ekvivalencia">Ekvivalencia</h3>
+<p>Tetszőleges <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>⊆</mo><msup><mi mathvariant="normal">Σ</mi><mo>∗</mo></msup></mrow><annotation encoding="application/x-tex">L \subseteq  \Sigma^*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8193em; vertical-align: -0.13597em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">⊆</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.688696em; vertical-align: 0em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.688696em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span></span></span></span></span> nyelv esetén a következő három állítás ekvivalens:</p>
+<ul>
+<li>
+<ol>
+<li>L generálható reguláris nyelvtannal</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>L felismerhető automatával</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>L reprezentálható reguláris kifejezéssel</li>
+</ol>
+</li>
+</ul>
+<p><strong>3 -&gt; 1:</strong></p>
+<p><em>Ha L reprezentálható reguláris kifejezéssel, akkor generálható reguláris nyelvtannal.</em></p>
+<p>Bizonyítás: L-et reprezentáló R reguláris kifejezés struktúrája szerinti indukcióval.</p>
+<ul>
+<li>
+<p>R = ∅: ekkor L=|R|=∅, ekkor L generálható a G=(N, SZIGMA, ∅, S) nyelvtannal.</p>
+</li>
+<li>
+<p>R = a: a eleme SZIGMA, vagy a=epszilon, ekkor L=|R|={a}, ami generálható a G=(N, SZIGMA, {S -&gt; A}, S) nyelvtannal</p>
+</li>
+<li>
+<p>INDUKCIÓ R = R1+R2, ekkor L=|R|=L1 unió L2, L1=|R1|, L2=|R2|</p>
+</li>
+<li>
+<p>ekkor tegyük fel, hogy Li generálható egy Gi= (Ni,Σ,Pi,Si) (i=1,2) reguláris nyelvtannal</p>
+</li>
+<li>
+<p>ekkor L generálható egy G= (N1∪N2∪{S},Σ,P1∪P2∪{S→S1,S→S2},S) nyelvtannal, ahol S egy új szimbólum</p>
+</li>
+<li>
+<p>aka vesszük az összes nemterminálist, az abc-t, az összes korábbi szabályt</p>
+</li>
+<li>
+<p>továbbá egy új kezdőszimbólumot</p>
+</li>
+<li>
+<p>és az új kezdőszimbólumból elérhető a régi kettő kezdőszimbólum, aka kiválaszthatjuk, melyik nyelvből származó szót akarjuk generálni</p>
+</li>
+<li>
+<p>ahhoz, hogy elérhető legyen a régi két kezdőszimbólum, felveszünk két új szabályt értelemszerűen a régiek közé</p>
+</li>
+<li>
+<p>INDUKCIÓ R = R1R2, ekkor L=|R|=L1L2, L1=|R1|, L2=|R2|</p>
+</li>
+<li>
+<p>ekkor tegyük fel, hogy Li generálható egy Gi= (Ni,Σ,Pi,Si) (i=1,2) reguláris nyelvtannal</p>
+</li>
+<li>
+<p>Akkor L generálható a G = (N1∪N2,Σ,P,S1) nyelvtannal, ahol P:</p>
+</li>
+<li>
+<p>belevesszük az összes szabályt az első nyelvet generáló nyelvtanból, a befejező szabályok végére odaírjuk a második nyelvtan kezdőszimbólumát</p>
+</li>
+<li>
+<p>a második nyelvtan összes szabályát is belevesszük</p>
+</li>
+<li>
+<p>INDUKCIÓ R = R1*, ekkor L=|R|=L1*, ahol L1=|R1|</p>
+</li>
+<li>
+<p>ekkor tegyük fel, hogy L1 generálható egy G1= (N1,Σ,P1,S1) nyelvtannal</p>
+</li>
+<li>
+<p>ekkor L generálható egy G= (N1∪{S},Σ,P,S) nyelvtannal, ahol S egy új szimbólum</p>
+</li>
+<li>
+<p>a szabályokat úgy módosítjuk, hogy:</p>
+</li>
+<li>
+<p>S-ből elérhető az üresszó és az eredeti kezdőszimbólum</p>
+</li>
+<li>
+<p>a nem “befejező” szabályokat felvesszük úgy, ahogy voltak</p>
+</li>
+<li>
+<p>a “befejező” szabályok jobb oldalára odaírjuk az S-t</p>
+</li>
+</ul>
+<p><strong>1 -&gt; 2:</strong></p>
+<p><em>Ha L nyelv reguláris, akkor felismerhető automatával.</em></p>
+<p>Bizonyítás: legyen L egy reguláris nyelv, és L=L(G), ahol G egy reguláris nyelvtan.</p>
+<p>Minden G= (N,Σ,P,S), reguláris nyelvtanhoz megadható vele ekvivalens G′= (N′,Σ,P′,S) reguláris nyelvtan, ́ugy hogy P′-ben minden szabály A→B, A→aB vagy A→ε alakú, ahol A,B ∈ N ́es a ∈ Σ.</p>
+<p>Bizonyítás</p>
+<ul>
+<li>
+<p>amelyik szabály már alapból ilyen alakú, azokat felvesszük P’-be</p>
+</li>
+<li>
+<p>az A -&gt; a1a2a3…anB alakú szabályokat szétdaraboljuk</p>
+</li>
+<li>
+<p>lesz belőle A -&gt; a1A1, A1 -&gt; a2A2 -&gt; … An-1 -&gt; anB</p>
+</li>
+<li>
+<p>az A -&gt; a1a2a3…an szabályokat feladarboljuk</p>
+</li>
+<li>
+<p>lesz belőle A -&gt; a1A1, A1 -&gt; a2A2 -&gt; … -&gt; An -&gt; epszilon</p>
+</li>
+</ul>
+<p>az új nemterminálisokat felvesszük N-be</p>
+<p>Minden olyan G= (N,Σ,P,S) reguláris nyelvtanhoz, melynek csak A→B, A→aB vagy A→ε alakú szabályai vannak megadható olyan M= (Q,Σ, δ,q0,F) nemdeterminisztkius ε-automata, amelyre L(M) =L(G).</p>
+<p>Bizonyítás</p>
+<ul>
+<li>
+<p>Q = N, azaz a nemterminálisokból lesznek az állapotok</p>
+</li>
+<li>
+<p>q0 = S, a kezdőszimbólumból lesz a kezdőállapot</p>
+</li>
+<li>
+<p>azokból a B nemterminálisokból lesz végállapot, amikből van B -&gt; epszilon szabály</p>
+</li>
+<li>
+<p>minden A -&gt; aB kinézetű szabályból pedig legyen egy átmenet A-ból B-be a hatására</p>
+</li>
+</ul>
+<p><strong>2 -&gt; 3:</strong></p>
+<p><em>Minden automatával felismert nyelv reprezentálható reguláris kifejezéssel. (Kleene tétele)</em></p>
+<p>Bizonyítás: legyen L=(M), ahol M egy determinisztikus automata. Megadunk egy olyan reguláris kifejezést, ami L-et reprezentálja.</p>
+<p>Tételezzük fel, hogy Q={1,2,3,…,n}, és q0=1.</p>
+<p>Minden 0 kisebbegyenlő k, azaz k darab állapot, és 0 kisebbegyenlő i, j kisebbegyenlő n esetén definiáljuk az L^(k)_i,j nyelvet a következőképpen:</p>
+<p>Nézzük úgy az automatát, mintha az i. állapotból indulnánk, és a j.-be akarnánk eljutni, de csak az {1,…,k} állapotokat érinthetjük. Az L^(k)_i,j nyelv azokat a szavakat tartalmazza, amelyeket ez a “kisebb” automata felismer.</p>
+<p>Ezután vegyük észre azt, hogy az L nyelv tulajdonképpen úgy áll elő, hogy venni kell az összes olyan L^(n)_1,j nyelvet, ahol j egy végállapot!</p>
+<p>Tehát vegyük az összes olyan nyelvet, ahol az első állapotból akarunk elindulni, és az utolsóba eljutni, és használhatjuk az összes állapotát M-nek (mind az n darabot). Tehát ezen L^(n)_1,j nyelvek uniója lesz L.</p>
+<p>Ezért elég az L^(n)_1,j-ket reprezentáló reguláris kifejezéseket megadnunk (R^(n)_1,j).</p>
+<p>Ehhez meg kell adnunk az R^(k)_i,j reguláris kifejezéseket k szerinti indukcióval.</p>
+<p>k=0 azt jelenti, hogy 0 közbülső állapotból kell eljutnunk az i állapotból a j állapotba. Ez lehet úgy, hogy valamilyen szimbólum hatására átmegyünk, vagy ha i=j, akkor hurokéllel helyben maradunk, vagy epszilonnal nem csinálunk semmit.</p>
+<p>Az indukciós feltevésünk az, hogy minden i,j-re megadtuk az R^(k)_i,j-t</p>
+<p>k+1-hez ÉSZREVESSZÜK (ja ugye tök triviális lmao)</p>
+<p>L^(k+1)_i,j egyenlő azzal, hogy</p>
+<ul>
+<li>
+<p>vagy amúgyis eljutunk k köztes állapottal is i-ből j-be</p>
+</li>
+<li>
+<p>vagy belevesszük a k+1. állapotot is a levesbe, elmegyünk az 1-estől a k+1. állapotba, ott körözünk akármeddig, és utána k+1-ből pedig eljutunk j-be</p>
+</li>
+</ul>
+<p>Ekkor, mivel az L^(k)_i,j nyelvekhez az indukciós feltevés miatt tudtunk megfelelő regexet adni, ezekre elvégezve az előző azonosságot, megkapjuk az R^(k+1)_i,j-t is, ezzel pedig meg tudjuk kapni az összes regexet, ami a kezdőállapotból a végállapotokba visz, ezeket uniózva pedig az egész nyelvhez tartozó regexet.</p>
+<h2 id="reguláris-nyelvekre-vonatkozó-pumpáló-lemma-alkalmazása-és-következményei">Reguláris nyelvekre vonatkozó pumpáló lemma, alkalmazása és következményei</h2>
+<h3 id="pumpáló-lemma">Pumpáló lemma</h3>
+<p>Minden L reguláris nyelv esetén megadható egy L-től függő k&gt;0 szám, melyre minden <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>∈</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">w \in L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mord mathnormal" style="margin-right: 0.02691em;">w</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">L</span></span></span></span></span> esetén, ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>w</mi><mi mathvariant="normal">∣</mi><mo>≥</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">|w| \ge k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right: 0.02691em;">w</span><span class="mord">∣</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span></span>, akkor van olyan <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><msub><mi>w</mi><mn>1</mn></msub><msub><mi>w</mi><mn>2</mn></msub><msub><mi>w</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">w = w_1w_2w_3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.02691em;">w</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.58056em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: -0.02691em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: -0.02691em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: -0.02691em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> felbontás, hogy</p>
+<ul>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi mathvariant="normal">∣</mi><msub><mi>w</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">0  \le |w_2|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.78041em; vertical-align: -0.13597em;"></span><span class="mord">0</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: -0.02691em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord">∣</span></span></span></span></span> és <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><msub><mi>w</mi><mn>1</mn></msub><msub><mi>w</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi><mo>≤</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">|w_1w_2| \le k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: -0.02691em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: -0.02691em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord">∣</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span></span></p>
+</li>
+<li>
+<p>minden <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n \ge  0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.77194em; vertical-align: -0.13597em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mn>1</mn></msub><msubsup><mi>w</mi><mn>2</mn><mi>n</mi></msubsup><msub><mi>w</mi><mn>3</mn></msub><mo>∈</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">w_1w_2^nw_3  \in L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.9125em; vertical-align: -0.248108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: -0.02691em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.664392em;"><span class="" style="top: -2.45189em; margin-left: -0.02691em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.248108em;"><span class=""></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: -0.02691em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">L</span></span></span></span></span></p>
+</li>
+</ul>
+<p>Fordítva, ha egy nyelvhez nem adható meg ilyen k szám, akkor a nyelv nem reguláris.</p>
+<p>Kb a lényeg, hogy ha egy nyelv reguláris, akkor a k-nál hosszabb szavak felbonthatók három részre, és a középső rész ismétlődhet akármeddig</p>
+<h3 id="alkalmazása">Alkalmazása</h3>
+<p>Pl bebizonyíthatjuk vele egy nyelvről, hogy nem reguláris.</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mi>n</mi></msup><msup><mi>b</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">a^nb^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.664392em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.664392em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span></span>, <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n \ge  0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.77194em; vertical-align: -0.13597em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span> nyelv nem reguláris</p>
+<p>tegyük fel, hogy van ilyen k, amivel felbontható</p>
+<p>a feltételek miatt w2-ben csak a betűk vannak</p>
+<p>ha ezt pumpáljuk, több a betű lesz benne, mint b - rossz</p>
+<h3 id="következményei">Következményei</h3>
+<p>Van olyan környezetfüggetlen nyelv, amelyik nem reguláris.</p>
+<ol>
+<li>
+<p>Minden reguláris nyelvtan környezetfüggetlen. (A REG nyelvek speciális CF nyelvek–jobblineárisak)</p>
+</li>
+<li>
+<p>CF - REG != Üreshalmaz, mivel pl az {<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mi>n</mi></msup><msup><mi>b</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">a^nb^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.664392em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.664392em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span></span> | n &gt;= 0} nyelv CF beli (S -&gt; aSb | <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">ϵ</span></span></span></span></span>), viszont nem teljesül rá a pumpáló lemma --&gt; nem REG nyelv!</p>
+</li>
+</ol>
+</div>
+</body>
+
+</html>

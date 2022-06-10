@@ -1,0 +1,352 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="processzusok-szálakfonalak-processzus-létrehozásabefejezése-processzusok-állapotai-processzus-leírása.-ütemezési-stratégiák-és-algoritmusok-kötegelt-interaktív-és-valós-idejű-rendszereknél-ütemezési-algoritmusok-céljai.-kontextus-csere">15. Processzusok, szálak/fonalak, processzus létrehozása/befejezése, processzusok állapotai, processzus leírása. Ütemezési stratégiák és algoritmusok kötegelt, interaktív és valós idejű rendszereknél, ütemezési algoritmusok céljai. Kontextus-csere</h1>
+<h2 id="processzusok-szálakfonalak-processzus-létrehozásabefejezése-processzusok-állapotai-processzus-leírása">Processzusok, szálak/fonalak, processzus létrehozása/befejezése, processzusok állapotai, processzus leírása</h2>
+<h3 id="processzus">Processzus</h3>
+<ul>
+<li>
+<p><strong>A végrehajtás alatt lévő program.</strong></p>
+</li>
+<li>
+<p>Szekvenciálisan végrehajtódó program</p>
+</li>
+<li>
+<p><strong>Egyidejűleg több processzus létezik:</strong> A processzor idejét meg kell osztani az egyidejűleg létező processzusok között: időosztás (time sharing)</p>
+</li>
+<li>
+<p>Futó processzusok is létrehozhatnak processzusokat: Kooperatív folyamatok, egymással együttműködő, de amúgy független processzusok</p>
+</li>
+<li>
+<p>Az <strong>erőforrásokat az OS-től kapják</strong> (centralizált erőforrás kezelés)</p>
+</li>
+<li>
+<p>jogosultságokkal rendelkeznek</p>
+</li>
+<li>
+<p>Előtérben és háttérben futó folyamatok</p>
+</li>
+<li>
+<p>Processzusnak lehet <strong>címtartománya</strong></p>
+</li>
+<li>
+<p>Saját memória</p>
+</li>
+<li>
+<p>Osztott memória</p>
+</li>
+</ul>
+<p><strong>Processus állapotok:</strong> </p>
+<img src="./ProcesszusAllapotok.JPG" alt="">
+<ul>
+<li>
+<p><strong>Futáskész:</strong> készen áll a futásra, csak ideiglenesen le lett állítva, hogy egy másik processzus futhasson</p>
+</li>
+<li>
+<p><strong>Futó:</strong> a proc bitrokolja a CPU-t</p>
+</li>
+<li>
+<p><strong>Blokkolt:</strong> bizonyos külső esemény bekövetkezéséig nem képes futni</p>
+</li>
+<li>
+<p><strong>Iniciális</strong></p>
+</li>
+<li>
+<p><strong>Terminális</strong></p>
+</li>
+<li>
+<p><strong>Felfüggesztett</strong></p>
+</li>
+</ul>
+<h3 id="szálakfonalak-thread">Szálak/fonalak (thread)</h3>
+<ul>
+<li>
+<p><strong>Önálló végrehajtási egységként működő program, objektum, szekvenciálisan végrehajtható utasítás-sorozat</strong></p>
+</li>
+<li>
+<p>A proc hozza létre (akár többet is egyszerre)</p>
+</li>
+<li>
+<p>Osztozik a létrehozó proc erőforrásain</p>
+</li>
+<li>
+<p>Van saját <strong>állapota, verme</strong></p>
+</li>
+<li>
+<p>Egy folyamaton belül több tevékenység végezhető párhuzamosan</p>
+</li>
+<li>
+<p><strong>Szálak megvalósítása:</strong></p>
+</li>
+<li>
+<p>A felhasználó kezeli a szálakat egy függvénykönyvtár segítségével. Ekkor a kernel (az operációs rendszer alapja (magja), amely felelős a hardver erőforrásainak kezeléséért) nem tud semmit a szálakról</p>
+</li>
+<li>
+<p><strong>A kernel kezeli a szálakat.</strong> Szálak létrehozása és megszüntetése kernelhívásokkal történik</p>
+</li>
+</ul>
+<h3 id="processzustáblázat-és-pcb">Processzustáblázat és PCB</h3>
+<p>A proc nyilvántartására, tulajdonságainak leírására szolgáló memóriaterület.</p>
+<p>Processusonként egy egy bejegyzés - Processzus vezérlő blokk (PCB)</p>
+<p><strong>PCB tartalma:</strong></p>
+<ul>
+<li>
+<p><strong>azonosító:</strong> processzus id</p>
+</li>
+<li>
+<p>processzus <strong>állapota</strong></p>
+</li>
+<li>
+<p><strong>CPU állapota:</strong> a kontextus cseréhez</p>
+</li>
+<li>
+<p>jogosultságok, prioritás</p>
+</li>
+<li>
+<p>birtokolt erőforrások</p>
+</li>
+</ul>
+<h3 id="processzus-létrehozása">Processzus létrehozása</h3>
+<ul>
+<li>
+<p>Futó processzusok is létrehozhatnak processzusokat: Kooperatív folyamatok, egymással együttműködő, de amúgy független processzusok</p>
+</li>
+<li>
+<p>Egyszerű esetekben megoldható, hogy minden processzus elérhető az OS elindulása után</p>
+</li>
+<li>
+<p>Általános célú rendszerekben szükség van a processzusok létrehozására és megszüntetésére</p>
+</li>
+<li>
+<p><strong>Processzusokat létrehozó események:</strong></p>
+</li>
+<li>
+<p>Rendszer inicializálása</p>
+</li>
+<li>
+<p>Felhasználó által kezdeményezett</p>
+</li>
+<li>
+<p>Kötegelt feladat kezdeményezése</p>
+</li>
+<li>
+<p><strong>Az OS indulásakor sok processzus keletkezik:</strong></p>
+</li>
+<li>
+<p>Felhasználókkal tartják a kapcsolatot: Előtérben futnak</p>
+</li>
+<li>
+<p>Nincsenek felhasználóhoz rendelve:</p>
+</li>
+<li>
+<p>Saját feladatuk van</p>
+</li>
+<li>
+<p>Háttérben futnak</p>
+</li>
+<li>
+<p><strong>Lépései:</strong></p>
+</li>
+</ul>
+<ol>
+<li>
+<p>Memóriaterület foglalása a PCB számára</p>
+</li>
+<li>
+<p>PCB kitöltése iniciális adatokkal</p>
+</li>
+<li>
+<p>Programszöveg, adatok, verem számára memóriafoglalás, betöltés</p>
+</li>
+<li>
+<p>A PCB procok láncra fűzése, futáskész állapot. Ettől kezdve a proc osztozik a CPU-n.</p>
+</li>
+</ol>
+<h3 id="processzus-befejezése">Processzus befejezése</h3>
+<ul>
+<li>
+<p><strong>Szabályos kilépés (exit(0)):</strong>  <em>önkéntes</em>, végzett a feladatával</p>
+</li>
+<li>
+<p><strong>Kilépés hiba miatt</strong></p>
+</li>
+<li>
+<p><strong>Kilépés végzetes hiba miatt:</strong>  <em>önkéntelen</em>, illegális utasítás, nullával osztás</p>
+</li>
+<li>
+<p><strong>Egy másik proc megsemmisíti:</strong>  <em>önkéntelen</em>, mésik proc kill() utasítására</p>
+</li>
+<li>
+<p><strong>Lépései:</strong></p>
+</li>
+</ul>
+<ol>
+<li>
+<p>Gyermek procok megszüntetése (rekurzívan)</p>
+</li>
+<li>
+<p>PCB procok láncról való levétele, terminális állapot. Ettől kezdve a proc nem osztocik a CPU-n</p>
+</li>
+<li>
+<p>Proc bitrokában lévő erőforrások felszabadítása (pl. fájlok lezárása)</p>
+</li>
+<li>
+<p>A memóriatérképnek (konstansok, változók, dinamikus változók) megfelelő memóriaterület felszabadítása</p>
+</li>
+<li>
+<p>PCB memóriaterületének felszabadítása</p>
+</li>
+</ol>
+<p><strong>Kölcsönös kizárás:</strong> Ha egy processzus megosztott erőforrást, akkor a többi processzus tartózkodjon ettől.</p>
+<p>Kettő vagy több processzus egy-egy szakasza nem lehet átfedő, mert ilyen ez a két szakas egymásra nézve <strong>kritikus szekciók</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> ennek a megoldása az oprendszer feladata.</p>
+<h2 id="ütemezési-stratégiák-és-algoritmusok-kötegelt-interaktív-és-valós-idejű-rendszereknél-ütemezési-algoritmusok-céljai">Ütemezési stratégiák és algoritmusok kötegelt, interaktív és valós idejű rendszereknél, ütemezési algoritmusok céljai</h2>
+<h3 id="ütemező">Ütemező</h3>
+<ul>
+<li>
+<p>Egy CPU áll rendelkezésre. Processzusok versengenek a CPU-ért</p>
+</li>
+<li>
+<p>Az OS dönti el, hogy melyik kapja meg a CPU-t</p>
+</li>
+<li>
+<p>Az <strong>ütemező (scheduler)</strong> hozza meg a döntést  Ütemezési algoritmus</p>
+</li>
+</ul>
+<p>Ütemezés</p>
+<ul>
+<li>
+<p><strong>Feladata:</strong> Egy adott időpontban futáskész procok közül egy kiválasztása, amely a következőkben a CPU-t bitrokolni fogja</p>
+</li>
+<li>
+<p><strong>Mikor kell ütemezni?:</strong> amikor egy processus befejeződik vagy blokkolódik</p>
+</li>
+<li>
+<p><strong>Céljai:</strong></p>
+</li>
+<li>
+<p>a CPU legyen jól kihasznált</p>
+</li>
+<li>
+<p>az átfutási idő (proc létrejöttétől megszűnéséig eltelt idő) legyen rövid</p>
+</li>
+<li>
+<p>egységnyi idő alatt minél több proc teljesüljön</p>
+</li>
+</ul>
+<h3 id="ütemezés-kötegelt-rendszerekben">Ütemezés kötegelt rendszerekben</h3>
+<p>A manapság haszálatos op.rendszerek nem tartoznak a kötegelt rendszerek (: <strong>Előre meghatározott sorrend szerint végrehajtandó feladatok együttese.</strong>) világába, mégis érdemes röviden megemlíteni ezek ütemezési típusait.</p>
+<ul>
+<li>
+<p><strong>Sorrendi ütemezés:</strong> (First-Come First-Served)</p>
+</li>
+<li>
+<p>Futásra kész folyamatok egy várakozó sorban helyezkednek el.</p>
+</li>
+<li>
+<p>A sorban levő első folyamatot hajtja végre a központi egység. Ha befejeződik a folyamat végrehajtása, az ütemező a sorban következő feladatot veszi elő.</p>
+</li>
+<li>
+<p>Új feladatok a sor végére kerülnek</p>
+</li>
+<li>
+<p>Ha az aktuálisan futó folyamat blokkolódik, akkor a sorban következő folyamat jön, míg a blokkolt folyamat, ha újra futásra kész lesz, akkor a sor végére kerül, és majd idővel újra rá kerül a vezérlés.</p>
+</li>
+<li>
+<p><strong>Legrövidebb feladat először:</strong> (Shortest Job First)</p>
+</li>
+<li>
+<p>az a folyamat kerül először ütemezésre, melyiknek a legkisebb a futási ideje.</p>
+</li>
+<li>
+<p>az alkalmazhatóság szempontjából nem ideális, ha nem tudjuk előre a folyamatok végrehajtási idejét.</p>
+</li>
+<li>
+<p><strong>Legrövidebb maradék futásidejű:</strong></p>
+</li>
+<li>
+<p>Ismerni kell a folyamatok futási idejét előre.</p>
+</li>
+<li>
+<p>Amikor új folyamat érkezik, vagy a blokkolás miatt egy következő folyamathoz kerül a vezérlés, akkor nem a teljes folyamat végrehajtási idejét, hanem csak a hátralévő időt vizsgálja az ütemező, és amelyik folyamatnak legkisebb a maradék futási ideje, az kerül ütemezésre</p>
+</li>
+<li>
+<p><strong>Háromszintű futásidejű:</strong></p>
+</li>
+<li>
+<p>A feladatok a központi memóriában vannak, közülük egyet hajt végre a központi egység. Előfordulhat, hogy a többi feladat közül ki kell rakni egyet a háttértárba, mivel a működés során elfogyhat a memória.</p>
+</li>
+<li>
+<p>Az a döntést, hogy a futásra jelentkező folyamatok milyen sorrendben kerüljenek be a memóriába, a bebocsátó ütemező hozza meg.</p>
+</li>
+</ul>
+<h3 id="ütemezés-interaktív-rendszereknél">Ütemezés interaktív rendszereknél</h3>
+<ul>
+<li>
+<p><strong>Round Robin</strong></p>
+</li>
+<li>
+<p>Az ütemező beállít egy <strong>időintervallumot</strong> egy időzítő segítségével és amikor az <strong>időzítő lejár megszakítást ad</strong>.</p>
+</li>
+<li>
+<p>Megadott időközönként óramegszakítás következik be és ekkor az ütemező a következő folyamatnak adja a processzort.</p>
+</li>
+<li>
+<p>A folyamatokat egy sorban tárolja a rendszer, és amikor lejárt az időszelet, akkor az a folyamat, amelyiktől az ütemező éppen elveszi a vezérlést, a sor végére kerül</p>
+</li>
+<li>
+<p>Minden processzusnak egyforma fontosságot ad.</p>
+</li>
+<li>
+<p><strong>Prioritásos ütemezés</strong></p>
+</li>
+<li>
+<p>Felmerül az igény, hogy nem feltétlenül egyformán fontos minden egyes folyamat.</p>
+</li>
+<li>
+<p>A folyamatokhoz egy fontossági mérőszámot, prioritást (prioritási osztályt) rendel hozzá</p>
+</li>
+<li>
+<p>A legmagasabb prioritású futáskész processzus kapja meg a CPU-t</p>
+</li>
+</ul>
+<h3 id="ütemezés-valós-idejű-rendszereknél">Ütemezés valós idejű rendszereknél</h3>
+<p><strong>Alapvető szerepe van az időnek</strong></p>
+<p>Ha a feladatainknak nemcsak azt szabjuk meg, hogy hajtódjanak végre valamilyen korrekt ütemezés szerint, hanem az is egy kritérium, hogy egy adott kérést valamilyen időn belül ki kell szolgálni, akkor valós idejű op.rendszerről beszélünk.</p>
+<p>A megfelelő határidők betartása úgy valósítható meg, hogy <strong>egy programot több folyamatra bontunk (ezek a folyamatok általában kiszámítható viselkedéssel rendelkeznek)</strong>, és ezeknek a rövid folyamatoknak az <strong>ütemező biztosítja a számukra előírt határidő betartását</strong></p>
+<ul>
+<li>
+<p><strong>Szigorú valós idejű rendszer</strong></p>
+</li>
+<li>
+<p>a határidő betartása kötelező</p>
+</li>
+<li>
+<p><strong>Toleráns valós idejű (soft real-time) rendszer</strong></p>
+</li>
+<li>
+<p>a határidők kis mulasztása még elfogadható, tolerálható.</p>
+</li>
+</ul>
+<h3 id="kontextus-csere">Kontextus csere</h3>
+<p>Több idejűleg létező processzusok - Egyetlen processzor: a CPU váltakozva hajtja végre a procok programjait.</p>
+<p>Kontextus csere: A CPU átvált <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">P1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span><span class="mord">1</span></span></span></span></span> procról a <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">P2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span><span class="mord">2</span></span></span></span></span> procra.</p>
+<ul>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">P1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span><span class="mord">1</span></span></span></span></span> állapotát a CPU regisztereiből menteni kell az erre a célra fenntartott memóriaterületre. (IP, SP)</p>
+</li>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">P2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span><span class="mord">2</span></span></span></span></span> korábban memóriába mentett állapotát helyre kell állítani a CPU regisztereiben</p>
+</li>
+</ul>
+</div>
+</body>
+
+</html>
